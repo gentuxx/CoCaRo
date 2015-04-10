@@ -27,3 +27,5 @@ module	et	allocation) ;
 
 - ENF14 : (8)	Il	doit	être	possible	d’obtenir	une	trace	d’une	exécution	d’un	agent	sous	forme	de	
 log.
+
+Potentielles : ENF6, ENF10, ENF13, ENF15, ENF16.
