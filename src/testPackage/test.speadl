@@ -1,0 +1,75 @@
+import testPackage.IRobotCreator
+import testPackage.IBoxGenerator
+
+namespace testPackage.test {
+	
+	component AgentBehaviourPDA {
+		provides log : ILog = decision.log
+		provides cycle : ICycle = decision.cycle
+		requires localGet : ILocalEnvironmentGet
+		requires localSet : ILocalEnvironmentSet
+		
+		part perception : AgentPerception {
+			bind localGet to localGet
+		}
+		part actions : AgentAct {
+			bind localSet to localSet
+		}
+		part decision : AgentDecision {
+			bind actions to actions.actions
+			bind perception to perception.perception
+		}
+	}
+	
+	ecosystem AgentPerception {
+		species PerceptionCore() {
+			requires localGet : ILocalEnvironmentGet
+			provides perception : IAgentPerception
+		}
+	}
+	
+	ecosystem AgentAct {
+		species ActionCore() {
+			requires localSet : ILocalEnvironmentSet
+			provides actions : IAgentAction
+		}
+	}
+	
+	ecosystem AgentDecision {
+		species DecisionCore() {
+			provides cycle : ICycle
+		provides log : ILog
+		requires perception : IAgentPerception
+		requires actions : IAgentAction
+		}
+	}
+	
+	ecosystem RobotsEcosystem {
+		provides createRobot : IRobotCreator
+		species Robot(identifier : String) {
+			part behaviour : AgentBehaviourPDA {
+				bind localGet to joinGet.prov
+				bind localSet to joinSet.prov
+			}
+		}
+	}
+	ecosystem Grid {
+		provides createBox : IBoxGenerator
+		species Box(color : String) {
+			
+		}
+		species Nest(color : String) {
+			
+		}
+	}
+	
+	component Environment {
+		part grid : Grid {
+			
+		}
+		part robotEcosystem : RobotsEcosystem {
+			
+		}
+		
+	}
+}
