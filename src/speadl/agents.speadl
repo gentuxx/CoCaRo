@@ -1,19 +1,17 @@
-import testPackage.IRobotCreator
 import java.Color
+import java.agents.IAgentPerception
+import java.agents.IAgentAction
+import java.agents.IAgentDecisionCreator
 
 namespace speadl.agents {
 	
 	component AgentBehaviourPDA {
-		provides log : ILog = decision.log
-		provides cycle : ICycle = decision.cycle
-		requires localGet : ILocalEnvironmentGet
-		requires localSet : ILocalEnvironmentSet
 		
 		part perception : AgentPerception {
-			bind localGet to localGet
+			
 		}
 		part actions : AgentAction {
-			bind localSet to localSet
+			
 		}
 		part decision : AgentDecision {
 			bind actions to actions.actions
@@ -22,34 +20,35 @@ namespace speadl.agents {
 	}
 	
 	ecosystem AgentPerception {
+		provides perception : IAgentPerception
+		
 		species PerceptionCore() {
-			requires localGet : ILocalEnvironmentGet
-			provides perception : IAgentPerception
+			
 		}
 	}
 	
 	ecosystem AgentAction {
+		provides actions : IAgentAction
+		
 		species ActionCore() {
-			requires localSet : ILocalEnvironmentSet
-			provides actions : IAgentAction
+			
 		}
 	}
 	
 	ecosystem AgentDecision {
-		species DecisionCore() {
-			provides cycle : ICycle
-		provides log : ILog
 		requires perception : IAgentPerception
 		requires actions : IAgentAction
+		provides creator : IAgentDecisionCreator
+		
+		species DecisionCore() {
+			
 		}
 	}
 	
 	ecosystem RobotsEcosystem {
-		provides createRobot : IRobotCreator
 		species Robot(identifier : String, color : Color) {
 			part behaviour : AgentBehaviourPDA {
-				bind localGet to joinGet.prov
-				bind localSet to joinSet.prov
+				
 			}
 		}
 	}

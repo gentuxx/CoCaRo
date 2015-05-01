@@ -9,7 +9,7 @@ namespace speadl.environment {
 		provides createBox : IBoxGenerator
 		provides createNests : INestCreator
 		species Box(color : Color) {
-			provides
+			
 		}
 		species Nest(color : Color) {
 			
