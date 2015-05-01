@@ -8,6 +8,7 @@ namespace speadl.environment {
 	ecosystem Grid {
 		provides createBox : IBoxGenerator
 		provides createNests : INestCreator
+		
 		species Box(color : Color) {
 			
 		}
@@ -16,13 +17,12 @@ namespace speadl.environment {
 		}
 	}
 	
-	component Environment {
+	component Environment {		
 		part grid : Grid {
 			
 		}
 		part robotEcosystem : RobotsEcosystem {
 			
 		}
-		
 	}
 }

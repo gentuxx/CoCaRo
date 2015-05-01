@@ -9,8 +9,7 @@ public class EnvironmentImpl extends Environment{
 
 	@Override
 	protected Grid make_grid() {
-		// TODO Auto-generated method stub
-		return null;
+		return new GridImpl();
 	}
 
 	@Override

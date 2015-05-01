@@ -19,17 +19,17 @@ public class BehaviourImpl extends AgentBehaviourPDA{
 	
 	@Override
 	protected AgentPerception make_perception() {
-		return new AgentPerceptionImpl();
+		return new AgentPerceptionImpl(identifier);
 	}
 
 	@Override
 	protected AgentAction make_actions() {
-		return new AgentActionsImpl();
+		return new AgentActionsImpl(identifier);
 	}
 
 	@Override
 	protected AgentDecision make_decision() {
-		return new AgentDecisionImpl();
+		return new AgentDecisionImpl(identifier, color);
 	}
 	
 	

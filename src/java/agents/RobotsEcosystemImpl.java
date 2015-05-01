@@ -9,7 +9,7 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 
 	@Override
 	protected Robot make_Robot(final String identifier, final Color color) {
-		Robot robot = new Robot(){
+		return new Robot(){
 
 			@Override
 			protected AgentBehaviourPDA make_behaviour() {
@@ -17,7 +17,6 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 			}
 			
 		};
-		return null;
 	}
 
 }
