@@ -1,6 +1,6 @@
-package testPackage;
+package java.environment;
 
-import testPackage.test.Environment;
+import java.agents.test.Environment;
 
 public class EnvironmentImpl extends Environment{
 

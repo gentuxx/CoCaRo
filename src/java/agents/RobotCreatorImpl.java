@@ -1,4 +1,4 @@
-package testPackage;
+package java.agents;
 
 public class RobotCreatorImpl implements IRobotCreator{
 

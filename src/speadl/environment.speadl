@@ -1,5 +1,6 @@
 import testPackage.IBoxGenerator
 import speadl.agents.RobotsEcosystem
+import testPackage.INestCreator
 
 namespace speadl.environment {
 	

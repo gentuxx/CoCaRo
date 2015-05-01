@@ -1,6 +1,6 @@
-package testPackage;
+package java.agents;
 
-import testPackage.test.RobotsEcosystem;
+import java.agents.test.RobotsEcosystem;
 
 public class RobotsEcosystemImpl extends RobotsEcosystem{
 
