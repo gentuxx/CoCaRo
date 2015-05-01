@@ -1,0 +1,26 @@
+import testPackage.IBoxGenerator
+import speadl.agents.RobotsEcosystem
+
+namespace speadl.environment {
+	
+	ecosystem Grid {
+		provides createBox : IBoxGenerator
+		provides createNests : INestCreator
+		species Box(color : String) {
+			
+		}
+		species Nest(color : String) {
+			
+		}
+	}
+	
+	component Environment {
+		part grid : Grid {
+			
+		}
+		part robotEcosystem : RobotsEcosystem {
+			
+		}
+		
+	}
+}

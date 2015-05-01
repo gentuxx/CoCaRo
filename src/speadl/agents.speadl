@@ -1,7 +1,6 @@
 import testPackage.IRobotCreator
-import testPackage.IBoxGenerator
 
-namespace testPackage.test {
+namespace speadl.agents {
 	
 	component AgentBehaviourPDA {
 		provides log : ILog = decision.log
@@ -12,7 +11,7 @@ namespace testPackage.test {
 		part perception : AgentPerception {
 			bind localGet to localGet
 		}
-		part actions : AgentAct {
+		part actions : AgentAction {
 			bind localSet to localSet
 		}
 		part decision : AgentDecision {
@@ -28,7 +27,7 @@ namespace testPackage.test {
 		}
 	}
 	
-	ecosystem AgentAct {
+	ecosystem AgentAction {
 		species ActionCore() {
 			requires localSet : ILocalEnvironmentSet
 			provides actions : IAgentAction
@@ -52,24 +51,5 @@ namespace testPackage.test {
 				bind localSet to joinSet.prov
 			}
 		}
-	}
-	ecosystem Grid {
-		provides createBox : IBoxGenerator
-		species Box(color : String) {
-			
-		}
-		species Nest(color : String) {
-			
-		}
-	}
-	
-	component Environment {
-		part grid : Grid {
-			
-		}
-		part robotEcosystem : RobotsEcosystem {
-			
-		}
-		
 	}
 }

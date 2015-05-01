@@ -1,7 +1,7 @@
-package testPackage.test;
+package speadl.environment;
 
-import testPackage.test.Grid;
-import testPackage.test.RobotsEcosystem;
+import speadl.agents.RobotsEcosystem;
+import speadl.environment.Grid;
 
 @SuppressWarnings("all")
 public abstract class Environment {
@@ -49,7 +49,7 @@ public abstract class Environment {
       assert this.implem_grid == null: "This is a bug.";
       this.implem_grid = this.implementation.make_grid();
       if (this.implem_grid == null) {
-      	throw new RuntimeException("make_grid() in testPackage.test.Environment should not return null.");
+      	throw new RuntimeException("make_grid() in speadl.environment.Environment should not return null.");
       }
       this.grid = this.implem_grid._newComponent(new BridgeImpl_grid(), false);
       
@@ -60,7 +60,7 @@ public abstract class Environment {
       assert this.implem_robotEcosystem == null: "This is a bug.";
       this.implem_robotEcosystem = this.implementation.make_robotEcosystem();
       if (this.implem_robotEcosystem == null) {
-      	throw new RuntimeException("make_robotEcosystem() in testPackage.test.Environment should not return null.");
+      	throw new RuntimeException("make_robotEcosystem() in speadl.environment.Environment should not return null.");
       }
       this.robotEcosystem = this.implem_robotEcosystem._newComponent(new BridgeImpl_robotEcosystem(), false);
       
