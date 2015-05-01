@@ -1,16 +1,17 @@
-import testPackage.IBoxGenerator
 import speadl.agents.RobotsEcosystem
-import testPackage.INestCreator
+import java.environment.IBoxGenerator
+import java.environment.INestCreator
+import java.Color
 
 namespace speadl.environment {
 	
 	ecosystem Grid {
 		provides createBox : IBoxGenerator
 		provides createNests : INestCreator
-		species Box(color : String) {
-			
+		species Box(color : Color) {
+			provides
 		}
-		species Nest(color : String) {
+		species Nest(color : Color) {
 			
 		}
 	}

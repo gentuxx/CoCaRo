@@ -1,4 +1,5 @@
 import testPackage.IRobotCreator
+import java.Color
 
 namespace speadl.agents {
 	
@@ -45,7 +46,7 @@ namespace speadl.agents {
 	
 	ecosystem RobotsEcosystem {
 		provides createRobot : IRobotCreator
-		species Robot(identifier : String) {
+		species Robot(identifier : String, color : Color) {
 			part behaviour : AgentBehaviourPDA {
 				bind localGet to joinGet.prov
 				bind localSet to joinSet.prov
