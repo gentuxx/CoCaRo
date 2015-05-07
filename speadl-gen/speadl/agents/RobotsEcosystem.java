@@ -1,7 +1,10 @@
 package speadl.agents;
 
 import java.Color;
-import speadl.agents.AgentBehaviourPDA;
+import java.agents.IAgentDecision;
+import java.agents.IAgentDecisionCreator;
+import speadl.agents.AgentBehaviour;
+import speadl.environment.Grid;
 
 @SuppressWarnings("all")
 public abstract class RobotsEcosystem {
@@ -12,9 +15,20 @@ public abstract class RobotsEcosystem {
   }
   
   public interface Provides {
+    /**
+     * This can be called to access the provided port.
+     * 
+     */
+    public IAgentDecisionCreator decisionCreator();
   }
   
   public interface Parts {
+    /**
+     * This can be called by the implementation to access the part and its provided ports.
+     * It will be initialized after the required ports are initialized and before the provided ports are initialized.
+     * 
+     */
+    public AgentBehaviour.Component behaviour();
   }
   
   public static class ComponentImpl implements RobotsEcosystem.Component, RobotsEcosystem.Parts {
@@ -23,12 +37,25 @@ public abstract class RobotsEcosystem {
     private final RobotsEcosystem implementation;
     
     public void start() {
+      assert this.behaviour != null: "This is a bug.";
+      ((AgentBehaviour.ComponentImpl) this.behaviour).start();
       this.implementation.start();
       this.implementation.started = true;
     }
     
-    protected void initParts() {
+    private void init_behaviour() {
+      assert this.behaviour == null: "This is a bug.";
+      assert this.implem_behaviour == null: "This is a bug.";
+      this.implem_behaviour = this.implementation.make_behaviour();
+      if (this.implem_behaviour == null) {
+      	throw new RuntimeException("make_behaviour() in speadl.agents.RobotsEcosystem should not return null.");
+      }
+      this.behaviour = this.implem_behaviour._newComponent(new BridgeImpl_behaviour(), false);
       
+    }
+    
+    protected void initParts() {
+      init_behaviour();
     }
     
     protected void initProvidedPorts() {
@@ -50,16 +77,41 @@ public abstract class RobotsEcosystem {
       	initProvidedPorts();
       }
     }
+    
+    public IAgentDecisionCreator decisionCreator() {
+      return this.behaviour().decisionCreator();
+    }
+    
+    private AgentBehaviour.Component behaviour;
+    
+    private AgentBehaviour implem_behaviour;
+    
+    private final class BridgeImpl_behaviour implements AgentBehaviour.Requires {
+    }
+    
+    public final AgentBehaviour.Component behaviour() {
+      return this.behaviour;
+    }
   }
   
-  public static abstract class Robot {
+  public static class Robot {
     public interface Requires {
+      /**
+       * This can be called by the implementation to access this required port.
+       * 
+       */
+      public Grid gridR();
     }
     
     public interface Component extends RobotsEcosystem.Robot.Provides {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IAgentDecision decisions();
     }
     
     public interface Parts {
@@ -68,7 +120,7 @@ public abstract class RobotsEcosystem {
        * It will be initialized after the required ports are initialized and before the provided ports are initialized.
        * 
        */
-      public AgentBehaviourPDA.Component behaviour();
+      public AgentBehaviour.AgentBehaviourPDA.Component aBehaviour();
     }
     
     public static class ComponentImpl implements RobotsEcosystem.Robot.Component, RobotsEcosystem.Robot.Parts {
@@ -77,25 +129,21 @@ public abstract class RobotsEcosystem {
       private final RobotsEcosystem.Robot implementation;
       
       public void start() {
-        assert this.behaviour != null: "This is a bug.";
-        ((AgentBehaviourPDA.ComponentImpl) this.behaviour).start();
+        assert this.aBehaviour != null: "This is a bug.";
+        ((AgentBehaviour.AgentBehaviourPDA.ComponentImpl) this.aBehaviour).start();
         this.implementation.start();
         this.implementation.started = true;
       }
       
-      private void init_behaviour() {
-        assert this.behaviour == null: "This is a bug.";
-        assert this.implem_behaviour == null: "This is a bug.";
-        this.implem_behaviour = this.implementation.make_behaviour();
-        if (this.implem_behaviour == null) {
-        	throw new RuntimeException("make_behaviour() in speadl.agents.RobotsEcosystem$Robot should not return null.");
-        }
-        this.behaviour = this.implem_behaviour._newComponent(new BridgeImpl_behaviour(), false);
+      private void init_aBehaviour() {
+        assert this.aBehaviour == null: "This is a bug.";
+        assert this.implementation.use_aBehaviour != null: "This is a bug.";
+        this.aBehaviour = this.implementation.use_aBehaviour._newComponent(new BridgeImpl_behaviour_aBehaviour(), false);
         
       }
       
       protected void initParts() {
-        init_behaviour();
+        init_aBehaviour();
       }
       
       protected void initProvidedPorts() {
@@ -118,15 +166,20 @@ public abstract class RobotsEcosystem {
         }
       }
       
-      private AgentBehaviourPDA.Component behaviour;
-      
-      private AgentBehaviourPDA implem_behaviour;
-      
-      private final class BridgeImpl_behaviour implements AgentBehaviourPDA.Requires {
+      public IAgentDecision decisions() {
+        return this.aBehaviour().decisions();
       }
       
-      public final AgentBehaviourPDA.Component behaviour() {
-        return this.behaviour;
+      private AgentBehaviour.AgentBehaviourPDA.Component aBehaviour;
+      
+      private final class BridgeImpl_behaviour_aBehaviour implements AgentBehaviour.AgentBehaviourPDA.Requires {
+        public final Grid gridB() {
+          return RobotsEcosystem.Robot.ComponentImpl.this.bridge.gridR();
+        }
+      }
+      
+      public final AgentBehaviour.AgentBehaviourPDA.Component aBehaviour() {
+        return this.aBehaviour;
       }
     }
     
@@ -193,12 +246,7 @@ public abstract class RobotsEcosystem {
       return this.selfComponent;
     }
     
-    /**
-     * This should be overridden by the implementation to define how to create this sub-component.
-     * This will be called once during the construction of the component to initialize this sub-component.
-     * 
-     */
-    protected abstract AgentBehaviourPDA make_behaviour();
+    private AgentBehaviour.AgentBehaviourPDA use_aBehaviour;
     
     /**
      * Not meant to be used to manually instantiate components (except for testing).
@@ -310,6 +358,13 @@ public abstract class RobotsEcosystem {
   }
   
   /**
+   * This should be overridden by the implementation to define how to create this sub-component.
+   * This will be called once during the construction of the component to initialize this sub-component.
+   * 
+   */
+  protected abstract AgentBehaviour make_behaviour();
+  
+  /**
    * Not meant to be used to manually instantiate components (except for testing).
    * 
    */
@@ -329,7 +384,9 @@ public abstract class RobotsEcosystem {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected abstract RobotsEcosystem.Robot make_Robot(final String identifier, final Color color);
+  protected RobotsEcosystem.Robot make_Robot(final String identifier, final Color color) {
+    return new RobotsEcosystem.Robot();
+  }
   
   /**
    * Do not call, used by generated code.
@@ -343,16 +400,10 @@ public abstract class RobotsEcosystem {
     assert implem.ecosystemComponent == null: "This is a bug.";
     assert this.selfComponent != null: "This is a bug.";
     implem.ecosystemComponent = this.selfComponent;
+    assert this.selfComponent.implem_behaviour != null: "This is a bug.";
+    assert implem.use_aBehaviour == null: "This is a bug.";
+    implem.use_aBehaviour = this.selfComponent.implem_behaviour._createImplementationOfAgentBehaviourPDA();
     return implem;
-  }
-  
-  /**
-   * This can be called to create an instance of the species from inside the implementation of the ecosystem.
-   * 
-   */
-  protected RobotsEcosystem.Robot.Component newRobot(final String identifier, final Color color) {
-    RobotsEcosystem.Robot _implem = _createImplementationOfRobot(identifier,color);
-    return _implem._newComponent(new RobotsEcosystem.Robot.Requires() {},true);
   }
   
   /**

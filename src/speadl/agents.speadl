@@ -2,54 +2,82 @@ import java.Color
 import java.agents.IAgentPerception
 import java.agents.IAgentAction
 import java.agents.IAgentDecisionCreator
+import speadl.environment.Grid
+import java.agents.IAgentDecision
 
 namespace speadl.agents {
 	
-	component AgentBehaviourPDA {
+	ecosystem RobotsEcosystem {
+		provides decisionCreator : IAgentDecisionCreator = behaviour.decisionCreator
+		
+		species Robot(identifier : String, color : Color) {
+			provides decisions : IAgentDecision = aBehaviour.decisions
+			requires gridR : Grid
+			
+			use aBehaviour : behaviour.AgentBehaviourPDA(){
+				bind gridB to gridR
+			}
+		}
+		
+		part behaviour : AgentBehaviour {
+				
+		}
+	}
+	
+	ecosystem AgentBehaviour {
+		
+		provides decisionCreator : IAgentDecisionCreator = decision.creator
+		
+		species AgentBehaviourPDA() {
+			
+			provides decisions : IAgentDecision = aDecision.decisions
+			requires gridB: Grid
+			
+			use aPerc : perception.PerceptionCore() {
+				bind gridP to gridB
+			}
+			use aAction : actions.ActionCore()
+			use aDecision : decision.DecisionCore() {
+				bind perception to aPerc.perception
+				bind actions to aAction.actions
+			}
+		}
 		
 		part perception : AgentPerception {
 			
 		}
+		
 		part actions : AgentAction {
 			
 		}
+		
 		part decision : AgentDecision {
-			bind actions to actions.actions
-			bind perception to perception.perception
+			
 		}
 	}
 	
 	ecosystem AgentPerception {
-		provides perception : IAgentPerception
 		
 		species PerceptionCore() {
-			
+			requires gridP : Grid
+			provides perception : IAgentPerception
 		}
 	}
 	
 	ecosystem AgentAction {
-		provides actions : IAgentAction
 		
 		species ActionCore() {
-			
+			provides actions : IAgentAction
 		}
 	}
 	
 	ecosystem AgentDecision {
-		requires perception : IAgentPerception
-		requires actions : IAgentAction
 		provides creator : IAgentDecisionCreator
 		
 		species DecisionCore() {
-			
-		}
-	}
-	
-	ecosystem RobotsEcosystem {
-		species Robot(identifier : String, color : Color) {
-			part behaviour : AgentBehaviourPDA {
-				
-			}
+			requires perception : IAgentPerception
+			requires actions : IAgentAction
+			provides decisions : IAgentDecision
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace speadl.environment {
 		}
 	}
 	
-	component Environment {		
+	component Environment {
 		part grid : Grid {
 			
 		}

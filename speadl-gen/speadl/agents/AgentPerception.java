@@ -1,6 +1,7 @@
 package speadl.agents;
 
 import java.agents.IAgentPerception;
+import speadl.environment.Grid;
 
 @SuppressWarnings("all")
 public abstract class AgentPerception {
@@ -11,11 +12,6 @@ public abstract class AgentPerception {
   }
   
   public interface Provides {
-    /**
-     * This can be called to access the provided port.
-     * 
-     */
-    public IAgentPerception perception();
   }
   
   public interface Parts {
@@ -35,16 +31,8 @@ public abstract class AgentPerception {
       
     }
     
-    private void init_perception() {
-      assert this.perception == null: "This is a bug.";
-      this.perception = this.implementation.make_perception();
-      if (this.perception == null) {
-      	throw new RuntimeException("make_perception() in speadl.agents.AgentPerception should not return null.");
-      }
-    }
-    
     protected void initProvidedPorts() {
-      init_perception();
+      
     }
     
     public ComponentImpl(final AgentPerception implem, final AgentPerception.Requires b, final boolean doInits) {
@@ -62,22 +50,26 @@ public abstract class AgentPerception {
       	initProvidedPorts();
       }
     }
-    
-    private IAgentPerception perception;
-    
-    public IAgentPerception perception() {
-      return this.perception;
-    }
   }
   
-  public static class PerceptionCore {
+  public static abstract class PerceptionCore {
     public interface Requires {
+      /**
+       * This can be called by the implementation to access this required port.
+       * 
+       */
+      public Grid gridP();
     }
     
     public interface Component extends AgentPerception.PerceptionCore.Provides {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IAgentPerception perception();
     }
     
     public interface Parts {
@@ -97,8 +89,16 @@ public abstract class AgentPerception {
         
       }
       
+      private void init_perception() {
+        assert this.perception == null: "This is a bug.";
+        this.perception = this.implementation.make_perception();
+        if (this.perception == null) {
+        	throw new RuntimeException("make_perception() in speadl.agents.AgentPerception$PerceptionCore should not return null.");
+        }
+      }
+      
       protected void initProvidedPorts() {
-        
+        init_perception();
       }
       
       public ComponentImpl(final AgentPerception.PerceptionCore implem, final AgentPerception.PerceptionCore.Requires b, final boolean doInits) {
@@ -115,6 +115,12 @@ public abstract class AgentPerception {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      private IAgentPerception perception;
+      
+      public IAgentPerception perception() {
+        return this.perception;
       }
     }
     
@@ -156,6 +162,13 @@ public abstract class AgentPerception {
       }
       return this.selfComponent;
     }
+    
+    /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract IAgentPerception make_perception();
     
     /**
      * This can be called by the implementation to access the required ports.
@@ -267,13 +280,6 @@ public abstract class AgentPerception {
   }
   
   /**
-   * This should be overridden by the implementation to define the provided port.
-   * This will be called once during the construction of the component to initialize the port.
-   * 
-   */
-  protected abstract IAgentPerception make_perception();
-  
-  /**
    * This can be called by the implementation to access the required ports.
    * 
    */
@@ -317,9 +323,7 @@ public abstract class AgentPerception {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentPerception.PerceptionCore make_PerceptionCore() {
-    return new AgentPerception.PerceptionCore();
-  }
+  protected abstract AgentPerception.PerceptionCore make_PerceptionCore();
   
   /**
    * Do not call, used by generated code.
@@ -334,15 +338,6 @@ public abstract class AgentPerception {
     assert this.selfComponent != null: "This is a bug.";
     implem.ecosystemComponent = this.selfComponent;
     return implem;
-  }
-  
-  /**
-   * This can be called to create an instance of the species from inside the implementation of the ecosystem.
-   * 
-   */
-  protected AgentPerception.PerceptionCore.Component newPerceptionCore() {
-    AgentPerception.PerceptionCore _implem = _createImplementationOfPerceptionCore();
-    return _implem._newComponent(new AgentPerception.PerceptionCore.Requires() {},true);
   }
   
   /**

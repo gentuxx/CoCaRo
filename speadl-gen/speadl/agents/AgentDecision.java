@@ -1,23 +1,13 @@
 package speadl.agents;
 
 import java.agents.IAgentAction;
+import java.agents.IAgentDecision;
 import java.agents.IAgentDecisionCreator;
 import java.agents.IAgentPerception;
 
 @SuppressWarnings("all")
 public abstract class AgentDecision {
   public interface Requires {
-    /**
-     * This can be called by the implementation to access this required port.
-     * 
-     */
-    public IAgentPerception perception();
-    
-    /**
-     * This can be called by the implementation to access this required port.
-     * 
-     */
-    public IAgentAction actions();
   }
   
   public interface Component extends AgentDecision.Provides {
@@ -83,14 +73,30 @@ public abstract class AgentDecision {
     }
   }
   
-  public static class DecisionCore {
+  public static abstract class DecisionCore {
     public interface Requires {
+      /**
+       * This can be called by the implementation to access this required port.
+       * 
+       */
+      public IAgentPerception perception();
+      
+      /**
+       * This can be called by the implementation to access this required port.
+       * 
+       */
+      public IAgentAction actions();
     }
     
     public interface Component extends AgentDecision.DecisionCore.Provides {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IAgentDecision decisions();
     }
     
     public interface Parts {
@@ -110,8 +116,16 @@ public abstract class AgentDecision {
         
       }
       
+      private void init_decisions() {
+        assert this.decisions == null: "This is a bug.";
+        this.decisions = this.implementation.make_decisions();
+        if (this.decisions == null) {
+        	throw new RuntimeException("make_decisions() in speadl.agents.AgentDecision$DecisionCore should not return null.");
+        }
+      }
+      
       protected void initProvidedPorts() {
-        
+        init_decisions();
       }
       
       public ComponentImpl(final AgentDecision.DecisionCore implem, final AgentDecision.DecisionCore.Requires b, final boolean doInits) {
@@ -128,6 +142,12 @@ public abstract class AgentDecision {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      private IAgentDecision decisions;
+      
+      public IAgentDecision decisions() {
+        return this.decisions;
       }
     }
     
@@ -169,6 +189,13 @@ public abstract class AgentDecision {
       }
       return this.selfComponent;
     }
+    
+    /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract IAgentDecision make_decisions();
     
     /**
      * This can be called by the implementation to access the required ports.
@@ -330,9 +357,7 @@ public abstract class AgentDecision {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentDecision.DecisionCore make_DecisionCore() {
-    return new AgentDecision.DecisionCore();
-  }
+  protected abstract AgentDecision.DecisionCore make_DecisionCore();
   
   /**
    * Do not call, used by generated code.
@@ -350,11 +375,10 @@ public abstract class AgentDecision {
   }
   
   /**
-   * This can be called to create an instance of the species from inside the implementation of the ecosystem.
+   * Use to instantiate a component from this implementation.
    * 
    */
-  protected AgentDecision.DecisionCore.Component newDecisionCore() {
-    AgentDecision.DecisionCore _implem = _createImplementationOfDecisionCore();
-    return _implem._newComponent(new AgentDecision.DecisionCore.Requires() {},true);
+  public AgentDecision.Component newComponent() {
+    return this._newComponent(new AgentDecision.Requires() {}, true);
   }
 }

@@ -11,11 +11,6 @@ public abstract class AgentAction {
   }
   
   public interface Provides {
-    /**
-     * This can be called to access the provided port.
-     * 
-     */
-    public IAgentAction actions();
   }
   
   public interface Parts {
@@ -35,16 +30,8 @@ public abstract class AgentAction {
       
     }
     
-    private void init_actions() {
-      assert this.actions == null: "This is a bug.";
-      this.actions = this.implementation.make_actions();
-      if (this.actions == null) {
-      	throw new RuntimeException("make_actions() in speadl.agents.AgentAction should not return null.");
-      }
-    }
-    
     protected void initProvidedPorts() {
-      init_actions();
+      
     }
     
     public ComponentImpl(final AgentAction implem, final AgentAction.Requires b, final boolean doInits) {
@@ -62,15 +49,9 @@ public abstract class AgentAction {
       	initProvidedPorts();
       }
     }
-    
-    private IAgentAction actions;
-    
-    public IAgentAction actions() {
-      return this.actions;
-    }
   }
   
-  public static class ActionCore {
+  public static abstract class ActionCore {
     public interface Requires {
     }
     
@@ -78,6 +59,11 @@ public abstract class AgentAction {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IAgentAction actions();
     }
     
     public interface Parts {
@@ -97,8 +83,16 @@ public abstract class AgentAction {
         
       }
       
+      private void init_actions() {
+        assert this.actions == null: "This is a bug.";
+        this.actions = this.implementation.make_actions();
+        if (this.actions == null) {
+        	throw new RuntimeException("make_actions() in speadl.agents.AgentAction$ActionCore should not return null.");
+        }
+      }
+      
       protected void initProvidedPorts() {
-        
+        init_actions();
       }
       
       public ComponentImpl(final AgentAction.ActionCore implem, final AgentAction.ActionCore.Requires b, final boolean doInits) {
@@ -115,6 +109,12 @@ public abstract class AgentAction {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      private IAgentAction actions;
+      
+      public IAgentAction actions() {
+        return this.actions;
       }
     }
     
@@ -156,6 +156,13 @@ public abstract class AgentAction {
       }
       return this.selfComponent;
     }
+    
+    /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract IAgentAction make_actions();
     
     /**
      * This can be called by the implementation to access the required ports.
@@ -267,13 +274,6 @@ public abstract class AgentAction {
   }
   
   /**
-   * This should be overridden by the implementation to define the provided port.
-   * This will be called once during the construction of the component to initialize the port.
-   * 
-   */
-  protected abstract IAgentAction make_actions();
-  
-  /**
    * This can be called by the implementation to access the required ports.
    * 
    */
@@ -317,9 +317,7 @@ public abstract class AgentAction {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentAction.ActionCore make_ActionCore() {
-    return new AgentAction.ActionCore();
-  }
+  protected abstract AgentAction.ActionCore make_ActionCore();
   
   /**
    * Do not call, used by generated code.
