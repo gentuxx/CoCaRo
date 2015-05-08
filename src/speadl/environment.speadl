@@ -24,7 +24,6 @@ namespace speadl.environment {
 	}
 	
 	component Grid {
-		
 		provides createNests : INestCreator = nestEnv.createNests
 		provides createBox : IBoxGenerator = boxEnv.createBox
 		
@@ -37,12 +36,14 @@ namespace speadl.environment {
 		}
 		
 		provides env : IEnvironment
-		requires decisions : IAgentDecision
 	}
 	
 	
 	
-	ecosystem LocalEnvironment {
+	ecosystem Environment {
+		
+		provides createBox : IBoxGenerator = globalGrid.createBox
+		provides createNests : INestCreator = globalGrid.createNests
 		
 		species RobotGrid(identifier : String, color : Color) {
 			use aRobot : robotEcosystem.Robot(identifier,color) {
@@ -50,7 +51,7 @@ namespace speadl.environment {
 			}
 			
 			part grid : Grid {
-				bind decisions to aRobot.decisions
+				
 			}
 		}
 	

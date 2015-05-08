@@ -22,11 +22,4 @@ public class AgentActionsImpl extends AgentAction {
 			
 		};
 	}
-	
-	@Override
-	protected IAgentAction make_actions() {
-		return new IAgentAction() {
-			
-		};
-	}
 }

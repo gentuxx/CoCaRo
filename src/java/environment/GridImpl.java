@@ -1,26 +1,27 @@
 package java.environment;
 
+import speadl.environment.BoxEnv;
 import speadl.environment.Grid;
+import speadl.environment.NestEnv;
 
 public class GridImpl extends Grid{
 
 	@Override
-	protected IBoxGenerator make_createBox() {
+	protected IEnvironment make_env() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected INestCreator make_createNests() {
+	protected BoxEnv make_boxEnv() {
 		// TODO Auto-generated method stub
-		return new INestCreator() {
+		return null;
+	}
 
-			@Override
-			public void createAllNests() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		};
+	@Override
+	protected NestEnv make_nestEnv() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

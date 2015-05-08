@@ -22,12 +22,4 @@ public class AgentPerceptionImpl extends AgentPerception {
 			
 		};
 	}
-	
-	@Override
-	protected IAgentPerception make_perception() {
-		return new IAgentPerception() {
-	
-		};
-	}
-
 }

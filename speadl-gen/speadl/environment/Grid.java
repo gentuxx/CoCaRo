@@ -1,6 +1,5 @@
 package speadl.environment;
 
-import java.agents.IAgentDecision;
 import java.environment.IBoxGenerator;
 import java.environment.IEnvironment;
 import java.environment.INestCreator;
@@ -10,11 +9,6 @@ import speadl.environment.NestEnv;
 @SuppressWarnings("all")
 public abstract class Grid {
   public interface Requires {
-    /**
-     * This can be called by the implementation to access this required port.
-     * 
-     */
-    public IAgentDecision decisions();
   }
   
   public interface Component extends Grid.Provides {
@@ -260,5 +254,13 @@ public abstract class Grid {
     	_comp.start();
     }
     return _comp;
+  }
+  
+  /**
+   * Use to instantiate a component from this implementation.
+   * 
+   */
+  public Grid.Component newComponent() {
+    return this._newComponent(new Grid.Requires() {}, true);
   }
 }

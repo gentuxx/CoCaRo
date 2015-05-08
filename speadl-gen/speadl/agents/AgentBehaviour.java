@@ -1,7 +1,6 @@
 package speadl.agents;
 
 import java.agents.IAgentAction;
-import java.agents.IAgentDecision;
 import java.agents.IAgentDecisionCreator;
 import java.agents.IAgentPerception;
 import java.environment.IEnvironment;
@@ -174,11 +173,6 @@ public abstract class AgentBehaviour {
     }
     
     public interface Provides {
-      /**
-       * This can be called to access the provided port.
-       * 
-       */
-      public IAgentDecision decisions();
     }
     
     public interface Parts {
@@ -267,10 +261,6 @@ public abstract class AgentBehaviour {
         }
       }
       
-      public IAgentDecision decisions() {
-        return this.aDecision().decisions();
-      }
-      
       private AgentPerception.PerceptionCore.Component aPerc;
       
       private final class BridgeImpl_perception_aPerc implements AgentPerception.PerceptionCore.Requires {
@@ -295,6 +285,10 @@ public abstract class AgentBehaviour {
       private AgentDecision.DecisionCore.Component aDecision;
       
       private final class BridgeImpl_decision_aDecision implements AgentDecision.DecisionCore.Requires {
+        public final IEnvironment env() {
+          return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.gridB();
+        }
+        
         public final IAgentPerception perception() {
           return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.aPerc().perception();
         }
