@@ -32,4 +32,10 @@ public class AgentDecisionImpl extends AgentDecision {
 		};
 	}
 
+	@Override
+	protected DecisionCore make_DecisionCore() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

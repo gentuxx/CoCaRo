@@ -1,2 +1,6 @@
 /.Environment.java._trace
 /.Grid.java._trace
+/.GlobalEnvironment.java._trace
+/.BoxEnv.java._trace
+/.NestEnv.java._trace
+/.LocalEnvironment.java._trace

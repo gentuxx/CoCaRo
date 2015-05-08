@@ -1,27 +1,64 @@
-import speadl.agents.RobotsEcosystem
 import java.environment.IBoxGenerator
 import java.environment.INestCreator
 import java.Color
+import speadl.agents.RobotsEcosystem
+import java.environment.IEnvironment
+import java.agents.IAgentDecision
 
 namespace speadl.environment {
 	
-	ecosystem Grid {
+	ecosystem BoxEnv {
 		provides createBox : IBoxGenerator
-		provides createNests : INestCreator
 		
 		species Box(color : Color) {
 			
 		}
+	}
+	
+	ecosystem NestEnv {
+		provides createNests : INestCreator
+		
 		species Nest(color : Color) {
 			
 		}
 	}
 	
-	component Environment {
-		part grid : Grid {
+	component Grid {
+		
+		provides createNests : INestCreator = nestEnv.createNests
+		provides createBox : IBoxGenerator = boxEnv.createBox
+		
+		part boxEnv : BoxEnv {
 			
 		}
+		
+		part nestEnv : NestEnv {
+			
+		}
+		
+		provides env : IEnvironment
+		requires decisions : IAgentDecision
+	}
+	
+	
+	
+	ecosystem LocalEnvironment {
+		
+		species RobotGrid(identifier : String, color : Color) {
+			use aRobot : robotEcosystem.Robot(identifier,color) {
+				bind gridR to grid.env
+			}
+			
+			part grid : Grid {
+				bind decisions to aRobot.decisions
+			}
+		}
+	
 		part robotEcosystem : RobotsEcosystem {
+			
+		}
+		
+		part globalGrid : Grid {
 			
 		}
 	}

@@ -3,7 +3,7 @@ package java.agents;
 import java.Color;
 
 import speadl.agents.AgentAction;
-import speadl.agents.AgentBehaviourPDA;
+import speadl.agents.AgentBehaviour.AgentBehaviourPDA;
 import speadl.agents.AgentDecision;
 import speadl.agents.AgentPerception;
 
@@ -31,7 +31,4 @@ public class BehaviourImpl extends AgentBehaviourPDA{
 	protected AgentDecision make_decision() {
 		return new AgentDecisionImpl(identifier, color);
 	}
-	
-	
-
 }

@@ -1,12 +1,20 @@
 package speadl.environment;
 
-import java.Color;
+import java.agents.IAgentDecision;
 import java.environment.IBoxGenerator;
+import java.environment.IEnvironment;
 import java.environment.INestCreator;
+import speadl.environment.BoxEnv;
+import speadl.environment.NestEnv;
 
 @SuppressWarnings("all")
 public abstract class Grid {
   public interface Requires {
+    /**
+     * This can be called by the implementation to access this required port.
+     * 
+     */
+    public IAgentDecision decisions();
   }
   
   public interface Component extends Grid.Provides {
@@ -17,16 +25,35 @@ public abstract class Grid {
      * This can be called to access the provided port.
      * 
      */
+    public INestCreator createNests();
+    
+    /**
+     * This can be called to access the provided port.
+     * 
+     */
     public IBoxGenerator createBox();
     
     /**
      * This can be called to access the provided port.
      * 
      */
-    public INestCreator createNests();
+    public IEnvironment env();
   }
   
   public interface Parts {
+    /**
+     * This can be called by the implementation to access the part and its provided ports.
+     * It will be initialized after the required ports are initialized and before the provided ports are initialized.
+     * 
+     */
+    public BoxEnv.Component boxEnv();
+    
+    /**
+     * This can be called by the implementation to access the part and its provided ports.
+     * It will be initialized after the required ports are initialized and before the provided ports are initialized.
+     * 
+     */
+    public NestEnv.Component nestEnv();
   }
   
   public static class ComponentImpl implements Grid.Component, Grid.Parts {
@@ -35,33 +62,51 @@ public abstract class Grid {
     private final Grid implementation;
     
     public void start() {
+      assert this.boxEnv != null: "This is a bug.";
+      ((BoxEnv.ComponentImpl) this.boxEnv).start();
+      assert this.nestEnv != null: "This is a bug.";
+      ((NestEnv.ComponentImpl) this.nestEnv).start();
       this.implementation.start();
       this.implementation.started = true;
     }
     
-    protected void initParts() {
+    private void init_boxEnv() {
+      assert this.boxEnv == null: "This is a bug.";
+      assert this.implem_boxEnv == null: "This is a bug.";
+      this.implem_boxEnv = this.implementation.make_boxEnv();
+      if (this.implem_boxEnv == null) {
+      	throw new RuntimeException("make_boxEnv() in speadl.environment.Grid should not return null.");
+      }
+      this.boxEnv = this.implem_boxEnv._newComponent(new BridgeImpl_boxEnv(), false);
       
     }
     
-    private void init_createBox() {
-      assert this.createBox == null: "This is a bug.";
-      this.createBox = this.implementation.make_createBox();
-      if (this.createBox == null) {
-      	throw new RuntimeException("make_createBox() in speadl.environment.Grid should not return null.");
+    private void init_nestEnv() {
+      assert this.nestEnv == null: "This is a bug.";
+      assert this.implem_nestEnv == null: "This is a bug.";
+      this.implem_nestEnv = this.implementation.make_nestEnv();
+      if (this.implem_nestEnv == null) {
+      	throw new RuntimeException("make_nestEnv() in speadl.environment.Grid should not return null.");
       }
+      this.nestEnv = this.implem_nestEnv._newComponent(new BridgeImpl_nestEnv(), false);
+      
     }
     
-    private void init_createNests() {
-      assert this.createNests == null: "This is a bug.";
-      this.createNests = this.implementation.make_createNests();
-      if (this.createNests == null) {
-      	throw new RuntimeException("make_createNests() in speadl.environment.Grid should not return null.");
+    protected void initParts() {
+      init_boxEnv();
+      init_nestEnv();
+    }
+    
+    private void init_env() {
+      assert this.env == null: "This is a bug.";
+      this.env = this.implementation.make_env();
+      if (this.env == null) {
+      	throw new RuntimeException("make_env() in speadl.environment.Grid should not return null.");
       }
     }
     
     protected void initProvidedPorts() {
-      init_createBox();
-      init_createNests();
+      init_env();
     }
     
     public ComponentImpl(final Grid implem, final Grid.Requires b, final boolean doInits) {
@@ -80,330 +125,40 @@ public abstract class Grid {
       }
     }
     
-    private IBoxGenerator createBox;
+    public INestCreator createNests() {
+      return this.nestEnv().createNests();
+    }
     
     public IBoxGenerator createBox() {
-      return this.createBox;
+      return this.boxEnv().createBox();
     }
     
-    private INestCreator createNests;
+    private IEnvironment env;
     
-    public INestCreator createNests() {
-      return this.createNests;
-    }
-  }
-  
-  public static class Box {
-    public interface Requires {
+    public IEnvironment env() {
+      return this.env;
     }
     
-    public interface Component extends Grid.Box.Provides {
+    private BoxEnv.Component boxEnv;
+    
+    private BoxEnv implem_boxEnv;
+    
+    private final class BridgeImpl_boxEnv implements BoxEnv.Requires {
     }
     
-    public interface Provides {
+    public final BoxEnv.Component boxEnv() {
+      return this.boxEnv;
     }
     
-    public interface Parts {
+    private NestEnv.Component nestEnv;
+    
+    private NestEnv implem_nestEnv;
+    
+    private final class BridgeImpl_nestEnv implements NestEnv.Requires {
     }
     
-    public static class ComponentImpl implements Grid.Box.Component, Grid.Box.Parts {
-      private final Grid.Box.Requires bridge;
-      
-      private final Grid.Box implementation;
-      
-      public void start() {
-        this.implementation.start();
-        this.implementation.started = true;
-      }
-      
-      protected void initParts() {
-        
-      }
-      
-      protected void initProvidedPorts() {
-        
-      }
-      
-      public ComponentImpl(final Grid.Box implem, final Grid.Box.Requires b, final boolean doInits) {
-        this.bridge = b;
-        this.implementation = implem;
-        
-        assert implem.selfComponent == null: "This is a bug.";
-        implem.selfComponent = this;
-        
-        // prevent them to be called twice if we are in
-        // a specialized component: only the last of the
-        // hierarchy will call them after everything is initialised
-        if (doInits) {
-        	initParts();
-        	initProvidedPorts();
-        }
-      }
-    }
-    
-    /**
-     * Used to check that two components are not created from the same implementation,
-     * that the component has been started to call requires(), provides() and parts()
-     * and that the component is not started by hand.
-     * 
-     */
-    private boolean init = false;;
-    
-    /**
-     * Used to check that the component is not started by hand.
-     * 
-     */
-    private boolean started = false;;
-    
-    private Grid.Box.ComponentImpl selfComponent;
-    
-    /**
-     * Can be overridden by the implementation.
-     * It will be called automatically after the component has been instantiated.
-     * 
-     */
-    protected void start() {
-      if (!this.init || this.started) {
-      	throw new RuntimeException("start() should not be called by hand: to create a new component, use newComponent().");
-      }
-    }
-    
-    /**
-     * This can be called by the implementation to access the provided ports.
-     * 
-     */
-    protected Grid.Box.Provides provides() {
-      assert this.selfComponent != null: "This is a bug.";
-      if (!this.init) {
-      	throw new RuntimeException("provides() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if provides() is needed to initialise the component.");
-      }
-      return this.selfComponent;
-    }
-    
-    /**
-     * This can be called by the implementation to access the required ports.
-     * 
-     */
-    protected Grid.Box.Requires requires() {
-      assert this.selfComponent != null: "This is a bug.";
-      if (!this.init) {
-      	throw new RuntimeException("requires() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if requires() is needed to initialise the component.");
-      }
-      return this.selfComponent.bridge;
-    }
-    
-    /**
-     * This can be called by the implementation to access the parts and their provided ports.
-     * 
-     */
-    protected Grid.Box.Parts parts() {
-      assert this.selfComponent != null: "This is a bug.";
-      if (!this.init) {
-      	throw new RuntimeException("parts() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if parts() is needed to initialise the component.");
-      }
-      return this.selfComponent;
-    }
-    
-    /**
-     * Not meant to be used to manually instantiate components (except for testing).
-     * 
-     */
-    public synchronized Grid.Box.Component _newComponent(final Grid.Box.Requires b, final boolean start) {
-      if (this.init) {
-      	throw new RuntimeException("This instance of Box has already been used to create a component, use another one.");
-      }
-      this.init = true;
-      Grid.Box.ComponentImpl  _comp = new Grid.Box.ComponentImpl(this, b, true);
-      if (start) {
-      	_comp.start();
-      }
-      return _comp;
-    }
-    
-    private Grid.ComponentImpl ecosystemComponent;
-    
-    /**
-     * This can be called by the species implementation to access the provided ports of its ecosystem.
-     * 
-     */
-    protected Grid.Provides eco_provides() {
-      assert this.ecosystemComponent != null: "This is a bug.";
-      return this.ecosystemComponent;
-    }
-    
-    /**
-     * This can be called by the species implementation to access the required ports of its ecosystem.
-     * 
-     */
-    protected Grid.Requires eco_requires() {
-      assert this.ecosystemComponent != null: "This is a bug.";
-      return this.ecosystemComponent.bridge;
-    }
-    
-    /**
-     * This can be called by the species implementation to access the parts of its ecosystem and their provided ports.
-     * 
-     */
-    protected Grid.Parts eco_parts() {
-      assert this.ecosystemComponent != null: "This is a bug.";
-      return this.ecosystemComponent;
-    }
-  }
-  
-  public static class Nest {
-    public interface Requires {
-    }
-    
-    public interface Component extends Grid.Nest.Provides {
-    }
-    
-    public interface Provides {
-    }
-    
-    public interface Parts {
-    }
-    
-    public static class ComponentImpl implements Grid.Nest.Component, Grid.Nest.Parts {
-      private final Grid.Nest.Requires bridge;
-      
-      private final Grid.Nest implementation;
-      
-      public void start() {
-        this.implementation.start();
-        this.implementation.started = true;
-      }
-      
-      protected void initParts() {
-        
-      }
-      
-      protected void initProvidedPorts() {
-        
-      }
-      
-      public ComponentImpl(final Grid.Nest implem, final Grid.Nest.Requires b, final boolean doInits) {
-        this.bridge = b;
-        this.implementation = implem;
-        
-        assert implem.selfComponent == null: "This is a bug.";
-        implem.selfComponent = this;
-        
-        // prevent them to be called twice if we are in
-        // a specialized component: only the last of the
-        // hierarchy will call them after everything is initialised
-        if (doInits) {
-        	initParts();
-        	initProvidedPorts();
-        }
-      }
-    }
-    
-    /**
-     * Used to check that two components are not created from the same implementation,
-     * that the component has been started to call requires(), provides() and parts()
-     * and that the component is not started by hand.
-     * 
-     */
-    private boolean init = false;;
-    
-    /**
-     * Used to check that the component is not started by hand.
-     * 
-     */
-    private boolean started = false;;
-    
-    private Grid.Nest.ComponentImpl selfComponent;
-    
-    /**
-     * Can be overridden by the implementation.
-     * It will be called automatically after the component has been instantiated.
-     * 
-     */
-    protected void start() {
-      if (!this.init || this.started) {
-      	throw new RuntimeException("start() should not be called by hand: to create a new component, use newComponent().");
-      }
-    }
-    
-    /**
-     * This can be called by the implementation to access the provided ports.
-     * 
-     */
-    protected Grid.Nest.Provides provides() {
-      assert this.selfComponent != null: "This is a bug.";
-      if (!this.init) {
-      	throw new RuntimeException("provides() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if provides() is needed to initialise the component.");
-      }
-      return this.selfComponent;
-    }
-    
-    /**
-     * This can be called by the implementation to access the required ports.
-     * 
-     */
-    protected Grid.Nest.Requires requires() {
-      assert this.selfComponent != null: "This is a bug.";
-      if (!this.init) {
-      	throw new RuntimeException("requires() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if requires() is needed to initialise the component.");
-      }
-      return this.selfComponent.bridge;
-    }
-    
-    /**
-     * This can be called by the implementation to access the parts and their provided ports.
-     * 
-     */
-    protected Grid.Nest.Parts parts() {
-      assert this.selfComponent != null: "This is a bug.";
-      if (!this.init) {
-      	throw new RuntimeException("parts() can't be accessed until a component has been created from this implementation, use start() instead of the constructor if parts() is needed to initialise the component.");
-      }
-      return this.selfComponent;
-    }
-    
-    /**
-     * Not meant to be used to manually instantiate components (except for testing).
-     * 
-     */
-    public synchronized Grid.Nest.Component _newComponent(final Grid.Nest.Requires b, final boolean start) {
-      if (this.init) {
-      	throw new RuntimeException("This instance of Nest has already been used to create a component, use another one.");
-      }
-      this.init = true;
-      Grid.Nest.ComponentImpl  _comp = new Grid.Nest.ComponentImpl(this, b, true);
-      if (start) {
-      	_comp.start();
-      }
-      return _comp;
-    }
-    
-    private Grid.ComponentImpl ecosystemComponent;
-    
-    /**
-     * This can be called by the species implementation to access the provided ports of its ecosystem.
-     * 
-     */
-    protected Grid.Provides eco_provides() {
-      assert this.ecosystemComponent != null: "This is a bug.";
-      return this.ecosystemComponent;
-    }
-    
-    /**
-     * This can be called by the species implementation to access the required ports of its ecosystem.
-     * 
-     */
-    protected Grid.Requires eco_requires() {
-      assert this.ecosystemComponent != null: "This is a bug.";
-      return this.ecosystemComponent.bridge;
-    }
-    
-    /**
-     * This can be called by the species implementation to access the parts of its ecosystem and their provided ports.
-     * 
-     */
-    protected Grid.Parts eco_parts() {
-      assert this.ecosystemComponent != null: "This is a bug.";
-      return this.ecosystemComponent;
+    public final NestEnv.Component nestEnv() {
+      return this.nestEnv;
     }
   }
   
@@ -451,14 +206,7 @@ public abstract class Grid {
    * This will be called once during the construction of the component to initialize the port.
    * 
    */
-  protected abstract IBoxGenerator make_createBox();
-  
-  /**
-   * This should be overridden by the implementation to define the provided port.
-   * This will be called once during the construction of the component to initialize the port.
-   * 
-   */
-  protected abstract INestCreator make_createNests();
+  protected abstract IEnvironment make_env();
   
   /**
    * This can be called by the implementation to access the required ports.
@@ -485,6 +233,20 @@ public abstract class Grid {
   }
   
   /**
+   * This should be overridden by the implementation to define how to create this sub-component.
+   * This will be called once during the construction of the component to initialize this sub-component.
+   * 
+   */
+  protected abstract BoxEnv make_boxEnv();
+  
+  /**
+   * This should be overridden by the implementation to define how to create this sub-component.
+   * This will be called once during the construction of the component to initialize this sub-component.
+   * 
+   */
+  protected abstract NestEnv make_nestEnv();
+  
+  /**
    * Not meant to be used to manually instantiate components (except for testing).
    * 
    */
@@ -498,77 +260,5 @@ public abstract class Grid {
     	_comp.start();
     }
     return _comp;
-  }
-  
-  /**
-   * This should be overridden by the implementation to instantiate the implementation of the species.
-   * 
-   */
-  protected Grid.Box make_Box(final Color color) {
-    return new Grid.Box();
-  }
-  
-  /**
-   * Do not call, used by generated code.
-   * 
-   */
-  public Grid.Box _createImplementationOfBox(final Color color) {
-    Grid.Box implem = make_Box(color);
-    if (implem == null) {
-    	throw new RuntimeException("make_Box() in speadl.environment.Grid should not return null.");
-    }
-    assert implem.ecosystemComponent == null: "This is a bug.";
-    assert this.selfComponent != null: "This is a bug.";
-    implem.ecosystemComponent = this.selfComponent;
-    return implem;
-  }
-  
-  /**
-   * This can be called to create an instance of the species from inside the implementation of the ecosystem.
-   * 
-   */
-  protected Grid.Box.Component newBox(final Color color) {
-    Grid.Box _implem = _createImplementationOfBox(color);
-    return _implem._newComponent(new Grid.Box.Requires() {},true);
-  }
-  
-  /**
-   * This should be overridden by the implementation to instantiate the implementation of the species.
-   * 
-   */
-  protected Grid.Nest make_Nest(final Color color) {
-    return new Grid.Nest();
-  }
-  
-  /**
-   * Do not call, used by generated code.
-   * 
-   */
-  public Grid.Nest _createImplementationOfNest(final Color color) {
-    Grid.Nest implem = make_Nest(color);
-    if (implem == null) {
-    	throw new RuntimeException("make_Nest() in speadl.environment.Grid should not return null.");
-    }
-    assert implem.ecosystemComponent == null: "This is a bug.";
-    assert this.selfComponent != null: "This is a bug.";
-    implem.ecosystemComponent = this.selfComponent;
-    return implem;
-  }
-  
-  /**
-   * This can be called to create an instance of the species from inside the implementation of the ecosystem.
-   * 
-   */
-  protected Grid.Nest.Component newNest(final Color color) {
-    Grid.Nest _implem = _createImplementationOfNest(color);
-    return _implem._newComponent(new Grid.Nest.Requires() {},true);
-  }
-  
-  /**
-   * Use to instantiate a component from this implementation.
-   * 
-   */
-  public Grid.Component newComponent() {
-    return this._newComponent(new Grid.Requires() {}, true);
   }
 }

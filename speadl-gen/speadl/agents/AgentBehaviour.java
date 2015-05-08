@@ -4,10 +4,10 @@ import java.agents.IAgentAction;
 import java.agents.IAgentDecision;
 import java.agents.IAgentDecisionCreator;
 import java.agents.IAgentPerception;
+import java.environment.IEnvironment;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
 import speadl.agents.AgentPerception;
-import speadl.environment.Grid;
 
 @SuppressWarnings("all")
 public abstract class AgentBehaviour {
@@ -167,7 +167,7 @@ public abstract class AgentBehaviour {
        * This can be called by the implementation to access this required port.
        * 
        */
-      public Grid gridB();
+      public IEnvironment gridB();
     }
     
     public interface Component extends AgentBehaviour.AgentBehaviourPDA.Provides {
@@ -274,7 +274,7 @@ public abstract class AgentBehaviour {
       private AgentPerception.PerceptionCore.Component aPerc;
       
       private final class BridgeImpl_perception_aPerc implements AgentPerception.PerceptionCore.Requires {
-        public final Grid gridP() {
+        public final IEnvironment gridP() {
           return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.gridB();
         }
       }

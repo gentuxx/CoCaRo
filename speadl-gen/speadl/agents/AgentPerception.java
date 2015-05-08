@@ -1,7 +1,7 @@
 package speadl.agents;
 
 import java.agents.IAgentPerception;
-import speadl.environment.Grid;
+import java.environment.IEnvironment;
 
 @SuppressWarnings("all")
 public abstract class AgentPerception {
@@ -58,7 +58,7 @@ public abstract class AgentPerception {
        * This can be called by the implementation to access this required port.
        * 
        */
-      public Grid gridP();
+      public IEnvironment gridP();
     }
     
     public interface Component extends AgentPerception.PerceptionCore.Provides {

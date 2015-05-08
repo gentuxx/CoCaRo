@@ -13,6 +13,12 @@ public class AgentActionsImpl extends AgentAction {
 	@Override
 	protected ActionCore make_ActionCore() {
 		return new ActionCore() {
+
+			@Override
+			protected IAgentAction make_actions() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		};
 	}

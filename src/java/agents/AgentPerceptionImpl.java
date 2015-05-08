@@ -13,6 +13,12 @@ public class AgentPerceptionImpl extends AgentPerception {
 	@Override
 	protected PerceptionCore make_PerceptionCore() {
 		return new PerceptionCore() {
+
+			@Override
+			protected IAgentPerception make_perception() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		};
 	}
