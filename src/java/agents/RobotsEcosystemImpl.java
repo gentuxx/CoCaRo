@@ -1,6 +1,6 @@
 package java.agents;
 
-import java.Color;
+import java.CustomColor;
 
 import speadl.agents.AgentBehaviour;
 import speadl.agents.RobotsEcosystem;
@@ -8,7 +8,7 @@ import speadl.agents.RobotsEcosystem;
 public class RobotsEcosystemImpl extends RobotsEcosystem{
 
 	@Override
-	protected Robot make_Robot(final String identifier, final Color color) {
+	protected Robot make_Robot(final String identifier, final CustomColor color) {
 		return null;
 	}
 

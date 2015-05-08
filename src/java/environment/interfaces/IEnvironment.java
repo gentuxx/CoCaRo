@@ -1,4 +1,4 @@
-package java.environment;
+package java.environment.interfaces;
 
 public interface IEnvironment {
 

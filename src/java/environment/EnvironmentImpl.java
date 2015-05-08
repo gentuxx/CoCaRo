@@ -1,6 +1,6 @@
 package java.environment;
 
-import java.Color;
+import java.CustomColor;
 
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Environment;
@@ -21,7 +21,7 @@ public class EnvironmentImpl extends Environment{
 	}
 
 	@Override
-	protected RobotGrid make_RobotGrid(String identifier, Color color) {
+	protected RobotGrid make_RobotGrid(String identifier, CustomColor color) {
 		// TODO Auto-generated method stub
 		return null;
 	}

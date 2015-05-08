@@ -1,4 +1,4 @@
-package java.agents;
+package java.agents.interfaces;
 
 import speadl.agents.AgentDecision.DecisionCore;
 

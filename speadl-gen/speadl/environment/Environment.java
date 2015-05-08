@@ -1,9 +1,9 @@
 package speadl.environment;
 
-import java.Color;
-import java.environment.IBoxGenerator;
-import java.environment.IEnvironment;
-import java.environment.INestCreator;
+import java.CustomColor;
+import java.environment.interfaces.IBoxGenerator;
+import java.environment.interfaces.IEnvironment;
+import java.environment.interfaces.INestCreator;
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Grid;
 
@@ -459,13 +459,13 @@ public abstract class Environment {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected abstract Environment.RobotGrid make_RobotGrid(final String identifier, final Color color);
+  protected abstract Environment.RobotGrid make_RobotGrid(final String identifier, final CustomColor color);
   
   /**
    * Do not call, used by generated code.
    * 
    */
-  public Environment.RobotGrid _createImplementationOfRobotGrid(final String identifier, final Color color) {
+  public Environment.RobotGrid _createImplementationOfRobotGrid(final String identifier, final CustomColor color) {
     Environment.RobotGrid implem = make_RobotGrid(identifier,color);
     if (implem == null) {
     	throw new RuntimeException("make_RobotGrid() in speadl.environment.Environment should not return null.");
@@ -483,7 +483,7 @@ public abstract class Environment {
    * This can be called to create an instance of the species from inside the implementation of the ecosystem.
    * 
    */
-  protected Environment.RobotGrid.Component newRobotGrid(final String identifier, final Color color) {
+  protected Environment.RobotGrid.Component newRobotGrid(final String identifier, final CustomColor color) {
     Environment.RobotGrid _implem = _createImplementationOfRobotGrid(identifier,color);
     return _implem._newComponent(new Environment.RobotGrid.Requires() {},true);
   }

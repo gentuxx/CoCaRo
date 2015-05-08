@@ -1,6 +1,6 @@
 package speadl.agents;
 
-import java.agents.IAgentAction;
+import java.agents.interfaces.IAgentAction;
 
 @SuppressWarnings("all")
 public abstract class AgentAction {

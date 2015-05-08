@@ -1,7 +1,7 @@
 package speadl.environment;
 
-import java.Color;
-import java.environment.IBoxGenerator;
+import java.CustomColor;
+import java.environment.interfaces.IBoxGenerator;
 
 @SuppressWarnings("all")
 public abstract class BoxEnv {
@@ -318,7 +318,7 @@ public abstract class BoxEnv {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected BoxEnv.Box make_Box(final Color color) {
+  protected BoxEnv.Box make_Box(final CustomColor color) {
     return new BoxEnv.Box();
   }
   
@@ -326,7 +326,7 @@ public abstract class BoxEnv {
    * Do not call, used by generated code.
    * 
    */
-  public BoxEnv.Box _createImplementationOfBox(final Color color) {
+  public BoxEnv.Box _createImplementationOfBox(final CustomColor color) {
     BoxEnv.Box implem = make_Box(color);
     if (implem == null) {
     	throw new RuntimeException("make_Box() in speadl.environment.BoxEnv should not return null.");
@@ -341,7 +341,7 @@ public abstract class BoxEnv {
    * This can be called to create an instance of the species from inside the implementation of the ecosystem.
    * 
    */
-  protected BoxEnv.Box.Component newBox(final Color color) {
+  protected BoxEnv.Box.Component newBox(final CustomColor color) {
     BoxEnv.Box _implem = _createImplementationOfBox(color);
     return _implem._newComponent(new BoxEnv.Box.Requires() {},true);
   }

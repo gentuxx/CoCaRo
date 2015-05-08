@@ -1,8 +1,8 @@
 package speadl.environment;
 
-import java.environment.IBoxGenerator;
-import java.environment.IEnvironment;
-import java.environment.INestCreator;
+import java.environment.interfaces.IBoxGenerator;
+import java.environment.interfaces.IEnvironment;
+import java.environment.interfaces.INestCreator;
 import speadl.environment.BoxEnv;
 import speadl.environment.NestEnv;
 

@@ -1,5 +1,7 @@
 package java.agents;
 
+import java.agents.interfaces.IAgentAction;
+
 import speadl.agents.AgentAction;
 
 public class AgentActionsImpl extends AgentAction {

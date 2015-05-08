@@ -1,15 +1,15 @@
-import java.Color
-import java.agents.IAgentAction
-import java.agents.IAgentDecisionCreator
-import java.agents.IAgentPerception
-import java.environment.IEnvironment
+import java.agents.interfaces.IAgentAction
+import java.agents.interfaces.IAgentDecisionCreator
+import java.agents.interfaces.IAgentPerception
+import java.environment.interfaces.IEnvironment
+import java.CustomColor
 
 namespace speadl.agents {
 	
 	ecosystem RobotsEcosystem {
 		provides decisionCreator : IAgentDecisionCreator = behaviour.decisionCreator
 		
-		species Robot(identifier : String, color : Color) {
+		species Robot(identifier : String, color : 	CustomColor) {
 			requires gridR : IEnvironment
 			
 			use aBehaviour : behaviour.AgentBehaviourPDA(){

@@ -1,18 +1,15 @@
 package java.agents;
 
-import java.Color;
+import java.CustomColor;
 
-import speadl.agents.AgentAction;
 import speadl.agents.AgentBehaviour.AgentBehaviourPDA;
-import speadl.agents.AgentDecision;
-import speadl.agents.AgentPerception;
 
 public class BehaviourImpl extends AgentBehaviourPDA{
 
-	private Color color;
+	private CustomColor color;
 	private String identifier;
 	
-	public BehaviourImpl(String identifier,Color color) {
+	public BehaviourImpl(String identifier,CustomColor color) {
 		this.identifier = identifier;
 		this.color = color;
 	}

@@ -1,16 +1,15 @@
-import java.environment.IBoxGenerator
-import java.environment.INestCreator
-import java.Color
+import java.CustomColor
+import java.environment.interfaces.IBoxGenerator
+import java.environment.interfaces.IEnvironment
+import java.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
-import java.environment.IEnvironment
-import java.agents.IAgentDecision
 
 namespace speadl.environment {
 	
 	ecosystem BoxEnv {
 		provides createBox : IBoxGenerator
 		
-		species Box(color : Color) {
+		species Box(color : CustomColor) {
 			
 		}
 	}
@@ -18,7 +17,7 @@ namespace speadl.environment {
 	ecosystem NestEnv {
 		provides createNests : INestCreator
 		
-		species Nest(color : Color) {
+		species Nest(color : CustomColor) {
 			
 		}
 	}
@@ -45,7 +44,7 @@ namespace speadl.environment {
 		provides createBox : IBoxGenerator = globalGrid.createBox
 		provides createNests : INestCreator = globalGrid.createNests
 		
-		species RobotGrid(identifier : String, color : Color) {
+		species RobotGrid(identifier : String, color : CustomColor) {
 			use aRobot : robotEcosystem.Robot(identifier,color) {
 				bind gridR to grid.env
 			}

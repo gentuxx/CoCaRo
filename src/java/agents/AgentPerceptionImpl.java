@@ -1,5 +1,7 @@
 package java.agents;
 
+import java.agents.interfaces.IAgentPerception;
+
 import speadl.agents.AgentPerception;
 
 public class AgentPerceptionImpl extends AgentPerception {

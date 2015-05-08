@@ -1,15 +1,16 @@
 package java.agents;
 
-import java.Color;
+import java.CustomColor;
+import java.agents.interfaces.IAgentDecisionCreator;
 
 import speadl.agents.AgentDecision;
 
 public class AgentDecisionImpl extends AgentDecision {
 	
-	private Color color;
+	private CustomColor color;
 	private String identifier;
 	
-	public AgentDecisionImpl(String identifier, Color color) {
+	public AgentDecisionImpl(String identifier, CustomColor color) {
 		this.identifier = identifier;
 		this.color = color;
 	}

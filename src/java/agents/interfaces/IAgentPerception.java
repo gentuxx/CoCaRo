@@ -1,4 +1,4 @@
-package java.agents;
+package java.agents.interfaces;
 
 public interface IAgentPerception {
 

@@ -1,8 +1,8 @@
 package speadl.agents;
 
-import java.Color;
-import java.agents.IAgentDecisionCreator;
-import java.environment.IEnvironment;
+import java.CustomColor;
+import java.agents.interfaces.IAgentDecisionCreator;
+import java.environment.interfaces.IEnvironment;
 import speadl.agents.AgentBehaviour;
 
 @SuppressWarnings("all")
@@ -374,7 +374,7 @@ public abstract class RobotsEcosystem {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected RobotsEcosystem.Robot make_Robot(final String identifier, final Color color) {
+  protected RobotsEcosystem.Robot make_Robot(final String identifier, final CustomColor color) {
     return new RobotsEcosystem.Robot();
   }
   
@@ -382,7 +382,7 @@ public abstract class RobotsEcosystem {
    * Do not call, used by generated code.
    * 
    */
-  public RobotsEcosystem.Robot _createImplementationOfRobot(final String identifier, final Color color) {
+  public RobotsEcosystem.Robot _createImplementationOfRobot(final String identifier, final CustomColor color) {
     RobotsEcosystem.Robot implem = make_Robot(identifier,color);
     if (implem == null) {
     	throw new RuntimeException("make_Robot() in speadl.agents.RobotsEcosystem should not return null.");

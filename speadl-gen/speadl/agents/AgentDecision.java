@@ -1,9 +1,9 @@
 package speadl.agents;
 
-import java.agents.IAgentAction;
-import java.agents.IAgentDecisionCreator;
-import java.agents.IAgentPerception;
-import java.environment.IEnvironment;
+import java.agents.interfaces.IAgentAction;
+import java.agents.interfaces.IAgentDecisionCreator;
+import java.agents.interfaces.IAgentPerception;
+import java.environment.interfaces.IEnvironment;
 
 @SuppressWarnings("all")
 public abstract class AgentDecision {

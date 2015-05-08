@@ -1,7 +1,7 @@
 package speadl.agents;
 
-import java.agents.IAgentPerception;
-import java.environment.IEnvironment;
+import java.agents.interfaces.IAgentPerception;
+import java.environment.interfaces.IEnvironment;
 
 @SuppressWarnings("all")
 public abstract class AgentPerception {

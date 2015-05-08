@@ -1,7 +1,7 @@
 package speadl.environment;
 
-import java.Color;
-import java.environment.INestCreator;
+import java.CustomColor;
+import java.environment.interfaces.INestCreator;
 
 @SuppressWarnings("all")
 public abstract class NestEnv {
@@ -318,7 +318,7 @@ public abstract class NestEnv {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected NestEnv.Nest make_Nest(final Color color) {
+  protected NestEnv.Nest make_Nest(final CustomColor color) {
     return new NestEnv.Nest();
   }
   
@@ -326,7 +326,7 @@ public abstract class NestEnv {
    * Do not call, used by generated code.
    * 
    */
-  public NestEnv.Nest _createImplementationOfNest(final Color color) {
+  public NestEnv.Nest _createImplementationOfNest(final CustomColor color) {
     NestEnv.Nest implem = make_Nest(color);
     if (implem == null) {
     	throw new RuntimeException("make_Nest() in speadl.environment.NestEnv should not return null.");
@@ -341,7 +341,7 @@ public abstract class NestEnv {
    * This can be called to create an instance of the species from inside the implementation of the ecosystem.
    * 
    */
-  protected NestEnv.Nest.Component newNest(final Color color) {
+  protected NestEnv.Nest.Component newNest(final CustomColor color) {
     NestEnv.Nest _implem = _createImplementationOfNest(color);
     return _implem._newComponent(new NestEnv.Nest.Requires() {},true);
   }

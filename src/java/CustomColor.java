@@ -1,5 +1,5 @@
 package java;
 
-public enum Color {
+public enum CustomColor {
 	Red, Green, Blue
 }
