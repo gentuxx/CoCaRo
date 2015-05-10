@@ -18,8 +18,29 @@ public class AgentActionsImpl extends AgentAction {
 
 			@Override
 			protected IAgentAction make_actions() {
-				// TODO Auto-generated method stub
-				return null;
+				
+				return new IAgentAction() {
+					
+					@Override
+					public void goUp() {
+						
+					}
+					
+					@Override
+					public void goRight() {
+						
+					}
+					
+					@Override
+					public void goLeft() {
+						
+					}
+					
+					@Override
+					public void goDown() {
+						
+					}
+				};
 			}
 			
 		};

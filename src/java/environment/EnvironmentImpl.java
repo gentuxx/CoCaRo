@@ -1,6 +1,7 @@
 package java.environment;
 
 import java.CustomColor;
+import java.agents.RobotsEcosystemImpl;
 
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Environment;
@@ -10,8 +11,7 @@ public class EnvironmentImpl extends Environment{
 
 	@Override
 	protected RobotsEcosystem make_robotEcosystem() {
-		// TODO Auto-generated method stub
-		return null;
+		return new RobotsEcosystemImpl();
 	}
 
 	@Override
