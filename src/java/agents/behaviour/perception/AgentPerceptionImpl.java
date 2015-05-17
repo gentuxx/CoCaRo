@@ -8,11 +8,9 @@ import speadl.environment.BoxEnv.Box;
 import speadl.environment.NestEnv.Nest;
 
 public class AgentPerceptionImpl extends AgentPerception {
-
-	private String identifier;
 	
 	public AgentPerceptionImpl() {
-		this.identifier = identifier;
+		
 	}
 
 	@Override
