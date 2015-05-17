@@ -1,8 +1,8 @@
 package speadl.agents;
 
-import java.agents.interfaces.IAgentAction;
-import java.agents.interfaces.IAgentDecisionCreator;
-import java.agents.interfaces.IAgentPerception;
+import java.agents.behaviour.actions.interfaces.IAgentAction;
+import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
+import java.agents.behaviour.perception.interfaces.IAgentPerception;
 import java.environment.interfaces.IEnvironment;
 
 @SuppressWarnings("all")

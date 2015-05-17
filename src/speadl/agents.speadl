@@ -1,8 +1,8 @@
-import java.agents.interfaces.IAgentAction
-import java.agents.interfaces.IAgentDecisionCreator
-import java.agents.interfaces.IAgentPerception
-import java.environment.interfaces.IEnvironment
 import java.CustomColor
+import java.agents.behaviour.actions.interfaces.IAgentAction
+import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator
+import java.agents.behaviour.perception.interfaces.IAgentPerception
+import java.environment.interfaces.IEnvironment
 
 namespace speadl.agents {
 	
@@ -12,8 +12,8 @@ namespace speadl.agents {
 		species Robot(identifier : String, color : 	CustomColor) {
 			requires gridR : IEnvironment
 			
-			use aBehaviour : behaviour.AgentBehaviourPDA(){
-				bind gridB to gridR
+			use aBehaviour : behaviour.AgentBehaviourPDA(identifier,color){
+				bind gridB to gridR	
 			}
 		}
 		
@@ -26,7 +26,7 @@ namespace speadl.agents {
 		
 		provides decisionCreator : IAgentDecisionCreator = decision.creator
 		
-		species AgentBehaviourPDA() {
+		species AgentBehaviourPDA(identifier : String, color : CustomColor) {
 			
 			requires gridB: IEnvironment
 			

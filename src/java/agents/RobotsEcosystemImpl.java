@@ -1,6 +1,10 @@
 package java.agents;
 
 import java.CustomColor;
+import java.agents.behaviour.AgentBehaviourPDAImpl;
+import java.agents.behaviour.actions.AgentActionsImpl;
+import java.agents.behaviour.decision.AgentDecisionImpl;
+import java.agents.behaviour.perception.AgentPerceptionImpl;
 
 import speadl.agents.AgentAction;
 import speadl.agents.AgentBehaviour;
@@ -10,14 +14,9 @@ import speadl.agents.RobotsEcosystem;
 
 public class RobotsEcosystemImpl extends RobotsEcosystem{
 	
-	String identifier;
-	CustomColor color;
-
 	@Override
 	protected Robot make_Robot(final String identifier, final CustomColor color) {
-		this.identifier = identifier;
-		this.color = color;
-		return new Robot();
+		return new RobotImpl(identifier,color);
 	}
 
 	@Override
@@ -25,18 +24,23 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 		return new AgentBehaviour() {
 			
 			@Override
+			protected AgentBehaviourPDA make_AgentBehaviourPDA(String identifier, CustomColor color) {
+				return new AgentBehaviourPDAImpl(identifier,color);				
+			}
+			
+			@Override
 			protected AgentPerception make_perception() {
-				return new AgentPerceptionImpl(identifier);
+				return new AgentPerceptionImpl();
 			}
 			
 			@Override
 			protected AgentDecision make_decision() {
-				return new AgentDecisionImpl(identifier, color);
+				return new AgentDecisionImpl();
 			}
 			
 			@Override
 			protected AgentAction make_actions() {
-				return new AgentActionsImpl(identifier);
+				return new AgentActionsImpl();
 			}
 		};
 	}

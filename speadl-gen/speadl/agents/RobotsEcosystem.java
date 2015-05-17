@@ -1,7 +1,7 @@
 package speadl.agents;
 
 import java.CustomColor;
-import java.agents.interfaces.IAgentDecisionCreator;
+import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import java.environment.interfaces.IEnvironment;
 import speadl.agents.AgentBehaviour;
 
@@ -392,7 +392,7 @@ public abstract class RobotsEcosystem {
     implem.ecosystemComponent = this.selfComponent;
     assert this.selfComponent.implem_behaviour != null: "This is a bug.";
     assert implem.use_aBehaviour == null: "This is a bug.";
-    implem.use_aBehaviour = this.selfComponent.implem_behaviour._createImplementationOfAgentBehaviourPDA();
+    implem.use_aBehaviour = this.selfComponent.implem_behaviour._createImplementationOfAgentBehaviourPDA(identifier,color);
     return implem;
   }
   

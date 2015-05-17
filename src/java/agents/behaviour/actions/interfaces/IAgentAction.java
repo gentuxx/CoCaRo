@@ -1,4 +1,4 @@
-package java.agents.interfaces;
+package java.agents.behaviour.actions.interfaces;
 
 public interface IAgentAction {
 	
@@ -9,5 +9,8 @@ public interface IAgentAction {
 	public void goLeft();
 	
 	public void goRight();
+	
+	public void takeBox();
 
+	public void dropBox();
 }

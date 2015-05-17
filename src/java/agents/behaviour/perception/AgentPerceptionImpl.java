@@ -1,6 +1,6 @@
-package java.agents;
+package java.agents.behaviour.perception;
 
-import java.agents.interfaces.IAgentPerception;
+import java.agents.behaviour.perception.interfaces.IAgentPerception;
 import java.util.List;
 
 import speadl.agents.AgentPerception;
@@ -11,7 +11,7 @@ public class AgentPerceptionImpl extends AgentPerception {
 
 	private String identifier;
 	
-	public AgentPerceptionImpl(String identifier) {
+	public AgentPerceptionImpl() {
 		this.identifier = identifier;
 	}
 

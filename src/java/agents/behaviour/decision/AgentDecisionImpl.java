@@ -1,18 +1,13 @@
-package java.agents;
+package java.agents.behaviour.decision;
 
-import java.CustomColor;
-import java.agents.interfaces.IAgentDecisionCreator;
+import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 
 import speadl.agents.AgentDecision;
 
 public class AgentDecisionImpl extends AgentDecision {
 	
-	private CustomColor color;
-	private String identifier;
-	
-	public AgentDecisionImpl(String identifier, CustomColor color) {
-		this.identifier = identifier;
-		this.color = color;
+	public AgentDecisionImpl() {
+		
 	}
 	
 	@Override
@@ -33,9 +28,11 @@ public class AgentDecisionImpl extends AgentDecision {
 		};
 	}
 
+	//TODO Résoudre l'origine du paramètre cooperative
+	
 	@Override
-	protected DecisionCore make_DecisionCore() {
+ 	protected DecisionCore make_DecisionCore() {
+		// TODO Auto-generated method stub
 		return new DecisionCore();
-	}
-
+ 	}
 }

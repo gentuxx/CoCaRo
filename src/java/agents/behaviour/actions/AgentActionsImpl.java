@@ -1,15 +1,13 @@
-package java.agents;
+package java.agents.behaviour.actions;
 
-import java.agents.interfaces.IAgentAction;
+import java.agents.behaviour.actions.interfaces.IAgentAction;
 
 import speadl.agents.AgentAction;
 
 public class AgentActionsImpl extends AgentAction {
-
-	private String identifier;
 	
-	public AgentActionsImpl(String identifier) {
-		this.identifier = identifier;
+	public AgentActionsImpl() {
+		
 	}
 
 	@Override
@@ -23,22 +21,32 @@ public class AgentActionsImpl extends AgentAction {
 					
 					@Override
 					public void goUp() {
-						
+						// TODO Auto-generated method stub
 					}
 					
 					@Override
 					public void goRight() {
-						
+						// TODO Auto-generated method stub
 					}
 					
 					@Override
 					public void goLeft() {
-						
+						// TODO Auto-generated method stub
 					}
 					
 					@Override
 					public void goDown() {
-						
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void takeBox() {
+						// TODO Auto-generated method stub
+					}
+
+					@Override
+					public void dropBox() {
+						// TODO Auto-generated method stub
 					}
 				};
 			}

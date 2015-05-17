@@ -1,8 +1,9 @@
 package speadl.agents;
 
-import java.agents.interfaces.IAgentAction;
-import java.agents.interfaces.IAgentDecisionCreator;
-import java.agents.interfaces.IAgentPerception;
+import java.CustomColor;
+import java.agents.behaviour.actions.interfaces.IAgentAction;
+import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
+import java.agents.behaviour.perception.interfaces.IAgentPerception;
 import java.environment.interfaces.IEnvironment;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
@@ -522,7 +523,7 @@ public abstract class AgentBehaviour {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentBehaviour.AgentBehaviourPDA make_AgentBehaviourPDA() {
+  protected AgentBehaviour.AgentBehaviourPDA make_AgentBehaviourPDA(final String identifier, final CustomColor color) {
     return new AgentBehaviour.AgentBehaviourPDA();
   }
   
@@ -530,8 +531,8 @@ public abstract class AgentBehaviour {
    * Do not call, used by generated code.
    * 
    */
-  public AgentBehaviour.AgentBehaviourPDA _createImplementationOfAgentBehaviourPDA() {
-    AgentBehaviour.AgentBehaviourPDA implem = make_AgentBehaviourPDA();
+  public AgentBehaviour.AgentBehaviourPDA _createImplementationOfAgentBehaviourPDA(final String identifier, final CustomColor color) {
+    AgentBehaviour.AgentBehaviourPDA implem = make_AgentBehaviourPDA(identifier,color);
     if (implem == null) {
     	throw new RuntimeException("make_AgentBehaviourPDA() in speadl.agents.AgentBehaviour should not return null.");
     }
