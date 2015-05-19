@@ -1,4 +1,4 @@
-package java.environment.interfaces;
+package CoCaRo.environment.interfaces;
 
 public interface INestCreator {
 	public void createAllNests();

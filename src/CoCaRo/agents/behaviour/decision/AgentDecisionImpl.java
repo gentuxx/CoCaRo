@@ -1,7 +1,6 @@
-package java.agents.behaviour.decision;
+package CoCaRo.agents.behaviour.decision;
 
-import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
-
+import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import speadl.agents.AgentDecision;
 
 public class AgentDecisionImpl extends AgentDecision {
@@ -12,6 +11,7 @@ public class AgentDecisionImpl extends AgentDecision {
 	
 	@Override
 	protected IAgentDecisionCreator make_creator() {
+		System.out.println("make IAgentDecisionCreator");
 		return new IAgentDecisionCreator() {
 
 			@Override

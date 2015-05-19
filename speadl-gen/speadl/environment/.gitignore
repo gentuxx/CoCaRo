@@ -4,3 +4,5 @@
 /.BoxEnv.java._trace
 /.NestEnv.java._trace
 /.LocalEnvironment.java._trace
+/BoxEnv.java
+/NestEnv.java

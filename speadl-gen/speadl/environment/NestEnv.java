@@ -1,7 +1,7 @@
 package speadl.environment;
 
-import java.CustomColor;
-import java.environment.interfaces.INestCreator;
+import CoCaRo.CustomColor;
+import CoCaRo.environment.interfaces.INestCreator;
 
 @SuppressWarnings("all")
 public abstract class NestEnv {

@@ -1,4 +1,4 @@
-package java.agents.behaviour.actions.interfaces;
+package CoCaRo.agents.behaviour.actions.interfaces;
 
 public interface IAgentAction {
 	

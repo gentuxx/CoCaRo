@@ -1,8 +1,8 @@
 package speadl.agents;
 
-import java.CustomColor;
-import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
-import java.environment.interfaces.IEnvironment;
+import CoCaRo.CustomColor;
+import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
+import CoCaRo.environment.interfaces.IEnvironment;
 import speadl.agents.AgentBehaviour;
 
 @SuppressWarnings("all")

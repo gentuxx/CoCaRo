@@ -1,7 +1,6 @@
-package java.agents.behaviour.actions;
+package CoCaRo.agents.behaviour.actions;
 
-import java.agents.behaviour.actions.interfaces.IAgentAction;
-
+import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
 import speadl.agents.AgentAction;
 
 public class AgentActionsImpl extends AgentAction {
@@ -21,7 +20,7 @@ public class AgentActionsImpl extends AgentAction {
 					
 					@Override
 					public void goUp() {
-						// TODO Auto-generated method stub
+						
 					}
 					
 					@Override

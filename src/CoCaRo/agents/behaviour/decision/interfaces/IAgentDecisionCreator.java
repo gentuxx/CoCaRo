@@ -1,4 +1,4 @@
-package java.agents.behaviour.decision.interfaces;
+package CoCaRo.agents.behaviour.decision.interfaces;
 
 import speadl.agents.AgentDecision.DecisionCore;
 

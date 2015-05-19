@@ -1,7 +1,6 @@
-package java.agents.behaviour;
+package CoCaRo.agents.behaviour;
 
-import java.CustomColor;
-
+import CoCaRo.CustomColor;
 import speadl.agents.AgentBehaviour.AgentBehaviourPDA;
 
 public class AgentBehaviourPDAImpl extends AgentBehaviourPDA{

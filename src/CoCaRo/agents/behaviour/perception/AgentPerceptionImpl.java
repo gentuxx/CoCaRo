@@ -1,8 +1,8 @@
-package java.agents.behaviour.perception;
+package CoCaRo.agents.behaviour.perception;
 
-import java.agents.behaviour.perception.interfaces.IAgentPerception;
 import java.util.List;
 
+import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 import speadl.agents.AgentPerception;
 import speadl.environment.BoxEnv.Box;
 import speadl.environment.NestEnv.Nest;

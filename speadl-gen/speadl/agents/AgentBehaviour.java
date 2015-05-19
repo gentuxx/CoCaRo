@@ -1,10 +1,10 @@
 package speadl.agents;
 
-import java.CustomColor;
-import java.agents.behaviour.actions.interfaces.IAgentAction;
-import java.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
-import java.agents.behaviour.perception.interfaces.IAgentPerception;
-import java.environment.interfaces.IEnvironment;
+import CoCaRo.CustomColor;
+import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
+import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
+import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
+import CoCaRo.environment.interfaces.IEnvironment;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
 import speadl.agents.AgentPerception;

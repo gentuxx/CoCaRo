@@ -1,7 +1,6 @@
-package java.agents;
+package CoCaRo.agents;
 
-import java.CustomColor;
-
+import CoCaRo.CustomColor;
 import speadl.agents.RobotsEcosystem.Robot;
 
 public class RobotImpl extends Robot{

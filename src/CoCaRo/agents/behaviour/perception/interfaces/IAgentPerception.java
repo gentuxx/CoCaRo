@@ -1,4 +1,4 @@
-package java.agents.behaviour.perception.interfaces;
+package CoCaRo.agents.behaviour.perception.interfaces;
 
 public interface IAgentPerception {
 	

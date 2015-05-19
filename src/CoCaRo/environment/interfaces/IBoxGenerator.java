@@ -1,6 +1,6 @@
-package java.environment.interfaces;
+package CoCaRo.environment.interfaces;
 
-import java.CustomColor;
+import CoCaRo.CustomColor;
 
 public interface IBoxGenerator {
 	public void generateBox(CustomColor color);

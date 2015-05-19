@@ -1,7 +1,7 @@
 package speadl.environment;
 
-import java.CustomColor;
-import java.environment.interfaces.IBoxGenerator;
+import CoCaRo.CustomColor;
+import CoCaRo.environment.interfaces.IBoxGenerator;
 
 @SuppressWarnings("all")
 public abstract class BoxEnv {

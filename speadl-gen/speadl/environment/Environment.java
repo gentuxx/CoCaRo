@@ -1,9 +1,9 @@
 package speadl.environment;
 
-import java.CustomColor;
-import java.environment.interfaces.IBoxGenerator;
-import java.environment.interfaces.IEnvironment;
-import java.environment.interfaces.INestCreator;
+import CoCaRo.CustomColor;
+import CoCaRo.environment.interfaces.IBoxGenerator;
+import CoCaRo.environment.interfaces.IEnvironment;
+import CoCaRo.environment.interfaces.INestCreator;
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Grid;
 
