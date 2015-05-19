@@ -6,11 +6,12 @@ import speadl.agents.AgentAction;
 public class AgentActionsImpl extends AgentAction {
 	
 	public AgentActionsImpl() {
-		
+		newActionCore();
 	}
 
 	@Override
 	protected ActionCore make_ActionCore() {
+		System.out.println("make ActionCore: Creation de l'espece ActionCore");
 		return new ActionCore() {
 
 			@Override

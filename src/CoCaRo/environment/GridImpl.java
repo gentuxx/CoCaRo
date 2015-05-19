@@ -39,10 +39,12 @@ public class GridImpl extends Grid{
 
 	@Override
 	protected BoxEnv make_boxEnv() {
+		System.out.println("make BoxEnv");
 		return new BoxEnv() {
 			
 			@Override
 			protected IBoxGenerator make_createBox() {
+				System.out.println("make IBoxGenerator");
 				return new IBoxGenerator() {
 					
 					@Override
@@ -66,6 +68,9 @@ public class GridImpl extends Grid{
 									grid[value1][value2] = Element.BOX_RED;
 								}
 								findPosition = true;
+								
+								System.out.println("generate box  Color : " + color +
+										" X : " + value1 + " Y : " + value2);
 							}
 						}
 					}

@@ -11,6 +11,7 @@ public class AgentBehaviourPDAImpl extends AgentBehaviourPDA{
 	public AgentBehaviourPDAImpl(String identifier, CustomColor color) {
 		this.identifier = identifier;
 		this.color = color;
+				
 	}
 	
 }
