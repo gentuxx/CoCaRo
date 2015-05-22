@@ -29,8 +29,8 @@ public class ConcurrentDecisionCore extends DecisionCore {
 		
 		
 		
-		requires().env().getNest();
-		requires().env().getBox();
+		requires().env().getNestList();
+		requires().env().getBoxList();
 		
 		
 		

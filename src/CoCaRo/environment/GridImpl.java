@@ -1,5 +1,6 @@
 package CoCaRo.environment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -13,28 +14,35 @@ import speadl.environment.Grid;
 import speadl.environment.NestEnv;
 import speadl.environment.NestEnv.Nest;
 
-public class GridImpl extends Grid{
+public class GridImpl extends Grid implements IEnvironment{
 
 	private List<Nest.Component> nestList;
 	private List<Box.Component> boxList;
 	private Element[][] grid = new Element[20][20];
 	
+	public GridImpl() {
+		nestList = new ArrayList<NestEnv.Nest.Component>();
+		boxList = new ArrayList<Box.Component>();
+	}
+	
+	@Override
+	public List<Nest.Component> getNestList() {
+		//TODO Vérifier que cette méthode est bien utiles
+		return nestList;
+	}
+
+
+	@Override
+	public List<Box.Component> getBoxList() {
+		//TODO Vérifier que cette méthode est bien utile
+		return boxList;
+	}
+	
 	
 	@Override
 	protected IEnvironment make_env() {
-		
-		return new IEnvironment() {
-
-			@Override
-			public List<speadl.environment.NestEnv.Nest.Component> getNest() {
-				return nestList;
-			}
-
-			@Override
-			public List<speadl.environment.BoxEnv.Box.Component> getBox() {
-				return boxList;
-			}
-		};
+		//Return the current object to avoid data duplication
+		return this;
 	}
 
 	@Override
@@ -81,10 +89,12 @@ public class GridImpl extends Grid{
 
 	@Override
 	protected NestEnv make_nestEnv() {
+		System.out.println("make NestEnv");
 		return new NestEnv() {
 			
 			@Override
 			protected INestCreator make_createNests() {
+				System.out.println("make INestGenerator");
 				return new INestCreator() {
 					
 					@Override
@@ -145,5 +155,4 @@ public class GridImpl extends Grid{
 	public Element[][] getGrid(){
 		return grid;
 	}
-
 }

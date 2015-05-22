@@ -8,7 +8,7 @@ import speadl.environment.NestEnv.Nest;
 
 public interface IEnvironment {
 	
-	public List<Nest.Component> getNest();
-	public List<Box.Component> getBox();
+	public List<Nest.Component> getNestList();
+	public List<Box.Component> getBoxList();
 
 }

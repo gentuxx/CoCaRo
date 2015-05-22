@@ -27,8 +27,8 @@ public class AgentPerceptionImpl extends AgentPerception {
 					@Override
 					public void perceive() {
 						
-						List<Nest.Component> nestList = requires().gridP().getNest();
-						List<Box.Component> boxList = requires().gridP().getBox();
+						List<Nest.Component> nestList = requires().gridP().getNestList();
+						List<Box.Component> boxList = requires().gridP().getBoxList();
 					}
 				};
 			}
