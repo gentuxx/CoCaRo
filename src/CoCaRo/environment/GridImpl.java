@@ -164,7 +164,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 				int posX = pos.getX() + (i-1);
 				int posY = pos.getY() + (j-1);
 				if(posX < 0 ||  posY < 0 || posX > grid.length || posY > grid[0].length){
-					partialGrid[i][j] = null;
+					partialGrid[i][j] = Element.OUTLINE;
 				}else{
 					partialGrid[i][j] = grid[pos.getX() + (i-1)][pos.getY() + (j-1)];
 				}				
