@@ -1,7 +1,7 @@
 package speadl.environment;
 
 import CoCaRo.environment.interfaces.IBoxGenerator;
-import CoCaRo.environment.interfaces.IEnvironment;
+import CoCaRo.environment.interfaces.IEnvironmentGet;
 import CoCaRo.environment.interfaces.INestCreator;
 import speadl.environment.BoxEnv;
 import speadl.environment.NestEnv;
@@ -31,7 +31,7 @@ public abstract class Grid {
      * This can be called to access the provided port.
      * 
      */
-    public IEnvironment env();
+    public IEnvironmentGet env();
   }
   
   public interface Parts {
@@ -127,9 +127,9 @@ public abstract class Grid {
       return this.boxEnv().boxGenerator();
     }
     
-    private IEnvironment env;
+    private IEnvironmentGet env;
     
-    public IEnvironment env() {
+    public IEnvironmentGet env() {
       return this.env;
     }
     
@@ -200,7 +200,7 @@ public abstract class Grid {
    * This will be called once during the construction of the component to initialize the port.
    * 
    */
-  protected abstract IEnvironment make_env();
+  protected abstract IEnvironmentGet make_env();
   
   /**
    * This can be called by the implementation to access the required ports.

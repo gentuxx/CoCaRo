@@ -1,9 +1,9 @@
 package speadl.agents;
 
+import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
 import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
-import CoCaRo.environment.interfaces.IEnvironment;
 
 @SuppressWarnings("all")
 public abstract class AgentDecision {
@@ -91,7 +91,7 @@ public abstract class AgentDecision {
        * This can be called by the implementation to access this required port.
        * 
        */
-      public IEnvironment env();
+      public IRobotCore core();
     }
     
     public interface Component extends AgentDecision.DecisionCore.Provides {

@@ -1,11 +1,7 @@
 package CoCaRo.agents.behaviour.perception;
 
-import java.util.List;
-
-import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 import speadl.agents.AgentPerception;
-import speadl.environment.BoxEnv.Box;
-import speadl.environment.NestEnv.Nest;
+import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 
 public class AgentPerceptionImpl extends AgentPerception {
 	
@@ -27,8 +23,8 @@ public class AgentPerceptionImpl extends AgentPerception {
 					@Override
 					public void perceive() {
 						
-						List<Nest.Component> nestList = requires().gridP().getNestList();
-						List<Box.Component> boxList = requires().gridP().getBoxList();
+						/*List<Nest.Component> nestList = requires().gridP().getNestList();
+						List<Box.Component> boxList = requires().gridP().getBoxList();*/
 					}
 				};
 			}

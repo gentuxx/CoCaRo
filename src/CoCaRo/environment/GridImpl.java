@@ -13,10 +13,11 @@ import speadl.environment.NestEnv.Nest;
 import CoCaRo.CustomColor;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.IBoxGenerator;
-import CoCaRo.environment.interfaces.IEnvironment;
+import CoCaRo.environment.interfaces.IEnvironmentGet;
+import CoCaRo.environment.interfaces.IEnvironmentSet;
 import CoCaRo.environment.interfaces.INestCreator;
 
-public class GridImpl extends Grid implements IEnvironment{
+public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
 	private List<Nest.Component> nestList;
 	private List<Box.Component> boxList;
@@ -44,7 +45,7 @@ public class GridImpl extends Grid implements IEnvironment{
 	
 	
 	@Override
-	protected IEnvironment make_env() {
+	protected IEnvironmentGet make_env() {
 		//Return the current object to avoid data duplication
 		return this;
 	}
@@ -63,6 +64,8 @@ public class GridImpl extends Grid implements IEnvironment{
 					public void generateBox(CustomColor color) {
 						boxList.add(newBox(color));
 						
+						System.out.println("Generated a "+color+" box");
+						
 						if(color.equals(CustomColor.Blue)){
 							putInGrid(Element.BLUE_BOX);
 						}else if(color.equals(CustomColor.Green)){
@@ -70,8 +73,6 @@ public class GridImpl extends Grid implements IEnvironment{
 						}else if(color.equals(CustomColor.Red)){
 							putInGrid(Element.RED_BOX);
 						}
-						
-						System.out.println("Generated a "+color+" box");
 					}
 				};
 			}

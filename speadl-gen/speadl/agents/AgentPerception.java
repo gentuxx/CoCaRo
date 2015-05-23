@@ -1,7 +1,7 @@
 package speadl.agents;
 
+import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
-import CoCaRo.environment.interfaces.IEnvironment;
 
 @SuppressWarnings("all")
 public abstract class AgentPerception {
@@ -58,7 +58,7 @@ public abstract class AgentPerception {
        * This can be called by the implementation to access this required port.
        * 
        */
-      public IEnvironment gridP();
+      public IRobotCore core();
     }
     
     public interface Component extends AgentPerception.PerceptionCore.Provides {

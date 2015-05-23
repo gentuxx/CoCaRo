@@ -1,10 +1,10 @@
 package speadl.agents;
 
 import CoCaRo.CustomColor;
+import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
 import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
-import CoCaRo.environment.interfaces.IEnvironment;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
 import speadl.agents.AgentPerception;
@@ -167,7 +167,7 @@ public abstract class AgentBehaviour {
        * This can be called by the implementation to access this required port.
        * 
        */
-      public IEnvironment gridB();
+      public IRobotCore coreB();
     }
     
     public interface Component extends AgentBehaviour.AgentBehaviourPDA.Provides {
@@ -265,8 +265,8 @@ public abstract class AgentBehaviour {
       private AgentPerception.PerceptionCore.Component aPerc;
       
       private final class BridgeImpl_perception_aPerc implements AgentPerception.PerceptionCore.Requires {
-        public final IEnvironment gridP() {
-          return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.gridB();
+        public final IRobotCore core() {
+          return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.coreB();
         }
       }
       
@@ -286,8 +286,8 @@ public abstract class AgentBehaviour {
       private AgentDecision.DecisionCore.Component aDecision;
       
       private final class BridgeImpl_decision_aDecision implements AgentDecision.DecisionCore.Requires {
-        public final IEnvironment env() {
-          return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.gridB();
+        public final IRobotCore core() {
+          return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.coreB();
         }
         
         public final IAgentPerception perception() {

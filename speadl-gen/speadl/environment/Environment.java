@@ -4,7 +4,6 @@ import CoCaRo.CustomColor;
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvInit;
-import CoCaRo.environment.interfaces.IEnvironment;
 import CoCaRo.environment.interfaces.INestCreator;
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Grid;
@@ -181,13 +180,6 @@ public abstract class Environment {
        * 
        */
       public RobotsEcosystem.Robot.Component aRobot();
-      
-      /**
-       * This can be called by the implementation to access the part and its provided ports.
-       * It will be initialized after the required ports are initialized and before the provided ports are initialized.
-       * 
-       */
-      public Grid.Component grid();
     }
     
     public static class ComponentImpl implements Environment.RobotGrid.Component, Environment.RobotGrid.Parts {
@@ -198,8 +190,6 @@ public abstract class Environment {
       public void start() {
         assert this.aRobot != null: "This is a bug.";
         ((RobotsEcosystem.Robot.ComponentImpl) this.aRobot).start();
-        assert this.grid != null: "This is a bug.";
-        ((Grid.ComponentImpl) this.grid).start();
         this.implementation.start();
         this.implementation.started = true;
       }
@@ -211,24 +201,20 @@ public abstract class Environment {
         
       }
       
-      private void init_grid() {
-        assert this.grid == null: "This is a bug.";
-        assert this.implem_grid == null: "This is a bug.";
-        this.implem_grid = this.implementation.make_grid();
-        if (this.implem_grid == null) {
-        	throw new RuntimeException("make_grid() in speadl.environment.Environment$RobotGrid should not return null.");
-        }
-        this.grid = this.implem_grid._newComponent(new BridgeImpl_grid(), false);
-        
-      }
-      
       protected void initParts() {
         init_aRobot();
-        init_grid();
+      }
+      
+      private void init_robotCore() {
+        assert this.robotCore == null: "This is a bug.";
+        this.robotCore = this.implementation.make_robotCore();
+        if (this.robotCore == null) {
+        	throw new RuntimeException("make_robotCore() in speadl.environment.Environment$RobotGrid should not return null.");
+        }
       }
       
       protected void initProvidedPorts() {
-        
+        init_robotCore();
       }
       
       public ComponentImpl(final Environment.RobotGrid implem, final Environment.RobotGrid.Requires b, final boolean doInits) {
@@ -247,31 +233,22 @@ public abstract class Environment {
         }
       }
       
+      private IRobotCore robotCore;
+      
       public IRobotCore robotCore() {
-        return this.aRobot().robotCore();
+        return this.robotCore;
       }
       
       private RobotsEcosystem.Robot.Component aRobot;
       
       private final class BridgeImpl_robotEcosystem_aRobot implements RobotsEcosystem.Robot.Requires {
-        public final IEnvironment gridR() {
-          return Environment.RobotGrid.ComponentImpl.this.grid().env();
+        public final IRobotCore coreR() {
+          return Environment.RobotGrid.ComponentImpl.this.robotCore();
         }
       }
       
       public final RobotsEcosystem.Robot.Component aRobot() {
         return this.aRobot;
-      }
-      
-      private Grid.Component grid;
-      
-      private Grid implem_grid;
-      
-      private final class BridgeImpl_grid implements Grid.Requires {
-      }
-      
-      public final Grid.Component grid() {
-        return this.grid;
       }
     }
     
@@ -315,6 +292,13 @@ public abstract class Environment {
     }
     
     /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract IRobotCore make_robotCore();
+    
+    /**
      * This can be called by the implementation to access the required ports.
      * 
      */
@@ -339,13 +323,6 @@ public abstract class Environment {
     }
     
     private RobotsEcosystem.Robot use_aRobot;
-    
-    /**
-     * This should be overridden by the implementation to define how to create this sub-component.
-     * This will be called once during the construction of the component to initialize this sub-component.
-     * 
-     */
-    protected abstract Grid make_grid();
     
     /**
      * Not meant to be used to manually instantiate components (except for testing).

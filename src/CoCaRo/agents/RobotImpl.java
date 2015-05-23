@@ -14,30 +14,4 @@ public class RobotImpl extends Robot{
 		this.identifier = identifier;
 		this.color = color;
 	}
-
-	@Override
-	protected IRobotCore make_robotCore() {
-		return new IRobotCore() {
-
-			@Override
-			public CustomColor getColor() {
-				return color;
-			}
-
-			@Override
-			public String getIdentifier() {
-				return identifier;
-			}
-
-			@Override
-			public Position getPosition() {
-				return position;
-			}
-
-			@Override
-			public void setPosition(Position newPosition) {
-				position = newPosition;
-			}
-		};
-	}
 }

@@ -1,10 +1,11 @@
 import CoCaRo.CustomColor
+import CoCaRo.agents.IRobotCore
 import CoCaRo.environment.interfaces.IBoxGenerator
-import CoCaRo.environment.interfaces.IEnvironment
+import CoCaRo.environment.interfaces.IEnvInit
+import CoCaRo.environment.interfaces.IEnvironmentGet
 import CoCaRo.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
-import CoCaRo.environment.interfaces.IEnvInit
-import CoCaRo.agents.IRobotCore
+import CoCaRo.environment.interfaces.IEnvironmentSet
 
 namespace speadl.environment {
 	
@@ -36,7 +37,7 @@ namespace speadl.environment {
 			
 		}
 		
-		provides env : IEnvironment
+		provides env : IEnvironmentGet
 	}
 	
 	
@@ -49,14 +50,10 @@ namespace speadl.environment {
 		
 		species RobotGrid(identifier : String, color : CustomColor) {
 			use aRobot : robotEcosystem.Robot(identifier,color) {
-				bind gridR to grid.env
+				bind coreR to robotCore
 			}
 			
-			provides robotCore : IRobotCore = aRobot.robotCore
-			
-			part grid : Grid {
-				
-			}
+			provides robotCore : IRobotCore
 		}
 	
 		part robotEcosystem : RobotsEcosystem {

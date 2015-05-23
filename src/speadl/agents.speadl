@@ -1,9 +1,8 @@
 import CoCaRo.CustomColor
+import CoCaRo.agents.IRobotCore
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction
 import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception
-import CoCaRo.environment.interfaces.IEnvironment
-import CoCaRo.agents.IRobotCore
 
 namespace speadl.agents {
 	
@@ -11,11 +10,10 @@ namespace speadl.agents {
 		provides decisionCreator : IAgentDecisionCreator = behaviour.decisionCreator
 		
 		species Robot(identifier : String, color : 	CustomColor) {
-			requires gridR : IEnvironment
-			provides robotCore : IRobotCore
+			requires coreR : IRobotCore
 			
 			use aBehaviour : behaviour.AgentBehaviourPDA(identifier,color){
-				bind gridB to gridR	
+				bind coreB to coreR	
 			}
 		}
 		
@@ -30,14 +28,14 @@ namespace speadl.agents {
 		
 		species AgentBehaviourPDA(identifier : String, color : CustomColor) {
 			
-			requires gridB: IEnvironment
+			requires coreB: IRobotCore
 			
 			use aPerc : perception.PerceptionCore() {
-				bind gridP to gridB
+				bind core to coreB
 			}
 			use aAction : actions.ActionCore()
 			use aDecision : decision.DecisionCore() {
-				bind env to gridB
+				bind core to coreB
 				bind perception to aPerc.perception
 				bind actions to aAction.actions
 			}
@@ -59,7 +57,7 @@ namespace speadl.agents {
 	ecosystem AgentPerception {
 		
 		species PerceptionCore() {
-			requires gridP : IEnvironment
+			requires core : IRobotCore
 			provides perception : IAgentPerception
 		}
 	}
@@ -77,7 +75,7 @@ namespace speadl.agents {
 		species DecisionCore() {
 			requires perception : IAgentPerception
 			requires actions : IAgentAction
-			requires env : IEnvironment
+			requires core : IRobotCore
 		}
 	}
 }

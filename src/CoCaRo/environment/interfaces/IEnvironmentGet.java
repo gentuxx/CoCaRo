@@ -7,7 +7,7 @@ import speadl.environment.Environment.RobotGrid;
 import speadl.environment.NestEnv.Nest;
 
 
-public interface IEnvironment {
+public interface IEnvironmentGet {
 	
 	public List<Nest.Component> getNestList();
 	public List<Box.Component> getBoxList();

@@ -42,7 +42,7 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 	
 	@Override
 	protected Robot make_Robot(final String identifier, final CustomColor color) {
-		System.out.println("make RobotImpl");
+		System.out.println("make RobotImpl ("+identifier+";"+color+")");
 		return new RobotImpl(identifier,color);
 	}
 
@@ -53,7 +53,7 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 			
 			@Override
 			protected AgentBehaviourPDA make_AgentBehaviourPDA(String identifier, CustomColor color) {
-				System.out.println("make AgentBehaviourPDAImpl");
+				System.out.println("make AgentBehaviourPDAImpl ("+identifier+";"+color+")");
 				return new AgentBehaviourPDAImpl(identifier,color);				
 			}
 			
