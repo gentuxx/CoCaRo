@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import CoCaRo.CustomColor;
-import CoCaRo.environment.interfaces.IBoxGenerator;
-import CoCaRo.environment.interfaces.IEnvironment;
-import CoCaRo.environment.interfaces.INestCreator;
 import speadl.environment.BoxEnv;
 import speadl.environment.BoxEnv.Box;
 import speadl.environment.Grid;
 import speadl.environment.NestEnv;
 import speadl.environment.NestEnv.Nest;
+import CoCaRo.CustomColor;
+import CoCaRo.environment.interfaces.IBoxGenerator;
+import CoCaRo.environment.interfaces.IEnvironment;
+import CoCaRo.environment.interfaces.INestCreator;
 
 public class GridImpl extends Grid implements IEnvironment{
 
@@ -51,7 +51,7 @@ public class GridImpl extends Grid implements IEnvironment{
 		return new BoxEnv() {
 			
 			@Override
-			protected IBoxGenerator make_createBox() {
+			protected IBoxGenerator make_boxGenerator() {
 				System.out.println("make IBoxGenerator");
 				return new IBoxGenerator() {
 					
@@ -59,28 +59,15 @@ public class GridImpl extends Grid implements IEnvironment{
 					public void generateBox(CustomColor color) {
 						boxList.add(newBox(color));
 						
-						Random rand = new Random();
-						boolean findPosition = false;
-						
-						while(!findPosition){
-							
-							int value1 = rand.nextInt(20);
-							int value2 = rand.nextInt(20);
-							
-							if(grid[value1][value2].equals(Element.EMPTY)){
-								if(color.equals(CustomColor.Blue)){
-									grid[value1][value2] = Element.BOX_BLUE;
-								}else if(color.equals(CustomColor.Green)){
-									grid[value1][value2] = Element.BOX_GREEN;
-								}else if(color.equals(CustomColor.Red)){
-									grid[value1][value2] = Element.BOX_RED;
-								}
-								findPosition = true;
-								
-								System.out.println("generate box  Color : " + color +
-										" X : " + value1 + " Y : " + value2);
-							}
+						if(color.equals(CustomColor.Blue)){
+							putInGrid(Element.BLUE_BOX);
+						}else if(color.equals(CustomColor.Green)){
+							putInGrid(Element.GREEN_BOX);
+						}else if(color.equals(CustomColor.Red)){
+							putInGrid(Element.RED_BOX);
 						}
+						
+						System.out.println("Generated a "+color+" box");
 					}
 				};
 			}
@@ -93,63 +80,49 @@ public class GridImpl extends Grid implements IEnvironment{
 		return new NestEnv() {
 			
 			@Override
-			protected INestCreator make_createNests() {
+			protected INestCreator make_nestCreator() {
 				System.out.println("make INestGenerator");
 				return new INestCreator() {
 					
 					@Override
 					public void createAllNests() {
 						nestList.add(newNest(CustomColor.Red));
-						Random rand = new Random();
-						boolean findPosition = false;
-						int value1;
-						int value2;
-						
-						while(!findPosition){
-							
-							value1 = rand.nextInt(20);
-							value2 = rand.nextInt(20);
-							
-							if(grid[value1][value2].equals(Element.EMPTY)){
-								grid[value1][value2] = Element.NEST_RED;
-								findPosition = true;
-							}
-						}
+						System.out.println("Generated the "+CustomColor.Red+" nest");
+						putInGrid(Element.RED_NEST);
 						
 						nestList.add(newNest(CustomColor.Green));
-						findPosition = false;
-						while(!findPosition){
-							
-							value1 = rand.nextInt(20);
-							value2 = rand.nextInt(20);
-							
-							if(grid[value1][value2].equals(Element.EMPTY)){
-								grid[value1][value2] = Element.NEST_GREEN;
-								findPosition = true;
-							}
-						}
+						System.out.println("Generated the "+CustomColor.Green+" nest");
+						putInGrid(Element.GREEN_NEST);						
 						
 						nestList.add(newNest(CustomColor.Blue));
-						findPosition = false;
-						while(!findPosition){
-							
-							value1 = rand.nextInt(20);
-							value2 = rand.nextInt(20);
-							
-							if(grid[value1][value2].equals(Element.EMPTY)){
-								grid[value1][value2] = Element.NEST_BLUE;
-								findPosition = true;
-							}
-						}
+						System.out.println("Generated the "+CustomColor.Blue+" nest");
+						putInGrid(Element.BLUE_NEST);
 					}
 				};
 			}
 		};
 	}
 	
+	//TODO Voir si on peut pas s'arranger pour positionner directement
+	private void putInGrid(Element elem) {
+		boolean findPosition = false;
+		while(!findPosition){
+			Random rand = new Random();
+			
+			int xValue = rand.nextInt(20);
+			int yValue = rand.nextInt(20);
+			
+			if(grid[xValue][yValue]==null || grid[xValue][yValue].equals(Element.EMPTY) || (grid[xValue][yValue]==null)){ 
+				grid[xValue][yValue] = elem;
+				findPosition = true;
+				System.out.println("Element put at ("+xValue+";"+yValue+")");
+			}
+		}
+	}
+	
 	public enum Element {
-		EMPTY, AGENT, AGENT_WITH_BOX, BOX_RED, BOX_GREEN, BOX_BLUE,
-		NEST_RED, NEST_GREEN, NEST_BLUE
+		EMPTY, AGENT, AGENT_WITH_BOX, RED_BOX, GREEN_BOX, BLUE_BOX,
+		RED_NEST, GREEN_NEST, BLUE_NEST
 	}
 	
 	public Element[][] getGrid(){

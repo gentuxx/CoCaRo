@@ -16,7 +16,7 @@ public abstract class BoxEnv {
      * This can be called to access the provided port.
      * 
      */
-    public IBoxGenerator createBox();
+    public IBoxGenerator boxGenerator();
   }
   
   public interface Parts {
@@ -36,16 +36,16 @@ public abstract class BoxEnv {
       
     }
     
-    private void init_createBox() {
-      assert this.createBox == null: "This is a bug.";
-      this.createBox = this.implementation.make_createBox();
-      if (this.createBox == null) {
-      	throw new RuntimeException("make_createBox() in speadl.environment.BoxEnv should not return null.");
+    private void init_boxGenerator() {
+      assert this.boxGenerator == null: "This is a bug.";
+      this.boxGenerator = this.implementation.make_boxGenerator();
+      if (this.boxGenerator == null) {
+      	throw new RuntimeException("make_boxGenerator() in speadl.environment.BoxEnv should not return null.");
       }
     }
     
     protected void initProvidedPorts() {
-      init_createBox();
+      init_boxGenerator();
     }
     
     public ComponentImpl(final BoxEnv implem, final BoxEnv.Requires b, final boolean doInits) {
@@ -64,10 +64,10 @@ public abstract class BoxEnv {
       }
     }
     
-    private IBoxGenerator createBox;
+    private IBoxGenerator boxGenerator;
     
-    public IBoxGenerator createBox() {
-      return this.createBox;
+    public IBoxGenerator boxGenerator() {
+      return this.boxGenerator;
     }
   }
   
@@ -272,7 +272,7 @@ public abstract class BoxEnv {
    * This will be called once during the construction of the component to initialize the port.
    * 
    */
-  protected abstract IBoxGenerator make_createBox();
+  protected abstract IBoxGenerator make_boxGenerator();
   
   /**
    * This can be called by the implementation to access the required ports.

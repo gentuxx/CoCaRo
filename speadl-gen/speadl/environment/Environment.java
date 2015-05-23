@@ -20,13 +20,13 @@ public abstract class Environment {
      * This can be called to access the provided port.
      * 
      */
-    public IBoxGenerator createBox();
+    public IBoxGenerator boxGenerator();
     
     /**
      * This can be called to access the provided port.
      * 
      */
-    public INestCreator createNests();
+    public INestCreator nestCreator();
   }
   
   public interface Parts {
@@ -106,12 +106,12 @@ public abstract class Environment {
       }
     }
     
-    public IBoxGenerator createBox() {
-      return this.globalGrid().createBox();
+    public IBoxGenerator boxGenerator() {
+      return this.globalGrid().boxGenerator();
     }
     
-    public INestCreator createNests() {
-      return this.globalGrid().createNests();
+    public INestCreator nestCreator() {
+      return this.globalGrid().nestCreator();
     }
     
     private RobotsEcosystem.Component robotEcosystem;

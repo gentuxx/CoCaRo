@@ -16,7 +16,7 @@ public abstract class NestEnv {
      * This can be called to access the provided port.
      * 
      */
-    public INestCreator createNests();
+    public INestCreator nestCreator();
   }
   
   public interface Parts {
@@ -36,16 +36,16 @@ public abstract class NestEnv {
       
     }
     
-    private void init_createNests() {
-      assert this.createNests == null: "This is a bug.";
-      this.createNests = this.implementation.make_createNests();
-      if (this.createNests == null) {
-      	throw new RuntimeException("make_createNests() in speadl.environment.NestEnv should not return null.");
+    private void init_nestCreator() {
+      assert this.nestCreator == null: "This is a bug.";
+      this.nestCreator = this.implementation.make_nestCreator();
+      if (this.nestCreator == null) {
+      	throw new RuntimeException("make_nestCreator() in speadl.environment.NestEnv should not return null.");
       }
     }
     
     protected void initProvidedPorts() {
-      init_createNests();
+      init_nestCreator();
     }
     
     public ComponentImpl(final NestEnv implem, final NestEnv.Requires b, final boolean doInits) {
@@ -64,10 +64,10 @@ public abstract class NestEnv {
       }
     }
     
-    private INestCreator createNests;
+    private INestCreator nestCreator;
     
-    public INestCreator createNests() {
-      return this.createNests;
+    public INestCreator nestCreator() {
+      return this.nestCreator;
     }
   }
   
@@ -272,7 +272,7 @@ public abstract class NestEnv {
    * This will be called once during the construction of the component to initialize the port.
    * 
    */
-  protected abstract INestCreator make_createNests();
+  protected abstract INestCreator make_nestCreator();
   
   /**
    * This can be called by the implementation to access the required ports.

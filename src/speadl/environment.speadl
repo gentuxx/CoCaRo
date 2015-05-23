@@ -7,7 +7,7 @@ import speadl.agents.RobotsEcosystem
 namespace speadl.environment {
 	
 	ecosystem BoxEnv {
-		provides createBox : IBoxGenerator
+		provides boxGenerator : IBoxGenerator
 		
 		species Box(color : CustomColor) {
 			
@@ -15,7 +15,7 @@ namespace speadl.environment {
 	}
 	
 	ecosystem NestEnv {
-		provides createNests : INestCreator
+		provides nestCreator : INestCreator
 		
 		species Nest(color : CustomColor) {
 			
@@ -23,8 +23,8 @@ namespace speadl.environment {
 	}
 	
 	component Grid {
-		provides createNests : INestCreator = nestEnv.createNests
-		provides createBox : IBoxGenerator = boxEnv.createBox
+		provides nestCreator : INestCreator = nestEnv.nestCreator
+		provides boxGenerator : IBoxGenerator = boxEnv.boxGenerator
 		
 		part boxEnv : BoxEnv {
 			
@@ -41,8 +41,8 @@ namespace speadl.environment {
 	
 	ecosystem Environment {
 		
-		provides createBox : IBoxGenerator = globalGrid.createBox
-		provides createNests : INestCreator = globalGrid.createNests
+		provides boxGenerator : IBoxGenerator = globalGrid.boxGenerator
+		provides nestCreator : INestCreator = globalGrid.nestCreator
 		
 		species RobotGrid(identifier : String, color : CustomColor) {
 			use aRobot : robotEcosystem.Robot(identifier,color) {

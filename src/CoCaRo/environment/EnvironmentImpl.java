@@ -39,7 +39,7 @@ public class EnvironmentImpl extends Environment{
 
 			@Override
 			protected Grid make_grid() {
-				//A check
+				//TODO A check
 				System.out.println("make robotGrid grid");
 				return globalGrid;
 			}

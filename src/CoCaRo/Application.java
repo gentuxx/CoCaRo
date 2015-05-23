@@ -1,11 +1,14 @@
 package CoCaRo;
 
+import speadl.environment.Environment;
 import CoCaRo.environment.EnvironmentImpl;
 
 public class Application {
 
 	public static void main(String[] args) {
-		new EnvironmentImpl().newComponent();
+		Environment.Component env = new EnvironmentImpl().newComponent();
+		env.nestCreator().createAllNests();
+		env.boxGenerator().generateBox(CustomColor.Red);
 	}
 
 }

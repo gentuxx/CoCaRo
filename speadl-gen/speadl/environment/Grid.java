@@ -19,13 +19,13 @@ public abstract class Grid {
      * This can be called to access the provided port.
      * 
      */
-    public INestCreator createNests();
+    public INestCreator nestCreator();
     
     /**
      * This can be called to access the provided port.
      * 
      */
-    public IBoxGenerator createBox();
+    public IBoxGenerator boxGenerator();
     
     /**
      * This can be called to access the provided port.
@@ -119,12 +119,12 @@ public abstract class Grid {
       }
     }
     
-    public INestCreator createNests() {
-      return this.nestEnv().createNests();
+    public INestCreator nestCreator() {
+      return this.nestEnv().nestCreator();
     }
     
-    public IBoxGenerator createBox() {
-      return this.boxEnv().createBox();
+    public IBoxGenerator boxGenerator() {
+      return this.boxEnv().boxGenerator();
     }
     
     private IEnvironment env;
