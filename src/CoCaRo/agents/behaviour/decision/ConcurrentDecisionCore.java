@@ -21,8 +21,8 @@ public class ConcurrentDecisionCore extends DecisionCore {
 
 			Position myPosition = requires().core().getPosition();
 			
-			int X = myPosition.getX();
-			int Y = myPosition.getY();
+			int selfPositionX = myPosition.getX();
+			int selfPositionY = myPosition.getY();
 			
 			List<Position> positions = new ArrayList<Position>();
 			
@@ -32,11 +32,11 @@ public class ConcurrentDecisionCore extends DecisionCore {
 					Element e = partialGrid[i+1][j+1];
 					
 					if (e == null) {
-						positions.add(new Position(myPosition.getX() + i, myPosition.getY() + j));
+						positions.add(new Position(selfPositionX + i, selfPositionY + j));
 					} else if ( (i == -1 && j == -1 || (i == -1 && j == 1) || (i == 1 && j == -1) || (i == 1 && j == 1) )
 							&& (e == Element.BLUE_BOX || e == Element.GREEN_BOX || e == Element.RED_BOX)) {
 						
-						requires().actions().takeBox(requires().core(), new Position(myPosition.getX() + i, myPosition.getY() + j));
+						requires().actions().takeBox(requires().core(), new Position(selfPositionX + i, selfPositionY + j));
 						return;
 					}
 				}
