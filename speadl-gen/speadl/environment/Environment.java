@@ -1,7 +1,9 @@
 package speadl.environment;
 
 import CoCaRo.CustomColor;
+import CoCaRo.agents.IRobotCore;
 import CoCaRo.environment.interfaces.IBoxGenerator;
+import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironment;
 import CoCaRo.environment.interfaces.INestCreator;
 import speadl.agents.RobotsEcosystem;
@@ -27,6 +29,12 @@ public abstract class Environment {
      * 
      */
     public INestCreator nestCreator();
+    
+    /**
+     * This can be called to access the provided port.
+     * 
+     */
+    public IEnvInit envInit();
   }
   
   public interface Parts {
@@ -86,8 +94,16 @@ public abstract class Environment {
       init_globalGrid();
     }
     
+    private void init_envInit() {
+      assert this.envInit == null: "This is a bug.";
+      this.envInit = this.implementation.make_envInit();
+      if (this.envInit == null) {
+      	throw new RuntimeException("make_envInit() in speadl.environment.Environment should not return null.");
+      }
+    }
+    
     protected void initProvidedPorts() {
-      
+      init_envInit();
     }
     
     public ComponentImpl(final Environment implem, final Environment.Requires b, final boolean doInits) {
@@ -112,6 +128,12 @@ public abstract class Environment {
     
     public INestCreator nestCreator() {
       return this.globalGrid().nestCreator();
+    }
+    
+    private IEnvInit envInit;
+    
+    public IEnvInit envInit() {
+      return this.envInit;
     }
     
     private RobotsEcosystem.Component robotEcosystem;
@@ -145,6 +167,11 @@ public abstract class Environment {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IRobotCore robotCore();
     }
     
     public interface Parts {
@@ -218,6 +245,10 @@ public abstract class Environment {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      public IRobotCore robotCore() {
+        return this.aRobot().robotCore();
       }
       
       private RobotsEcosystem.Robot.Component aRobot;
@@ -400,6 +431,13 @@ public abstract class Environment {
     }
     return this.selfComponent;
   }
+  
+  /**
+   * This should be overridden by the implementation to define the provided port.
+   * This will be called once during the construction of the component to initialize the port.
+   * 
+   */
+  protected abstract IEnvInit make_envInit();
   
   /**
    * This can be called by the implementation to access the required ports.

@@ -3,6 +3,8 @@ import CoCaRo.environment.interfaces.IBoxGenerator
 import CoCaRo.environment.interfaces.IEnvironment
 import CoCaRo.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
+import CoCaRo.environment.interfaces.IEnvInit
+import CoCaRo.agents.IRobotCore
 
 namespace speadl.environment {
 	
@@ -43,11 +45,14 @@ namespace speadl.environment {
 		
 		provides boxGenerator : IBoxGenerator = globalGrid.boxGenerator
 		provides nestCreator : INestCreator = globalGrid.nestCreator
+		provides envInit : IEnvInit
 		
 		species RobotGrid(identifier : String, color : CustomColor) {
 			use aRobot : robotEcosystem.Robot(identifier,color) {
 				bind gridR to grid.env
 			}
+			
+			provides robotCore : IRobotCore = aRobot.robotCore
 			
 			part grid : Grid {
 				

@@ -1,6 +1,7 @@
 package speadl.agents;
 
 import CoCaRo.CustomColor;
+import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import CoCaRo.environment.interfaces.IEnvironment;
 import speadl.agents.AgentBehaviour;
@@ -93,7 +94,7 @@ public abstract class RobotsEcosystem {
     }
   }
   
-  public static class Robot {
+  public static abstract class Robot {
     public interface Requires {
       /**
        * This can be called by the implementation to access this required port.
@@ -106,6 +107,11 @@ public abstract class RobotsEcosystem {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IRobotCore robotCore();
     }
     
     public interface Parts {
@@ -140,8 +146,16 @@ public abstract class RobotsEcosystem {
         init_aBehaviour();
       }
       
+      private void init_robotCore() {
+        assert this.robotCore == null: "This is a bug.";
+        this.robotCore = this.implementation.make_robotCore();
+        if (this.robotCore == null) {
+        	throw new RuntimeException("make_robotCore() in speadl.agents.RobotsEcosystem$Robot should not return null.");
+        }
+      }
+      
       protected void initProvidedPorts() {
-        
+        init_robotCore();
       }
       
       public ComponentImpl(final RobotsEcosystem.Robot implem, final RobotsEcosystem.Robot.Requires b, final boolean doInits) {
@@ -158,6 +172,12 @@ public abstract class RobotsEcosystem {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      private IRobotCore robotCore;
+      
+      public IRobotCore robotCore() {
+        return this.robotCore;
       }
       
       private AgentBehaviour.AgentBehaviourPDA.Component aBehaviour;
@@ -211,6 +231,13 @@ public abstract class RobotsEcosystem {
       }
       return this.selfComponent;
     }
+    
+    /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract IRobotCore make_robotCore();
     
     /**
      * This can be called by the implementation to access the required ports.
@@ -374,9 +401,7 @@ public abstract class RobotsEcosystem {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected RobotsEcosystem.Robot make_Robot(final String identifier, final CustomColor color) {
-    return new RobotsEcosystem.Robot();
-  }
+  protected abstract RobotsEcosystem.Robot make_Robot(final String identifier, final CustomColor color);
   
   /**
    * Do not call, used by generated code.

@@ -7,8 +7,7 @@ public class Application {
 
 	public static void main(String[] args) {
 		Environment.Component env = new EnvironmentImpl().newComponent();
-		env.nestCreator().createAllNests();
-		env.boxGenerator().generateBox(CustomColor.Red);
+		env.envInit().init();
 	}
 
 }

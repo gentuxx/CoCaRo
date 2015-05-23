@@ -6,10 +6,12 @@ import java.util.Random;
 
 import speadl.environment.BoxEnv;
 import speadl.environment.BoxEnv.Box;
+import speadl.environment.Environment.RobotGrid;
 import speadl.environment.Grid;
 import speadl.environment.NestEnv;
 import speadl.environment.NestEnv.Nest;
 import CoCaRo.CustomColor;
+import CoCaRo.Position;
 import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvironment;
 import CoCaRo.environment.interfaces.INestCreator;
@@ -18,11 +20,13 @@ public class GridImpl extends Grid implements IEnvironment{
 
 	private List<Nest.Component> nestList;
 	private List<Box.Component> boxList;
+	private List<RobotGrid.Component> robotsList;
 	private Element[][] grid = new Element[20][20];
 	
 	public GridImpl() {
-		nestList = new ArrayList<NestEnv.Nest.Component>();
-		boxList = new ArrayList<Box.Component>();
+		nestList = new ArrayList<>();
+		boxList = new ArrayList<>();
+		robotsList = new ArrayList<>();
 	}
 	
 	@Override
@@ -104,8 +108,9 @@ public class GridImpl extends Grid implements IEnvironment{
 	}
 	
 	//TODO Voir si on peut pas s'arranger pour positionner directement
-	private void putInGrid(Element elem) {
+	private Position putInGrid(Element elem) {
 		boolean findPosition = false;
+		
 		while(!findPosition){
 			Random rand = new Random();
 			
@@ -116,8 +121,11 @@ public class GridImpl extends Grid implements IEnvironment{
 				grid[xValue][yValue] = elem;
 				findPosition = true;
 				System.out.println("Element put at ("+xValue+";"+yValue+")");
+				return new Position(xValue,yValue);
 			}
 		}
+		
+		return null;
 	}
 	
 	public enum Element {
@@ -127,5 +135,12 @@ public class GridImpl extends Grid implements IEnvironment{
 	
 	public Element[][] getGrid(){
 		return grid;
+	}
+
+	@Override
+	public void addRobot(
+			speadl.environment.Environment.RobotGrid.Component robotGrid) {
+		robotGrid.robotCore().setPosition(putInGrid(Element.AGENT));
+		robotsList.add(robotGrid);
 	}
 }

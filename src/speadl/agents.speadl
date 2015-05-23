@@ -3,6 +3,7 @@ import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction
 import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception
 import CoCaRo.environment.interfaces.IEnvironment
+import CoCaRo.agents.IRobotCore
 
 namespace speadl.agents {
 	
@@ -11,6 +12,7 @@ namespace speadl.agents {
 		
 		species Robot(identifier : String, color : 	CustomColor) {
 			requires gridR : IEnvironment
+			provides robotCore : IRobotCore
 			
 			use aBehaviour : behaviour.AgentBehaviourPDA(identifier,color){
 				bind gridB to gridR	
