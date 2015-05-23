@@ -1,7 +1,10 @@
 package CoCaRo.agents.behaviour.perception;
 
 import speadl.agents.AgentPerception;
+import CoCaRo.Position;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
+import CoCaRo.environment.GridImpl.Element;
+import CoCaRo.environment.interfaces.IEnvironmentGet;
 
 public class AgentPerceptionImpl extends AgentPerception {
 	
@@ -21,14 +24,14 @@ public class AgentPerceptionImpl extends AgentPerception {
 				return new IAgentPerception() {
 					
 					@Override
-					public void perceive() {
+					public Element[][] getPartialGrid() {
 						
-						/*List<Nest.Component> nestList = requires().gridP().getNestList();
-						List<Box.Component> boxList = requires().gridP().getBoxList();*/
+						IEnvironmentGet envGet = requires().core().getEnvironmentGet();
+						Position position = requires().core().getPosition();
+						return envGet.getPartialGrid(position);
 					}
 				};
 			}
-			
 		};
 	}
 }

@@ -144,4 +144,15 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 		robotGrid.robotCore().setPosition(putInGrid(Element.AGENT));
 		robotsList.add(robotGrid);
 	}
+
+	@Override
+	public Element[][] getPartialGrid(Position pos) {
+		Element[][] partialGrid = new Element[3][3];
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				partialGrid[i][j] = grid[pos.getX() + (i-1)][pos.getY() + (j-1)];
+			}
+		}
+		return partialGrid;
+	}
 }
