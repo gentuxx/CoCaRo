@@ -1,16 +1,19 @@
 package CoCaRo.agents.behaviour.actions.interfaces;
 
+import CoCaRo.Position;
+import CoCaRo.agents.IRobotCore;
+
 public interface IAgentAction {
 	
-	public void goUp();
+	public void goUp(IRobotCore core);
 	
-	public void goDown();
+	public void goDown(IRobotCore core);
 	
-	public void goLeft();
+	public void goLeft(IRobotCore core);
 	
-	public void goRight();
-	
-	public void takeBox();
+	public void goRight(IRobotCore core);
 
-	public void dropBox();
+	public void dropBox(IRobotCore core);
+
+	public void takeBox(IRobotCore core, Position boxPosition);
 }

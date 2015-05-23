@@ -5,7 +5,7 @@ import java.util.List;
 
 import speadl.agents.AgentDecision.DecisionCore;
 import CoCaRo.Position;
-import CoCaRo.environment.GridImpl.Element;
+import CoCaRo.Element;
 
 public class ConcurrentDecisionCore extends DecisionCore {
 
@@ -36,22 +36,12 @@ public class ConcurrentDecisionCore extends DecisionCore {
 					} else if ( (i == -1 && j == -1 || (i == -1 && j == 1) || (i == 1 && j == -1) || (i == 1 && j == 1) )
 							&& (e == Element.BLUE_BOX || e == Element.GREEN_BOX || e == Element.RED_BOX)) {
 						
-						requires().actions().takeBox(requires().core(), new Position(myPosition.getX() + i, myPosition.getY() + j);
+						requires().actions().takeBox(requires().core(), new Position(myPosition.getX() + i, myPosition.getY() + j));
 						return;
 					}
 				}
 			}
 		}
-
-
-
-
-		/*requires().env().getNestList();
-		requires().env().getBoxList();*/
-
-
-
-		requires().perception().perceive();
 	}
 
 }

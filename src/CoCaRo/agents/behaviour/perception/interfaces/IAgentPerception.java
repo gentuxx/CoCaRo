@@ -1,7 +1,9 @@
 package CoCaRo.agents.behaviour.perception.interfaces;
 
+import CoCaRo.Element;
+
 public interface IAgentPerception {
 	
-	public void perceive();
+	public Element[][] getPartialGrid();
 	
 }
