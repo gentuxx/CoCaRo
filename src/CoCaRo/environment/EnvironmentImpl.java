@@ -4,6 +4,7 @@ import speadl.agents.RobotsEcosystem;
 import speadl.environment.Environment;
 import speadl.environment.Grid;
 import CoCaRo.CustomColor;
+import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.RobotsEcosystemImpl;
@@ -29,16 +30,18 @@ public class EnvironmentImpl extends Environment{
 	}
 
 	@Override
-	protected RobotGrid make_RobotGrid(String identifier, CustomColor color) {
+	protected RobotGrid make_RobotGrid(final String identifier, final CustomColor color) {
 		System.out.println("make RobotGrid ("+identifier+";"+color+")");
 		return new RobotGrid() {
 
-			private Position position;
-			
 			@Override
 			protected IRobotCore make_robotCore() {
 				return new IRobotCore() {
 
+					private Position position;
+					
+					private Element box;
+					
 					@Override
 					public CustomColor getColor() {
 						return color;
@@ -67,6 +70,23 @@ public class EnvironmentImpl extends Environment{
 					@Override
 					public IEnvironmentGet getEnvironmentGet() {
 						return globalGrid;
+					}
+
+					@Override
+					public void takeBox(Element box) {
+						this.box = box;
+					}
+
+					@Override
+					public boolean hasBox() {
+						return (this.box == null);
+					}
+					
+					@Override
+					public Element dropBox() {
+						Element oldBox = box;
+						box = null;
+						return oldBox;
 					}
 				};
 			}

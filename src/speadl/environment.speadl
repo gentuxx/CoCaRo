@@ -5,7 +5,6 @@ import CoCaRo.environment.interfaces.IEnvInit
 import CoCaRo.environment.interfaces.IEnvironmentGet
 import CoCaRo.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
-import CoCaRo.environment.interfaces.IEnvironmentSet
 
 namespace speadl.environment {
 	

@@ -4,11 +4,6 @@ import speadl.agents.AgentPerception;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 
 public class AgentPerceptionImpl extends AgentPerception {
-	
-	public AgentPerceptionImpl() {
-		System.out.println("Constructor AgentPerceptionImpl");
-		
-	}
 
 	@Override
 	protected PerceptionCore make_PerceptionCore() {

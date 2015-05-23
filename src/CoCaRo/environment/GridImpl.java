@@ -11,6 +11,7 @@ import speadl.environment.Grid;
 import speadl.environment.NestEnv;
 import speadl.environment.NestEnv.Nest;
 import CoCaRo.CustomColor;
+import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
@@ -19,10 +20,12 @@ import CoCaRo.environment.interfaces.INestCreator;
 
 public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
+	private final static int GRID_SIZE = 20;
+	
 	private List<Nest.Component> nestList;
 	private List<Box.Component> boxList;
 	private List<RobotGrid.Component> robotsList;
-	private Element[][] grid = new Element[20][20];
+	private Element[][] grid = new Element[GRID_SIZE][GRID_SIZE];
 	
 	public GridImpl() {
 		nestList = new ArrayList<>();
@@ -115,10 +118,10 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 		while(!findPosition){
 			Random rand = new Random();
 			
-			int xValue = rand.nextInt(20);
-			int yValue = rand.nextInt(20);
+			int xValue = rand.nextInt(GRID_SIZE);
+			int yValue = rand.nextInt(GRID_SIZE);
 			
-			if(grid[xValue][yValue]==null || grid[xValue][yValue].equals(Element.EMPTY) || (grid[xValue][yValue]==null)){ 
+			if(grid[xValue][yValue]==null){ 
 				grid[xValue][yValue] = elem;
 				findPosition = true;
 				System.out.println("Element put at ("+xValue+";"+yValue+")");
@@ -127,11 +130,6 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 		}
 		
 		return null;
-	}
-	
-	public enum Element {
-		EMPTY, AGENT, AGENT_WITH_BOX, RED_BOX, GREEN_BOX, BLUE_BOX,
-		RED_NEST, GREEN_NEST, BLUE_NEST
 	}
 	
 	public Element[][] getGrid(){
@@ -143,5 +141,18 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 			speadl.environment.Environment.RobotGrid.Component robotGrid) {
 		robotGrid.robotCore().setPosition(putInGrid(Element.AGENT));
 		robotsList.add(robotGrid);
+	}
+
+	@Override
+	public void updatePosition(Position oldPosition, Position newPosition) {
+		grid[newPosition.getX()][newPosition.getY()] = grid[oldPosition.getX()][oldPosition.getY()];
+		grid[oldPosition.getX()][oldPosition.getY()] = null;
+	}
+
+	@Override
+	public Element removeBox(Position position) {
+		Element box = grid[position.getX()][position.getY()];
+		grid[position.getX()][position.getY()] = null;
+		return box;
 	}
 }
