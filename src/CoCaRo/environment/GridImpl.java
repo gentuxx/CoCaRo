@@ -155,4 +155,21 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 		grid[position.getX()][position.getY()] = null;
 		return box;
 	}
+
+	@Override
+	public Element[][] getPartialGrid(Position pos) {
+		Element[][] partialGrid = new Element[3][3];
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				int posX = pos.getX() + (i-1);
+				int posY = pos.getY() + (j-1);
+				if(posX < 0 ||  posY < 0 || posX > grid.length || posY > grid[0].length){
+					partialGrid[i][j] = null;
+				}else{
+					partialGrid[i][j] = grid[pos.getX() + (i-1)][pos.getY() + (j-1)];
+				}				
+			}
+		}
+		return partialGrid;
+	}
 }
