@@ -24,4 +24,6 @@ public interface IRobotCore {
 	public Element dropBox();
 
 	boolean hasBox();
+	
+	public CustomColor getColorBox();
 }

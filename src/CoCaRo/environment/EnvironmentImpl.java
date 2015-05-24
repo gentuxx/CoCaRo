@@ -88,6 +88,19 @@ public class EnvironmentImpl extends Environment{
 						box = null;
 						return oldBox;
 					}
+
+					@Override
+					public CustomColor getColorBox() {
+						CustomColor color = null;
+						if(box == Element.BLUE_BOX){
+							color = CustomColor.Blue;
+						}else if(box == Element.RED_BOX){
+							color = CustomColor.Red;
+						}else if(box == Element.GREEN_BOX){
+							color = CustomColor.Green;
+						}
+						return color;
+					}
 				};
 			}
 		};

@@ -1,5 +1,7 @@
 package CoCaRo.agents.behaviour.perception;
 
+import java.util.List;
+
 import speadl.agents.AgentPerception;
 import CoCaRo.Element;
 import CoCaRo.Position;
@@ -25,6 +27,7 @@ public class AgentPerceptionImpl extends AgentPerception {
 						Position position = requires().core().getPosition();
 						return envGet.getPartialGrid(position);
 					}
+
 				};
 			}
 		};

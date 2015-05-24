@@ -1,7 +1,9 @@
 package CoCaRo.environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import speadl.environment.BoxEnv;
@@ -22,19 +24,19 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
 	private final static int GRID_SIZE = 20;
 	
-	private List<Nest.Component> nestList;
+	private Map<Nest.Component, Position> nestList;
 	private List<Box.Component> boxList;
 	private List<RobotGrid.Component> robotsList;
 	private Element[][] grid = new Element[GRID_SIZE][GRID_SIZE];
 	
 	public GridImpl() {
-		nestList = new ArrayList<>();
+		nestList = new HashMap<>();
 		boxList = new ArrayList<>();
 		robotsList = new ArrayList<>();
 	}
 	
 	@Override
-	public List<Nest.Component> getNestList() {
+	public Map<Nest.Component, Position> getNestList() {
 		//TODO Vérifier que cette méthode est bien utiles
 		return nestList;
 	}
@@ -94,17 +96,18 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 					
 					@Override
 					public void createAllNests() {
-						nestList.add(newNest(CustomColor.Red));
+						
+						Position pos = putInGrid(Element.RED_NEST);
+						nestList.put(newNest(CustomColor.Red), pos);
 						System.out.println("Generated the "+CustomColor.Red+" nest");
-						putInGrid(Element.RED_NEST);
 						
-						nestList.add(newNest(CustomColor.Green));
+						pos = putInGrid(Element.GREEN_NEST);	
+						nestList.put(newNest(CustomColor.Green), pos);
 						System.out.println("Generated the "+CustomColor.Green+" nest");
-						putInGrid(Element.GREEN_NEST);						
 						
-						nestList.add(newNest(CustomColor.Blue));
+						pos = putInGrid(Element.BLUE_NEST);
+						nestList.put(newNest(CustomColor.Blue), pos);
 						System.out.println("Generated the "+CustomColor.Blue+" nest");
-						putInGrid(Element.BLUE_NEST);
 					}
 				};
 			}
