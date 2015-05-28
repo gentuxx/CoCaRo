@@ -474,14 +474,14 @@ public abstract class Environment {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected abstract Environment.RobotGrid make_RobotGrid(final String identifier, final CustomColor color);
+  protected abstract Environment.RobotGrid make_RobotGrid(final String identifier, final CustomColor color, final boolean cooperative);
   
   /**
    * Do not call, used by generated code.
    * 
    */
-  public Environment.RobotGrid _createImplementationOfRobotGrid(final String identifier, final CustomColor color) {
-    Environment.RobotGrid implem = make_RobotGrid(identifier,color);
+  public Environment.RobotGrid _createImplementationOfRobotGrid(final String identifier, final CustomColor color, final boolean cooperative) {
+    Environment.RobotGrid implem = make_RobotGrid(identifier,color,cooperative);
     if (implem == null) {
     	throw new RuntimeException("make_RobotGrid() in speadl.environment.Environment should not return null.");
     }
@@ -490,7 +490,7 @@ public abstract class Environment {
     implem.ecosystemComponent = this.selfComponent;
     assert this.selfComponent.implem_robotEcosystem != null: "This is a bug.";
     assert implem.use_aRobot == null: "This is a bug.";
-    implem.use_aRobot = this.selfComponent.implem_robotEcosystem._createImplementationOfRobot(identifier,color);
+    implem.use_aRobot = this.selfComponent.implem_robotEcosystem._createImplementationOfRobot(identifier,color,cooperative);
     return implem;
   }
   
@@ -498,8 +498,8 @@ public abstract class Environment {
    * This can be called to create an instance of the species from inside the implementation of the ecosystem.
    * 
    */
-  protected Environment.RobotGrid.Component newRobotGrid(final String identifier, final CustomColor color) {
-    Environment.RobotGrid _implem = _createImplementationOfRobotGrid(identifier,color);
+  protected Environment.RobotGrid.Component newRobotGrid(final String identifier, final CustomColor color, final boolean cooperative) {
+    Environment.RobotGrid _implem = _createImplementationOfRobotGrid(identifier,color,cooperative);
     return _implem._newComponent(new Environment.RobotGrid.Requires() {},true);
   }
   

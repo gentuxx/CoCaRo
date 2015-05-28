@@ -2,7 +2,6 @@ package speadl.agents;
 
 import CoCaRo.CustomColor;
 import CoCaRo.agents.IRobotCore;
-import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import speadl.agents.AgentBehaviour;
 
 @SuppressWarnings("all")
@@ -14,11 +13,6 @@ public abstract class RobotsEcosystem {
   }
   
   public interface Provides {
-    /**
-     * This can be called to access the provided port.
-     * 
-     */
-    public IAgentDecisionCreator decisionCreator();
   }
   
   public interface Parts {
@@ -75,10 +69,6 @@ public abstract class RobotsEcosystem {
       	initParts();
       	initProvidedPorts();
       }
-    }
-    
-    public IAgentDecisionCreator decisionCreator() {
-      return this.behaviour().decisionCreator();
     }
     
     private AgentBehaviour.Component behaviour;
@@ -374,7 +364,7 @@ public abstract class RobotsEcosystem {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected RobotsEcosystem.Robot make_Robot(final String identifier, final CustomColor color) {
+  protected RobotsEcosystem.Robot make_Robot(final String identifier, final CustomColor color, final boolean cooperative) {
     return new RobotsEcosystem.Robot();
   }
   
@@ -382,8 +372,8 @@ public abstract class RobotsEcosystem {
    * Do not call, used by generated code.
    * 
    */
-  public RobotsEcosystem.Robot _createImplementationOfRobot(final String identifier, final CustomColor color) {
-    RobotsEcosystem.Robot implem = make_Robot(identifier,color);
+  public RobotsEcosystem.Robot _createImplementationOfRobot(final String identifier, final CustomColor color, final boolean cooperative) {
+    RobotsEcosystem.Robot implem = make_Robot(identifier,color,cooperative);
     if (implem == null) {
     	throw new RuntimeException("make_Robot() in speadl.agents.RobotsEcosystem should not return null.");
     }
@@ -392,7 +382,7 @@ public abstract class RobotsEcosystem {
     implem.ecosystemComponent = this.selfComponent;
     assert this.selfComponent.implem_behaviour != null: "This is a bug.";
     assert implem.use_aBehaviour == null: "This is a bug.";
-    implem.use_aBehaviour = this.selfComponent.implem_behaviour._createImplementationOfAgentBehaviourPDA(identifier,color);
+    implem.use_aBehaviour = this.selfComponent.implem_behaviour._createImplementationOfAgentBehaviourPDA(identifier,color,cooperative);
     return implem;
   }
   

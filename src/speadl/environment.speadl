@@ -47,8 +47,8 @@ namespace speadl.environment {
 		provides nestCreator : INestCreator = globalGrid.nestCreator
 		provides envInit : IEnvInit
 		
-		species RobotGrid(identifier : String, color : CustomColor) {
-			use aRobot : robotEcosystem.Robot(identifier,color) {
+		species RobotGrid(identifier : String, color : CustomColor, cooperative : boolean) {
+			use aRobot : robotEcosystem.Robot(identifier,color,cooperative) {
 				bind coreR to robotCore
 			}
 			

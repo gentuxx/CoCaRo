@@ -25,5 +25,5 @@ public interface IRobotCore {
 
 	boolean hasBox();
 	
-	public CustomColor getColorBox();
+	public CustomColor getBoxColor();
 }

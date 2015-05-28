@@ -1,18 +1,16 @@
 import CoCaRo.CustomColor
 import CoCaRo.agents.IRobotCore
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction
-import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception
 
 namespace speadl.agents {
 	
 	ecosystem RobotsEcosystem {
-		provides decisionCreator : IAgentDecisionCreator = behaviour.decisionCreator
 		
-		species Robot(identifier : String, color : 	CustomColor) {
+		species Robot(identifier : String, color : 	CustomColor, cooperative : boolean) {
 			requires coreR : IRobotCore
 			
-			use aBehaviour : behaviour.AgentBehaviourPDA(identifier,color){
+			use aBehaviour : behaviour.AgentBehaviourPDA(identifier,color,cooperative){
 				bind coreB to coreR	
 			}
 		}
@@ -24,9 +22,7 @@ namespace speadl.agents {
 	
 	ecosystem AgentBehaviour {
 		
-		provides decisionCreator : IAgentDecisionCreator = decision.creator
-		
-		species AgentBehaviourPDA(identifier : String, color : CustomColor) {
+		species AgentBehaviourPDA(identifier : String, color : CustomColor, cooperative : boolean) {
 			
 			requires coreB: IRobotCore
 			
@@ -34,7 +30,7 @@ namespace speadl.agents {
 				bind core to coreB
 			}
 			use aAction : actions.ActionCore()
-			use aDecision : decision.DecisionCore() {
+			use aDecision : decision.DecisionCore(cooperative) {
 				bind core to coreB
 				bind perception to aPerc.perception
 				bind actions to aAction.actions
@@ -70,9 +66,8 @@ namespace speadl.agents {
 	}
 	
 	ecosystem AgentDecision {
-		provides creator : IAgentDecisionCreator
 		
-		species DecisionCore() {
+		species DecisionCore(cooperative : boolean) {
 			requires perception : IAgentPerception
 			requires actions : IAgentAction
 			requires core : IRobotCore

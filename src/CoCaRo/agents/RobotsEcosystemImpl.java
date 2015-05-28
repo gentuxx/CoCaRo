@@ -23,25 +23,12 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 	
 	private List<Robot> robots;
 	
-	//TODO Identifier où il faut mettre ce genre d'initialisation
 	public RobotsEcosystemImpl() {
-		//Initialize Robot list
-		/*robots = new ArrayList<Robot>();
 		
-		//Create NB_ROBOTS_INIT with different identifiers and colors
-		for(int i=0;i<NB_ROBOTS_INIT;i++) {
-			System.out.println("Création du robot "+String.valueOf(nextRobotIdentifier)
-					+" de couleur "+nextRobotColor);
-			
-			//Add the result of make_Robot to the list
-			robots.add(make_Robot(String.valueOf(nextRobotIdentifier),nextRobotColor));
-			nextRobotIdentifier++;
-			nextRobotColor = nextRobotColor.next();
-		}*/
 	}
 	
 	@Override
-	protected Robot make_Robot(final String identifier, final CustomColor color) {
+	protected Robot make_Robot(final String identifier, final CustomColor color, final boolean cooperative) {
 		System.out.println("make RobotImpl ("+identifier+";"+color+")");
 		return new RobotImpl(identifier,color);
 	}
@@ -52,7 +39,7 @@ public class RobotsEcosystemImpl extends RobotsEcosystem{
 		return new AgentBehaviour() {
 			
 			@Override
-			protected AgentBehaviourPDA make_AgentBehaviourPDA(String identifier, CustomColor color) {
+			protected AgentBehaviourPDA make_AgentBehaviourPDA(String identifier, CustomColor color, boolean cooperative) {
 				System.out.println("make AgentBehaviourPDAImpl ("+identifier+";"+color+")");
 				return new AgentBehaviourPDAImpl(identifier,color);				
 			}

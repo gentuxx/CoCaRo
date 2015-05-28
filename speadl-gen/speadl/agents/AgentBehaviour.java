@@ -3,7 +3,6 @@ package speadl.agents;
 import CoCaRo.CustomColor;
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
-import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
@@ -18,11 +17,6 @@ public abstract class AgentBehaviour {
   }
   
   public interface Provides {
-    /**
-     * This can be called to access the provided port.
-     * 
-     */
-    public IAgentDecisionCreator decisionCreator();
   }
   
   public interface Parts {
@@ -121,10 +115,6 @@ public abstract class AgentBehaviour {
       	initParts();
       	initProvidedPorts();
       }
-    }
-    
-    public IAgentDecisionCreator decisionCreator() {
-      return this.decision().creator();
     }
     
     private AgentPerception.Component perception;
@@ -523,7 +513,7 @@ public abstract class AgentBehaviour {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentBehaviour.AgentBehaviourPDA make_AgentBehaviourPDA(final String identifier, final CustomColor color) {
+  protected AgentBehaviour.AgentBehaviourPDA make_AgentBehaviourPDA(final String identifier, final CustomColor color, final boolean cooperative) {
     return new AgentBehaviour.AgentBehaviourPDA();
   }
   
@@ -531,8 +521,8 @@ public abstract class AgentBehaviour {
    * Do not call, used by generated code.
    * 
    */
-  public AgentBehaviour.AgentBehaviourPDA _createImplementationOfAgentBehaviourPDA(final String identifier, final CustomColor color) {
-    AgentBehaviour.AgentBehaviourPDA implem = make_AgentBehaviourPDA(identifier,color);
+  public AgentBehaviour.AgentBehaviourPDA _createImplementationOfAgentBehaviourPDA(final String identifier, final CustomColor color, final boolean cooperative) {
+    AgentBehaviour.AgentBehaviourPDA implem = make_AgentBehaviourPDA(identifier,color,cooperative);
     if (implem == null) {
     	throw new RuntimeException("make_AgentBehaviourPDA() in speadl.agents.AgentBehaviour should not return null.");
     }
@@ -547,7 +537,7 @@ public abstract class AgentBehaviour {
     implem.use_aAction = this.selfComponent.implem_actions._createImplementationOfActionCore();
     assert this.selfComponent.implem_decision != null: "This is a bug.";
     assert implem.use_aDecision == null: "This is a bug.";
-    implem.use_aDecision = this.selfComponent.implem_decision._createImplementationOfDecisionCore();
+    implem.use_aDecision = this.selfComponent.implem_decision._createImplementationOfDecisionCore(cooperative);
     return implem;
   }
   

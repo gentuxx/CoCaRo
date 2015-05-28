@@ -2,11 +2,10 @@ package speadl.agents;
 
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
-import CoCaRo.agents.behaviour.decision.interfaces.IAgentDecisionCreator;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 
 @SuppressWarnings("all")
-public abstract class AgentDecision {
+public class AgentDecision {
   public interface Requires {
   }
   
@@ -14,11 +13,6 @@ public abstract class AgentDecision {
   }
   
   public interface Provides {
-    /**
-     * This can be called to access the provided port.
-     * 
-     */
-    public IAgentDecisionCreator creator();
   }
   
   public interface Parts {
@@ -38,16 +32,8 @@ public abstract class AgentDecision {
       
     }
     
-    private void init_creator() {
-      assert this.creator == null: "This is a bug.";
-      this.creator = this.implementation.make_creator();
-      if (this.creator == null) {
-      	throw new RuntimeException("make_creator() in speadl.agents.AgentDecision should not return null.");
-      }
-    }
-    
     protected void initProvidedPorts() {
-      init_creator();
+      
     }
     
     public ComponentImpl(final AgentDecision implem, final AgentDecision.Requires b, final boolean doInits) {
@@ -64,12 +50,6 @@ public abstract class AgentDecision {
       	initParts();
       	initProvidedPorts();
       }
-    }
-    
-    private IAgentDecisionCreator creator;
-    
-    public IAgentDecisionCreator creator() {
-      return this.creator;
     }
   }
   
@@ -287,13 +267,6 @@ public abstract class AgentDecision {
   }
   
   /**
-   * This should be overridden by the implementation to define the provided port.
-   * This will be called once during the construction of the component to initialize the port.
-   * 
-   */
-  protected abstract IAgentDecisionCreator make_creator();
-  
-  /**
    * This can be called by the implementation to access the required ports.
    * 
    */
@@ -337,7 +310,7 @@ public abstract class AgentDecision {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentDecision.DecisionCore make_DecisionCore() {
+  protected AgentDecision.DecisionCore make_DecisionCore(final boolean cooperative) {
     return new AgentDecision.DecisionCore();
   }
   
@@ -345,8 +318,8 @@ public abstract class AgentDecision {
    * Do not call, used by generated code.
    * 
    */
-  public AgentDecision.DecisionCore _createImplementationOfDecisionCore() {
-    AgentDecision.DecisionCore implem = make_DecisionCore();
+  public AgentDecision.DecisionCore _createImplementationOfDecisionCore(final boolean cooperative) {
+    AgentDecision.DecisionCore implem = make_DecisionCore(cooperative);
     if (implem == null) {
     	throw new RuntimeException("make_DecisionCore() in speadl.agents.AgentDecision should not return null.");
     }

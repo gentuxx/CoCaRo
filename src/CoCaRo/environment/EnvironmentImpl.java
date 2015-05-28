@@ -30,7 +30,7 @@ public class EnvironmentImpl extends Environment{
 	}
 
 	@Override
-	protected RobotGrid make_RobotGrid(final String identifier, final CustomColor color) {
+	protected RobotGrid make_RobotGrid(final String identifier, final CustomColor color, final boolean cooperative) {
 		System.out.println("make RobotGrid ("+identifier+";"+color+")");
 		return new RobotGrid() {
 
@@ -90,8 +90,9 @@ public class EnvironmentImpl extends Environment{
 					}
 
 					@Override
-					public CustomColor getColorBox() {
+					public CustomColor getBoxColor() {
 						CustomColor color = null;
+						
 						if(box == Element.BLUE_BOX){
 							color = CustomColor.Blue;
 						}else if(box == Element.RED_BOX){
@@ -99,6 +100,7 @@ public class EnvironmentImpl extends Environment{
 						}else if(box == Element.GREEN_BOX){
 							color = CustomColor.Green;
 						}
+						
 						return color;
 					}
 				};
@@ -119,9 +121,9 @@ public class EnvironmentImpl extends Environment{
 				provides().boxGenerator().generateBox(CustomColor.Red);
 				provides().boxGenerator().generateBox(CustomColor.Blue);
 				provides().boxGenerator().generateBox(CustomColor.Green);
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Red));
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green));
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue));
+				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Red,false));
+				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,false));
+				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,false));
 			}
 		};
 	}
