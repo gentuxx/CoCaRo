@@ -2,10 +2,11 @@ package speadl.agents;
 
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
+import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 
 @SuppressWarnings("all")
-public class AgentDecision {
+public abstract class AgentDecision {
   public interface Requires {
   }
   
@@ -53,7 +54,7 @@ public class AgentDecision {
     }
   }
   
-  public static class DecisionCore {
+  public static abstract class DecisionCore {
     public interface Requires {
       /**
        * This can be called by the implementation to access this required port.
@@ -78,6 +79,11 @@ public class AgentDecision {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IDecisionMaker decisionMaker();
     }
     
     public interface Parts {
@@ -97,8 +103,16 @@ public class AgentDecision {
         
       }
       
+      private void init_decisionMaker() {
+        assert this.decisionMaker == null: "This is a bug.";
+        this.decisionMaker = this.implementation.make_decisionMaker();
+        if (this.decisionMaker == null) {
+        	throw new RuntimeException("make_decisionMaker() in speadl.agents.AgentDecision$DecisionCore should not return null.");
+        }
+      }
+      
       protected void initProvidedPorts() {
-        
+        init_decisionMaker();
       }
       
       public ComponentImpl(final AgentDecision.DecisionCore implem, final AgentDecision.DecisionCore.Requires b, final boolean doInits) {
@@ -115,6 +129,12 @@ public class AgentDecision {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      private IDecisionMaker decisionMaker;
+      
+      public IDecisionMaker decisionMaker() {
+        return this.decisionMaker;
       }
     }
     
@@ -156,6 +176,13 @@ public class AgentDecision {
       }
       return this.selfComponent;
     }
+    
+    /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract IDecisionMaker make_decisionMaker();
     
     /**
      * This can be called by the implementation to access the required ports.
@@ -310,9 +337,7 @@ public class AgentDecision {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected AgentDecision.DecisionCore make_DecisionCore(final boolean cooperative) {
-    return new AgentDecision.DecisionCore();
-  }
+  protected abstract AgentDecision.DecisionCore make_DecisionCore(final boolean cooperative);
   
   /**
    * Do not call, used by generated code.

@@ -10,13 +10,12 @@ public class AgentDecisionImpl extends AgentDecision {
 	
 	@Override
  	protected DecisionCore make_DecisionCore(boolean cooperative) {
-		// TODO Auto-generated method stub
 		System.out.println("make DecisionCore");
 		if(cooperative) {
-			return new ConcurrentDecisionCore();
+			return new CooperativeDecisionCore();
 		}
 		else {
-			return new CooperativeDecisionCore(); 
+			return new ConcurrentDecisionCore();
 		}
  	}
 }

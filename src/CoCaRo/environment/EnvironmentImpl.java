@@ -7,6 +7,8 @@ import CoCaRo.CustomColor;
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.agents.IRobotCore;
+import CoCaRo.agents.RobotController;
+import CoCaRo.agents.RobotThread;
 import CoCaRo.agents.RobotsEcosystemImpl;
 import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
@@ -32,6 +34,7 @@ public class EnvironmentImpl extends Environment{
 	@Override
 	protected RobotGrid make_RobotGrid(final String identifier, final CustomColor color, final boolean cooperative) {
 		System.out.println("make RobotGrid ("+identifier+";"+color+")");
+		
 		return new RobotGrid() {
 
 			@Override
@@ -105,6 +108,17 @@ public class EnvironmentImpl extends Environment{
 					}
 				};
 			}
+		
+			@Override
+			protected void start() {
+				RobotThread t = new RobotThread() {
+					@Override
+					public void action() {
+						parts().aRobot().decisionMaker().interact();
+					}
+				};
+				eco_provides().controller().addThread(t);
+			}
 		};
 	}
 
@@ -126,6 +140,11 @@ public class EnvironmentImpl extends Environment{
 				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,false));
 			}
 		};
+	}
+
+	@Override
+	protected RobotController make_controller() {
+		return new RobotController();
 	}
 	
 }

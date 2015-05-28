@@ -2,6 +2,7 @@ package speadl.environment;
 
 import CoCaRo.CustomColor;
 import CoCaRo.agents.IRobotCore;
+import CoCaRo.agents.RobotController;
 import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.INestCreator;
@@ -34,6 +35,12 @@ public abstract class Environment {
      * 
      */
     public IEnvInit envInit();
+    
+    /**
+     * This can be called to access the provided port.
+     * 
+     */
+    public RobotController controller();
   }
   
   public interface Parts {
@@ -101,8 +108,17 @@ public abstract class Environment {
       }
     }
     
+    private void init_controller() {
+      assert this.controller == null: "This is a bug.";
+      this.controller = this.implementation.make_controller();
+      if (this.controller == null) {
+      	throw new RuntimeException("make_controller() in speadl.environment.Environment should not return null.");
+      }
+    }
+    
     protected void initProvidedPorts() {
       init_envInit();
+      init_controller();
     }
     
     public ComponentImpl(final Environment implem, final Environment.Requires b, final boolean doInits) {
@@ -133,6 +149,12 @@ public abstract class Environment {
     
     public IEnvInit envInit() {
       return this.envInit;
+    }
+    
+    private RobotController controller;
+    
+    public RobotController controller() {
+      return this.controller;
     }
     
     private RobotsEcosystem.Component robotEcosystem;
@@ -415,6 +437,13 @@ public abstract class Environment {
    * 
    */
   protected abstract IEnvInit make_envInit();
+  
+  /**
+   * This should be overridden by the implementation to define the provided port.
+   * This will be called once during the construction of the component to initialize the port.
+   * 
+   */
+  protected abstract RobotController make_controller();
   
   /**
    * This can be called by the implementation to access the required ports.

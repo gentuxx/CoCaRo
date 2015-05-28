@@ -5,6 +5,7 @@ import CoCaRo.environment.interfaces.IEnvInit
 import CoCaRo.environment.interfaces.IEnvironmentGet
 import CoCaRo.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
+import CoCaRo.agents.RobotController
 
 namespace speadl.environment {
 	
@@ -46,6 +47,7 @@ namespace speadl.environment {
 		provides boxGenerator : IBoxGenerator = globalGrid.boxGenerator
 		provides nestCreator : INestCreator = globalGrid.nestCreator
 		provides envInit : IEnvInit
+		provides controller : RobotController
 		
 		species RobotGrid(identifier : String, color : CustomColor, cooperative : boolean) {
 			use aRobot : robotEcosystem.Robot(identifier,color,cooperative) {

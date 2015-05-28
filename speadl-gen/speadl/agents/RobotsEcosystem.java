@@ -2,6 +2,7 @@ package speadl.agents;
 
 import CoCaRo.CustomColor;
 import CoCaRo.agents.IRobotCore;
+import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 import speadl.agents.AgentBehaviour;
 
 @SuppressWarnings("all")
@@ -96,6 +97,11 @@ public abstract class RobotsEcosystem {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IDecisionMaker decisionMaker();
     }
     
     public interface Parts {
@@ -148,6 +154,10 @@ public abstract class RobotsEcosystem {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      public IDecisionMaker decisionMaker() {
+        return this.aBehaviour().decisionMaker();
       }
       
       private AgentBehaviour.AgentBehaviourPDA.Component aBehaviour;
