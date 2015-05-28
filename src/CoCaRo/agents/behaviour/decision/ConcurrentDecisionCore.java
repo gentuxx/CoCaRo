@@ -22,6 +22,10 @@ public class ConcurrentDecisionCore extends DecisionCore {
 			public void interact() {
 				Element[][] partialGrid = requires().perception().getPartialGrid();
 
+				if(requires().core().getEnergy()==0) {
+					//TODO SUICIDE
+				}
+				
 				Position positionToGo = null;
 				Position myPosition = requires().core().getPosition();
 						

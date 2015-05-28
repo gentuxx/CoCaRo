@@ -25,6 +25,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX(),oldPosition.getY()-1);
 						core.setPosition(newPosition);
+						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
 					}
 
@@ -34,6 +35,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX(),oldPosition.getY()+1);
 						core.setPosition(newPosition);
+						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
 					}
 
@@ -43,6 +45,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX()-1,oldPosition.getY());
 						core.setPosition(newPosition);
+						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
 					}
 
@@ -52,6 +55,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX()-1,oldPosition.getY());
 						core.setPosition(newPosition);
+						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
 					}
 

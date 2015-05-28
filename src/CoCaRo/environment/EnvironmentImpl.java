@@ -45,6 +45,8 @@ public class EnvironmentImpl extends Environment{
 					
 					private Element box;
 					
+					private long energy;
+					
 					@Override
 					public CustomColor getColor() {
 						return color;
@@ -105,6 +107,16 @@ public class EnvironmentImpl extends Environment{
 						}
 						
 						return color;
+					}
+
+					@Override
+					public long getEnergy() {
+						return energy;
+					}
+
+					@Override
+					public void spendEnergy() {
+						this.energy--;
 					}
 				};
 			}
