@@ -71,9 +71,18 @@ public class GUI extends JFrame {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
+		// Changing one case at [2][0]
+		Case c = (Case) panel.getComponent(nthComponent(2,0));
+		c.setColor();
+		
 		setVisible(true);
+	} 
+	
+	private int nthComponent(int x, int y) {
+		// 20 * 20
+		return y * GRID_SIZE + x;
 	}
-
+	
 	public static void main(String[] args) {
 		new GUI();
 	}
