@@ -1,3 +1,7 @@
+import CoCaRo.environment.interfaces.IEnvironmentGet
+
 namespace speadl.interface {
-	
+	component Interface {
+		requires envGet : IEnvironmentGet
+	}
 }
