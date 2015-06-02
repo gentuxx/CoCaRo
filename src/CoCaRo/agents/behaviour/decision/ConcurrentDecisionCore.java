@@ -27,10 +27,10 @@ public class ConcurrentDecisionCore extends DecisionCore {
 				}
 				
 				Position positionToGo = null;
-				Position myPosition = requires().core().getPosition();
+				Position currentPosition = requires().core().getPosition();
 						
-				int selfPositionX = myPosition.getX();
-				int selfPositionY = myPosition.getY();
+				int selfPositionX = currentPosition.getX();
+				int selfPositionY = currentPosition.getY();
 				
 				// si j'ai une boite
 				if (! requires().core().hasBox()) {

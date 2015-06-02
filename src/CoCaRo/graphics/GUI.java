@@ -1,10 +1,8 @@
 package CoCaRo.graphics;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;

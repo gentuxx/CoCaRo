@@ -147,9 +147,12 @@ public class EnvironmentImpl extends Environment{
 				provides().boxGenerator().generateBox(CustomColor.Red);
 				provides().boxGenerator().generateBox(CustomColor.Blue);
 				provides().boxGenerator().generateBox(CustomColor.Green);
+				System.out.println("\n===================\n");
 				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Red,false));
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,false));
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,false));
+				/*parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,false));
+				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,false));*/
+				System.out.println("\n===================\n");
+				provides().controller().start(1);
 			}
 		};
 	}
