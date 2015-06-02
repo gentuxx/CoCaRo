@@ -25,9 +25,9 @@ public interface IRobotCore {
 
 	boolean hasBox();
 	
+	public long getEnergy();
+	
+	public void spendEnergy();
+	
 	public CustomColor getBoxColor();
-	
-	public int getEnergy();
-	
-	public void setEnergy(int energy);
 }

@@ -127,7 +127,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 			if(grid[xValue][yValue]==null){ 
 				grid[xValue][yValue] = elem;
 				findPosition = true;
-				System.out.println("Element put at ("+xValue+";"+yValue+")");
+				System.out.println(elem+" put at ("+xValue+";"+yValue+")");
 				return new Position(xValue,yValue);
 			}
 		}

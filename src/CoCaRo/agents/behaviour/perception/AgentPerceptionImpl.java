@@ -1,7 +1,5 @@
 package CoCaRo.agents.behaviour.perception;
 
-import java.util.List;
-
 import speadl.agents.AgentPerception;
 import CoCaRo.Element;
 import CoCaRo.Position;

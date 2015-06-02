@@ -3,6 +3,7 @@ package speadl.agents;
 import CoCaRo.CustomColor;
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
+import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
@@ -164,6 +165,11 @@ public abstract class AgentBehaviour {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public IDecisionMaker decisionMaker();
     }
     
     public interface Parts {
@@ -250,6 +256,10 @@ public abstract class AgentBehaviour {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      public IDecisionMaker decisionMaker() {
+        return this.aDecision().decisionMaker();
       }
       
       private AgentPerception.PerceptionCore.Component aPerc;
