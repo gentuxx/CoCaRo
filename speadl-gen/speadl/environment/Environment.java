@@ -5,9 +5,11 @@ import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.RobotController;
 import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvInit;
+import CoCaRo.environment.interfaces.IEnvironmentGet;
 import CoCaRo.environment.interfaces.INestCreator;
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Grid;
+import speadl.graphics.GUI;
 
 @SuppressWarnings("all")
 public abstract class Environment {
@@ -57,6 +59,13 @@ public abstract class Environment {
      * 
      */
     public Grid.Component globalGrid();
+    
+    /**
+     * This can be called by the implementation to access the part and its provided ports.
+     * It will be initialized after the required ports are initialized and before the provided ports are initialized.
+     * 
+     */
+    public GUI.Component graphics();
   }
   
   public static class ComponentImpl implements Environment.Component, Environment.Parts {
@@ -69,6 +78,8 @@ public abstract class Environment {
       ((RobotsEcosystem.ComponentImpl) this.robotEcosystem).start();
       assert this.globalGrid != null: "This is a bug.";
       ((Grid.ComponentImpl) this.globalGrid).start();
+      assert this.graphics != null: "This is a bug.";
+      ((GUI.ComponentImpl) this.graphics).start();
       this.implementation.start();
       this.implementation.started = true;
     }
@@ -95,9 +106,21 @@ public abstract class Environment {
       
     }
     
+    private void init_graphics() {
+      assert this.graphics == null: "This is a bug.";
+      assert this.implem_graphics == null: "This is a bug.";
+      this.implem_graphics = this.implementation.make_graphics();
+      if (this.implem_graphics == null) {
+      	throw new RuntimeException("make_graphics() in speadl.environment.Environment should not return null.");
+      }
+      this.graphics = this.implem_graphics._newComponent(new BridgeImpl_graphics(), false);
+      
+    }
+    
     protected void initParts() {
       init_robotEcosystem();
       init_globalGrid();
+      init_graphics();
     }
     
     private void init_envInit() {
@@ -177,6 +200,20 @@ public abstract class Environment {
     
     public final Grid.Component globalGrid() {
       return this.globalGrid;
+    }
+    
+    private GUI.Component graphics;
+    
+    private GUI implem_graphics;
+    
+    private final class BridgeImpl_graphics implements GUI.Requires {
+      public final IEnvironmentGet envGet() {
+        return Environment.ComponentImpl.this.globalGrid().env();
+      }
+    }
+    
+    public final GUI.Component graphics() {
+      return this.graphics;
     }
   }
   
@@ -482,6 +519,13 @@ public abstract class Environment {
    * 
    */
   protected abstract Grid make_globalGrid();
+  
+  /**
+   * This should be overridden by the implementation to define how to create this sub-component.
+   * This will be called once during the construction of the component to initialize this sub-component.
+   * 
+   */
+  protected abstract GUI make_graphics();
   
   /**
    * Not meant to be used to manually instantiate components (except for testing).

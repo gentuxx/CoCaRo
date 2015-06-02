@@ -3,6 +3,7 @@ package CoCaRo.environment;
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Environment;
 import speadl.environment.Grid;
+import speadl.graphics.GUI;
 import CoCaRo.CustomColor;
 import CoCaRo.Element;
 import CoCaRo.Position;
@@ -13,6 +14,7 @@ import CoCaRo.agents.RobotsEcosystemImpl;
 import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
 import CoCaRo.environment.interfaces.IEnvironmentSet;
+import CoCaRo.graphics.GUIImpl;
 
 public class EnvironmentImpl extends Environment{
 	
@@ -160,7 +162,10 @@ public class EnvironmentImpl extends Environment{
 	protected RobotController make_controller() {
 		return new RobotController();
 	}
+
+	@Override
+	protected GUI make_graphics() {
+		return new GUIImpl();
+	}
 	
 }
-
-

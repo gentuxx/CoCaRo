@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import speadl.environment.BoxEnv;
 import speadl.environment.BoxEnv.Box;
@@ -15,6 +16,8 @@ import speadl.environment.NestEnv.Nest;
 import CoCaRo.CustomColor;
 import CoCaRo.Element;
 import CoCaRo.Position;
+import CoCaRo.environment.interfaces.EnvChangeListener;
+import CoCaRo.environment.interfaces.EnvChangeListener.EnvChangeEvent;
 import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
 import CoCaRo.environment.interfaces.IEnvironmentSet;
@@ -29,10 +32,35 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	private List<RobotGrid.Component> robotsList;
 	private Element[][] grid = new Element[GRID_SIZE][GRID_SIZE];
 	
+	private CopyOnWriteArrayList<EnvChangeListener> listeners;
+	
 	public GridImpl() {
 		nestList = new HashMap<>();
 		boxList = new ArrayList<>();
 		robotsList = new ArrayList<>();
+		listeners = new CopyOnWriteArrayList<EnvChangeListener>();
+	}
+	
+	//TODO Rendre accessible pour l'interface graphique
+	public void addGUI(EnvChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	//TODO Vérifier l'utilité de cette fonction
+	//TODO Rendre accessible pour l'interface graphique
+	public void removeGUI(EnvChangeListener listener) {
+		listeners.remove(listener);
+	}
+	
+	/**
+	 * Envoie un évènement à toutes les interfaces graphiques enregistrées
+	 */
+	protected void fireChangeEvent() {
+	    EnvChangeEvent evt = new EnvChangeEvent(null);
+
+	    for (EnvChangeListener listener : listeners) {
+	    	listener.changeEventReceived(evt);
+	    }
 	}
 	
 	@Override

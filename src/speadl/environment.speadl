@@ -5,6 +5,7 @@ import CoCaRo.environment.interfaces.IEnvInit
 import CoCaRo.environment.interfaces.IEnvironmentGet
 import CoCaRo.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
+import speadl.graphics.GUI
 import CoCaRo.agents.RobotController
 
 namespace speadl.environment {
@@ -63,6 +64,10 @@ namespace speadl.environment {
 		
 		part globalGrid : Grid {
 			
+		}
+		
+		part graphics : GUI {
+			bind envGet to globalGrid.env	
 		}
 	}
 }

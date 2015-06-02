@@ -1,7 +1,7 @@
 import CoCaRo.environment.interfaces.IEnvironmentGet
 
-namespace speadl.interface {
-	component Interface {
+namespace speadl.graphics {
+	component GUI {
 		requires envGet : IEnvironmentGet
 	}
 }

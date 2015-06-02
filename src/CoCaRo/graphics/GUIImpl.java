@@ -9,18 +9,38 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import speadl.graphics.GUI;
 import CoCaRo.Element;
+import CoCaRo.environment.interfaces.EnvChangeListener;
 
-public class GUI extends JFrame {
+public class GUIImpl extends GUI {
 
+	private JFrame jFrame;
+	private EnvChangeListener observer;
 	final int GRID_SIZE = 20;
 	GridLayout layout;
 	Element[][] elements;
 
-	public GUI() {
+	public GUIImpl() {
+		jFrame = new JFrame("Cocaro");
+		observer = new EnvChangeListener() {
+
+			@Override
+			public void changeEventReceived(EnvChangeEvent evt) {
+				update();
+			}
+			
+		};
+		
+		requires().envGet().addGUI(observer);
+		
 		init();
 	}
 
+	public void update() {
+		//TODO Mettre à jour l'interface graphique à partir des données fournies par le "requires"
+	}
+	
 	public void init() {
 
 		elements = new Element[GRID_SIZE][GRID_SIZE];
@@ -49,8 +69,6 @@ public class GUI extends JFrame {
 
 		layout = new GridLayout(GRID_SIZE,GRID_SIZE);
 
-		setTitle("GUI CoCaRo");
-
 		JPanel panel = new JPanel(layout);
 		panel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
 
@@ -62,18 +80,18 @@ public class GUI extends JFrame {
 			}
 		}
 
-		add(panel);
-		setSize(700, 700);
+		jFrame.add(panel);
+		jFrame.setSize(700, 700);
 
 		// Centers the window
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		jFrame.setLocation(dim.width/2-jFrame.getSize().width/2, dim.height/2-jFrame.getSize().height/2);
 
 		// Changing one case at [2][0]
 		Case c = (Case) panel.getComponent(nthComponent(2,0));
 		c.setColor();
 		
-		setVisible(true);
+		jFrame.setVisible(true);
 	} 
 	
 	private int nthComponent(int x, int y) {
@@ -82,6 +100,6 @@ public class GUI extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		new GUI();
+		new GUIImpl();
 	}
 }
