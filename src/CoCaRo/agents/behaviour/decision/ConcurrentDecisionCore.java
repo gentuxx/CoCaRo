@@ -65,11 +65,11 @@ public class ConcurrentDecisionCore extends DecisionCore {
 			for(Nest.Component nest : nestsList.keySet()){
 				//TODO Si la couleur du nid correspond à la boite
 				if(true){
+//				if(getGrid[nestsList.get(nest).getX()][nestsList.get(nest).getY()] == requires().core().getColorBox()) 
 //				if(nest == requires().core().getColorBox()){
 					
 					positionToGo = nestsList.get(nest);
 				}
-				
 			}
 		}
 		

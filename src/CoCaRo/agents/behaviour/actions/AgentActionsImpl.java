@@ -64,6 +64,27 @@ public class AgentActionsImpl extends AgentAction {
 					@Override
 					public void dropBox(IRobotCore core) {
 						Element box = core.dropBox();
+						// TODO Si la box est de la couleur du nid
+//						if((box == Element.BLUE_BOX &&)
+//								|| (box == Element.GREEN_BOX &&)
+//								|| (box == Element.RED_BOX)){
+//							core.setEnergy(20);
+//						}else{
+//							core.setEnergy(10);
+//						}
+						
+					}
+
+					@Override
+					public void suicide() {
+						
+					}
+
+					@Override
+					public void checkEnergy(IRobotCore core) {
+						if(core.getEnergy() == 0){
+							suicide();
+						}						
 					}
 				};
 			}
