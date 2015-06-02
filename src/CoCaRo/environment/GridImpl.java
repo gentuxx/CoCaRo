@@ -148,6 +148,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
 	@Override
 	public void updatePosition(Position oldPosition, Position newPosition) {
+		System.out.println("Déplacement de "+oldPosition+" vers "+newPosition );
 		grid[newPosition.getX()][newPosition.getY()] = grid[oldPosition.getX()][oldPosition.getY()];
 		grid[oldPosition.getX()][oldPosition.getY()] = null;
 	}
@@ -161,15 +162,21 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
 	@Override
 	public Element[][] getPartialGrid(Position pos) {
+
+		int posX,posY;
+		
 		Element[][] partialGrid = new Element[3][3];
-		for(int i = 0; i < 3; i++){
-			for(int j = 0; j < 3; j++){
-				int posX = pos.getX() + (i-1);
-				int posY = pos.getY() + (j-1);
-				if(posX < 0 ||  posY < 0 || posX > grid.length || posY > grid[0].length){
-					partialGrid[i][j] = Element.OUTLINE;
+			
+		for(int i = -1; i < 2; i++){
+			for(int j = -1; j < 2; j++){
+				posX = pos.getX() + i;
+				posY = pos.getY() + j;
+				
+				//Si la nouvelle position est hors de la grille
+				if(posX < 0 ||  posY < 0 || posX >= grid.length || posY >= grid[0].length){
+					partialGrid[i+1][j+1] = Element.OUTLINE;
 				}else{
-					partialGrid[i][j] = grid[pos.getX() + (i-1)][pos.getY() + (j-1)];
+					partialGrid[i+1][j+1] = grid[posX][posY];
 				}				
 			}
 		}

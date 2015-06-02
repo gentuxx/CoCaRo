@@ -39,7 +39,6 @@ public abstract class RobotThread extends Thread{
 		}*/
 		
 		while(!stop) {
-			System.out.println("Action!");
 			action();
 			
 			// waiting

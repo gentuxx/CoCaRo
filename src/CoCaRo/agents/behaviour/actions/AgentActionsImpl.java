@@ -24,6 +24,7 @@ public class AgentActionsImpl extends AgentAction {
 						IEnvironmentSet env = core.getEnvironmentSet();
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX(),oldPosition.getY()-1);
+						System.out.println(newPosition);
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -34,6 +35,7 @@ public class AgentActionsImpl extends AgentAction {
 						IEnvironmentSet env = core.getEnvironmentSet();
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX(),oldPosition.getY()+1);
+						System.out.println(newPosition);
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -44,6 +46,7 @@ public class AgentActionsImpl extends AgentAction {
 						IEnvironmentSet env = core.getEnvironmentSet();
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX()-1,oldPosition.getY());
+						System.out.println(newPosition);
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -53,7 +56,8 @@ public class AgentActionsImpl extends AgentAction {
 					public void goRight(IRobotCore core) {
 						IEnvironmentSet env = core.getEnvironmentSet();
 						final Position oldPosition = core.getPosition();
-						Position newPosition = new Position(oldPosition.getX()-1,oldPosition.getY());
+						Position newPosition = new Position(oldPosition.getX()+1,oldPosition.getY());
+						System.out.println(newPosition);
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);

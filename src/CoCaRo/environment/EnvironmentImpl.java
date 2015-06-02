@@ -84,7 +84,7 @@ public class EnvironmentImpl extends Environment{
 
 					@Override
 					public boolean hasBox() {
-						return (this.box == null);
+						return (this.box != null);
 					}
 					
 					@Override
@@ -151,7 +151,7 @@ public class EnvironmentImpl extends Environment{
 				/*parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,false));
 				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,false));*/
 				System.out.println("\n===================\n");
-				provides().controller().start(1);
+				provides().controller().start(20);
 			}
 		};
 	}
