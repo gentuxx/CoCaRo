@@ -47,17 +47,17 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 		listeners.add(listener);
 	}
 	
-	//TODO Vérifier l'utilité de cette fonction
+	//TODO Vï¿½rifier l'utilitï¿½ de cette fonction
 	//TODO Rendre accessible pour l'interface graphique
 	public void removeGUI(EnvChangeListener listener) {
 		listeners.remove(listener);
 	}
 	
 	/**
-	 * Envoie un évènement à toutes les interfaces graphiques enregistrées
+	 * Envoie un ï¿½vï¿½nement ï¿½ toutes les interfaces graphiques enregistrï¿½es
 	 */
 	protected void fireChangeEvent() {
-	    EnvChangeEvent evt = new EnvChangeEvent(null);
+	    EnvChangeEvent evt = new EnvChangeEvent("");
 
 	    for (EnvChangeListener listener : listeners) {
 	    	listener.changeEventReceived(evt);
@@ -80,7 +80,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
 	@Override
 	public List<Box.Component> getBoxList() {
-		//TODO Vérifier que cette méthode est bien utile
+		//TODO Vï¿½rifier que cette mï¿½thode est bien utile
 		return boxList;
 	}
 	
@@ -179,7 +179,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 				return new Position(xValue,yValue);
 			}
 		}
-		
+		fireChangeEvent();
 		return null;
 	}
 	
@@ -196,15 +196,17 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 
 	@Override
 	public void updatePosition(Position oldPosition, Position newPosition) {
-		System.out.println("Déplacement de "+oldPosition+" vers "+newPosition );
+		System.out.println("Dï¿½placement de "+oldPosition+" vers "+newPosition );
 		grid[newPosition.getX()][newPosition.getY()] = grid[oldPosition.getX()][oldPosition.getY()];
 		grid[oldPosition.getX()][oldPosition.getY()] = null;
+		fireChangeEvent();
 	}
 
 	@Override
 	public Element removeBox(Position position) {
 		Element box = grid[position.getX()][position.getY()];
 		grid[position.getX()][position.getY()] = null;
+		fireChangeEvent();
 		return box;
 	}
 

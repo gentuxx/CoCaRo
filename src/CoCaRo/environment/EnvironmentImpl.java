@@ -169,7 +169,7 @@ public class EnvironmentImpl extends Environment{
 				/*parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,cooperative));
 				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,cooperative));*/
 				System.out.println("\n===================\n");
-				provides().controller().start(20);
+				provides().controller().start(1);
 			}
 		};
 	}

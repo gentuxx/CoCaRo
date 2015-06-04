@@ -7,7 +7,7 @@ public class LoggerImpl extends Logger implements ILog{
 
 	@Override
 	public void addLine(String line) {
-		System.err.println("TEST : " + line);
+		System.out.println(line);
 		
 	}
 
