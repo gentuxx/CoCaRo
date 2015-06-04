@@ -16,10 +16,11 @@ public class ConcurrentDecisionCore extends DecisionCore {
 		System.out.println("make DecisionMaker");
 		return new IDecisionMaker() {
 
+			private List<Position> oldPositions = new ArrayList<>();
+			
 			@Override
 			public void interact() {
 				System.out.println("Action!");
-				
 				
 				Element[][] partialGrid = requires().perception().getPartialGrid();
 
@@ -53,45 +54,43 @@ public class ConcurrentDecisionCore extends DecisionCore {
 					
 					System.out.println("Nid repéré à "+nestPosition);
 					
-					if(nestPosition.equals(currentPosition)) {
+					int xDiff = currentPosition.getX()-nestPosition.getX();
+					int yDiff = currentPosition.getY()-nestPosition.getY();
+					
+					if((xDiff==0 && (yDiff==1 || yDiff==-1)) || (yDiff==0 && (xDiff==1 || xDiff==-1))){
 						System.out.println("Boite ramenée au nid");
-						System.out.println("====================");
 						requires().core().dropBox();
 					}
-					else {
-						int xDiff = currentPosition.getX()-nestPosition.getX();
-						int yDiff = currentPosition.getY()-nestPosition.getY();
-						
-						//Loop over each NESO case
-						for(int i=-1;i<1;i++) {
-							//If the Element is null, add it to the list
-							if(partialGrid[i+1][i+2]==null) {
-								positions.add(new Position(i,i+1));
-							}
-							
-							if(partialGrid[i+2][i+1]==null) {
-								positions.add(new Position(i+1,i));
-							}
+					
+					//Loop over each NESO case
+					for(int i=-1;i<1;i++) {
+						//If the Element is null, add it to the list
+						if(partialGrid[i+1][i+2]==null) {
+							positions.add(new Position(i,i+1));
 						}
 						
-						//Depending on xDiff and yDiff
-						if(xDiff<0 && positions.contains(Position.EAST)) {
-							positionToGo = Position.EAST;
+						if(partialGrid[i+2][i+1]==null) {
+							positions.add(new Position(i+1,i));
 						}
-						else if(yDiff<0 && positions.contains(Position.SOUTH)){
-							positionToGo = Position.SOUTH;
-						}
-						else if(xDiff>0 && positions.contains(Position.WEST)){
-							positionToGo = Position.WEST;
-						}
-						else if(yDiff>0 && positions.contains(Position.NORTH)) {
-							positionToGo = Position.NORTH;
-						}
-						
-						if(positionToGo!=null) {
-							positionToGo = new Position(positionToGo.getX()+currentPosition.getX(),
-									positionToGo.getX()+currentPosition.getX());
-						}
+					}
+					
+					//Depending on xDiff and yDiff
+					if(xDiff<0 && positions.contains(Position.EAST)) {
+						positionToGo = Position.EAST;
+					}
+					else if(yDiff<0 && positions.contains(Position.SOUTH)){
+						positionToGo = Position.SOUTH;
+					}
+					else if(xDiff>0 && positions.contains(Position.WEST)){
+						positionToGo = Position.WEST;
+					}
+					else if(yDiff>0 && positions.contains(Position.NORTH)) {
+						positionToGo = Position.NORTH;
+					}
+					
+					if(positionToGo!=null) {
+						positionToGo = new Position(positionToGo.getX()+currentPosition.getX(),
+								positionToGo.getY()+currentPosition.getY());
 					}
 				}
 				else {
@@ -117,7 +116,10 @@ public class ConcurrentDecisionCore extends DecisionCore {
 								}
 								//S'il n'y a pas de boite, alors on peut se deplacer sur cette case
 								else if(e==null) {
-									positions.add(new Position(selfPositionX + i, selfPositionY + j));							
+									Position newPos = new Position(selfPositionX + i, selfPositionY + j);
+									if(!oldPositions.contains(newPos)) {
+										positions.add(newPos);
+									}
 								}								
 							}
 							// Si il y a une boite dans les angles
@@ -148,6 +150,7 @@ public class ConcurrentDecisionCore extends DecisionCore {
 				//alors il se déplace aléatoirement vers les positions possibles
 				if(positionToGo == null){
 					if(positions.isEmpty()) {
+						oldPositions.clear();
 						return;
 					}
 					else {
@@ -157,6 +160,13 @@ public class ConcurrentDecisionCore extends DecisionCore {
 					}
 				}
 
+				//Mise à jour de l'historique des positions
+				if(oldPositions.size()==5) {
+					oldPositions.remove(oldPositions.get(0));
+				}
+				
+				oldPositions.add(positionToGo);
+				
 				// Aller à la position
 
 				if(positionToGo.getX() < selfPositionX){
