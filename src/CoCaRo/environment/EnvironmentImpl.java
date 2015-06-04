@@ -20,7 +20,12 @@ import CoCaRo.logging.LoggerImpl;
 
 public class EnvironmentImpl extends Environment{
 	
+	private boolean cooperative = false;
 	private GridImpl globalGrid;
+	
+	public EnvironmentImpl(boolean cooperative) {
+		this.cooperative = cooperative;
+	}
 	
 	@Override
 	protected RobotsEcosystem make_robotEcosystem() {
@@ -39,17 +44,21 @@ public class EnvironmentImpl extends Environment{
 	protected RobotGrid make_RobotGrid(final String identifier, final CustomColor color, final boolean cooperative) {
 		System.out.println("make RobotGrid ("+identifier+";"+color+")");
 		
-		return new RobotGrid() {
-
+		RobotGrid robotGrid = new RobotGrid() {
+			
+			private RobotThread robotThread;
+			
 			@Override
 			protected IRobotCore make_robotCore() {
 				return new IRobotCore() {
 
+					private final static long MAX_ENERGY = 100;
+					
 					private Position position;
 					
 					private Element box;
 					
-					private long energy;
+					private long energy = MAX_ENERGY;
 					
 					@Override
 					public CustomColor getColor() {
@@ -59,6 +68,14 @@ public class EnvironmentImpl extends Environment{
 					@Override
 					public String getIdentifier() {
 						return identifier;
+					}
+					
+					public void suicide(){
+						eco_provides().controller().removeThread(robotThread);
+						globalGrid.removeRobot(getPosition());
+						
+						//TODO Voir à quoi sert l'identifier
+						globalGrid.addRobot(newRobotGrid("", color, cooperative));
 					}
 
 					@Override
@@ -92,18 +109,15 @@ public class EnvironmentImpl extends Environment{
 					}
 					
 					@Override
-					public Element dropBox() {
-						Element oldBox = box;
-						box = null;
-						
-						if(oldBox.getColor().equals(getColor())) {
-							energy+=66;
+					public void dropBox() {
+						if(box.getColor().equals(getColor())) {
+							energy+=(2 * MAX_ENERGY)/3;
 						}
 						else {
-							energy+=33;
+							energy+=MAX_ENERGY/3;
 						}
 						
-						return oldBox;
+						box = null;
 					}
 
 					@Override
@@ -124,15 +138,17 @@ public class EnvironmentImpl extends Environment{
 		
 			@Override
 			protected void start() {
-				RobotThread t = new RobotThread() {
+				robotThread = new RobotThread() {
 					@Override
 					public void action() {
 						parts().aRobot().decisionMaker().interact();
 					}
 				};
-				eco_provides().controller().addThread(t);
+				eco_provides().controller().addThread(robotThread);
 			}
 		};
+		
+		return robotGrid;
 	}
 
 	@Override
@@ -149,9 +165,9 @@ public class EnvironmentImpl extends Environment{
 				provides().boxGenerator().generateBox(CustomColor.Blue);
 				provides().boxGenerator().generateBox(CustomColor.Green);
 				System.out.println("\n===================\n");
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Red,false));
-				/*parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,false));
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,false));*/
+				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Red,cooperative));
+				/*parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,cooperative));
+				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,cooperative));*/
 				System.out.println("\n===================\n");
 				provides().controller().start(20);
 			}

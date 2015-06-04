@@ -24,7 +24,15 @@ public class ConcurrentDecisionCore extends DecisionCore {
 				Element[][] partialGrid = requires().perception().getPartialGrid();
 
 				if(requires().core().getEnergy()==0) {
-					//TODO SUICIDE
+					System.out.println("Va te pendre!!!!!!!");
+					try {
+						requires().core().suicide();
+					} catch (Throwable e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.exit(-1);
+					}
+					return;
 				}
 
 				Position positionToGo = null;
@@ -33,7 +41,7 @@ public class ConcurrentDecisionCore extends DecisionCore {
 				int selfPositionX = currentPosition.getX();
 				int selfPositionY = currentPosition.getY();
 
-				
+				List<Position> positions = new ArrayList<Position>();
 				
 				//Si le robot a déjà une boite
 				if (requires().core().hasBox()){
@@ -43,44 +51,51 @@ public class ConcurrentDecisionCore extends DecisionCore {
 					Position nestPosition = requires().core().getEnvironmentGet().
 							getNest(requires().core().getBoxColor());
 					
+					System.out.println("Nid repéré à "+nestPosition);
+					
 					if(nestPosition.equals(currentPosition)) {
+						System.out.println("Boite ramenée au nid");
+						System.out.println("====================");
 						requires().core().dropBox();
 					}
 					else {
 						int xDiff = currentPosition.getX()-nestPosition.getX();
 						int yDiff = currentPosition.getY()-nestPosition.getY();
-					
-						List<Position> positions = new ArrayList<Position>();
-						
-						//Algorithme pour trouver le plus court chemin vers le nid
 						
 						//Loop over each NESO case
 						for(int i=-1;i<1;i++) {
-							if(partialGrid[i][i+1]==null) {
+							//If the Element is null, add it to the list
+							if(partialGrid[i+1][i+2]==null) {
 								positions.add(new Position(i,i+1));
 							}
 							
-							if(partialGrid[i+1][i]==null) {
+							if(partialGrid[i+2][i+1]==null) {
 								positions.add(new Position(i+1,i));
 							}
-						}						
-					}
-					
-					
-					/*for(Nest.Component nest : nestsList.keySet()){
-						
-						//TODO Si la couleur du nid correspond à la boite
-						if(true){
-							//						if(nest == requires().core().getColorBox()){
-							//							if(getGrid[nestsList.get(nest).getX()][nestsList.get(nest).getY()] == requires().core().getColorBox())	
-							positionToGo = nestsList.get(nest);
 						}
-
-					}*/
+						
+						//Depending on xDiff and yDiff
+						if(xDiff<0 && positions.contains(Position.EAST)) {
+							positionToGo = Position.EAST;
+						}
+						else if(yDiff<0 && positions.contains(Position.SOUTH)){
+							positionToGo = Position.SOUTH;
+						}
+						else if(xDiff>0 && positions.contains(Position.WEST)){
+							positionToGo = Position.WEST;
+						}
+						else if(yDiff>0 && positions.contains(Position.NORTH)) {
+							positionToGo = Position.NORTH;
+						}
+						
+						if(positionToGo!=null) {
+							positionToGo = new Position(positionToGo.getX()+currentPosition.getX(),
+									positionToGo.getX()+currentPosition.getX());
+						}
+					}
 				}
 				else {
-
-					List<Position> positions = new ArrayList<Position>();
+					positions = new ArrayList<Position>();
 
 					// regarder aux alentours et si Nord - Est - Sud - Ouest d'un pas, alors prioritaire
 
@@ -127,41 +142,35 @@ public class ConcurrentDecisionCore extends DecisionCore {
 							break;
 						}
 					}
-
-					// Si le robot n'a pas déjà repéré de boite, 
-					//alors il se déplace aléatoirement vers les positions possibles
-					if(positionToGo == null){
-						if(positions.isEmpty()) {
-							return;
-						}
-						else {
-							Random rand = new Random();
-							int index = rand.nextInt(positions.size());
-							positionToGo = positions.get(index);
-							System.out.println(positionToGo);
-							System.out.println("=");
-						}
+				}
+				
+				// Si le robot n'a pas de déplacement optimal,
+				//alors il se déplace aléatoirement vers les positions possibles
+				if(positionToGo == null){
+					if(positions.isEmpty()) {
+						return;
 					}
-
+					else {
+						Random rand = new Random();
+						int index = rand.nextInt(positions.size());
+						positionToGo = positions.get(index);
+					}
 				}
 
 				// Aller à la position
 
 				if(positionToGo.getX() < selfPositionX){
-					System.out.println("left");
 					requires().actions().goLeft(requires().core());
 				}else if(positionToGo.getX() > selfPositionX){
-					System.out.println("right");
 					requires().actions().goRight(requires().core());
 				}else if(positionToGo.getY() < selfPositionY){
-					System.out.println("up");
 					requires().actions().goUp(requires().core());
 				}else if(positionToGo.getY() > selfPositionY){
-					System.out.println("down");
 					requires().actions().goDown(requires().core());
 				}
 				else {
-					System.out.println("J'ai fait de la merde!!!!!!!!!!");
+					System.out.println("J'ai fait de la merde : "+currentPosition + " vers " + positionToGo);
+					System.exit(-1);
 				}
 			}
 		};

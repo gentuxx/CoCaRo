@@ -116,4 +116,9 @@ public class RobotController {
 			robot.start();
 		}
 	}
+
+	public void removeThread(RobotThread robotThread) {
+		robotThread.turnOff();
+		robots.remove(robotThread);
+	}
 }

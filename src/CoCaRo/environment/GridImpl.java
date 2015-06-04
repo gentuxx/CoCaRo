@@ -30,7 +30,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	
 	private Map<Nest.Component, Position> nestList;
 	private List<Box.Component> boxList;
-	private List<RobotGrid.Component> robotsList;
+	private Map<Position,RobotGrid.Component> robotsMap;
 	private Element[][] grid = new Element[GRID_SIZE][GRID_SIZE];
 	
 	private CopyOnWriteArrayList<EnvChangeListener> listeners;
@@ -38,7 +38,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	public GridImpl() {
 		nestList = new HashMap<>();
 		boxList = new ArrayList<>();
-		robotsList = new ArrayList<>();
+		robotsMap = new HashMap<>();
 		listeners = new CopyOnWriteArrayList<EnvChangeListener>();
 	}
 	
@@ -191,7 +191,7 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	public void addRobot(
 			speadl.environment.Environment.RobotGrid.Component robotGrid) {
 		robotGrid.robotCore().setPosition(putInGrid(Element.AGENT));
-		robotsList.add(robotGrid);
+		robotsMap.put(robotGrid.robotCore().getPosition(),robotGrid);
 	}
 
 	@Override
@@ -229,5 +229,10 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 			}
 		}
 		return partialGrid;
+	}
+
+	public void removeRobot(Position position) {
+		grid[position.getX()][position.getY()]=null;
+		robotsMap.remove(position);
 	}
 }

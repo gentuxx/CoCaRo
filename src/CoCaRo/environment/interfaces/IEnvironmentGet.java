@@ -12,9 +12,9 @@ public interface IEnvironmentGet {
 	
 	public Position getNest(CustomColor color);
 	public List<Box.Component> getBoxList();
-	public void addRobot(RobotGrid.Component robotGrid);
 	public Element[][] getPartialGrid(Position pos);
 	public void addGUI(EnvChangeListener listener);
 	public void removeGUI(EnvChangeListener listener);
+	public void addRobot(RobotGrid.Component robotGrid);
 
 }

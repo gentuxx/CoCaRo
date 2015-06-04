@@ -21,7 +21,7 @@ public interface IRobotCore {
 	
 	public void takeBox(Element box);
 	
-	public Element dropBox();
+	public void dropBox();
 
 	boolean hasBox();
 	
@@ -30,4 +30,6 @@ public interface IRobotCore {
 	public void spendEnergy();
 	
 	public CustomColor getBoxColor();
+	
+	public void suicide();
 }
