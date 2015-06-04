@@ -1,12 +1,12 @@
 import CoCaRo.CustomColor
 import CoCaRo.agents.IRobotCore
+import CoCaRo.agents.RobotController
 import CoCaRo.environment.interfaces.IBoxGenerator
 import CoCaRo.environment.interfaces.IEnvInit
 import CoCaRo.environment.interfaces.IEnvironmentGet
 import CoCaRo.environment.interfaces.INestCreator
 import speadl.agents.RobotsEcosystem
 import speadl.graphics.GUI
-import CoCaRo.agents.RobotController
 
 namespace speadl.environment {
 	
@@ -22,7 +22,7 @@ namespace speadl.environment {
 		provides nestCreator : INestCreator
 		
 		species Nest(color : CustomColor) {
-			
+			provides getColor : CustomColor
 		}
 	}
 	

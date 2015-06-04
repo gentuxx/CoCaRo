@@ -71,7 +71,7 @@ public abstract class NestEnv {
     }
   }
   
-  public static class Nest {
+  public static abstract class Nest {
     public interface Requires {
     }
     
@@ -79,6 +79,11 @@ public abstract class NestEnv {
     }
     
     public interface Provides {
+      /**
+       * This can be called to access the provided port.
+       * 
+       */
+      public CustomColor getColor();
     }
     
     public interface Parts {
@@ -98,8 +103,16 @@ public abstract class NestEnv {
         
       }
       
+      private void init_getColor() {
+        assert this.getColor == null: "This is a bug.";
+        this.getColor = this.implementation.make_getColor();
+        if (this.getColor == null) {
+        	throw new RuntimeException("make_getColor() in speadl.environment.NestEnv$Nest should not return null.");
+        }
+      }
+      
       protected void initProvidedPorts() {
-        
+        init_getColor();
       }
       
       public ComponentImpl(final NestEnv.Nest implem, final NestEnv.Nest.Requires b, final boolean doInits) {
@@ -116,6 +129,12 @@ public abstract class NestEnv {
         	initParts();
         	initProvidedPorts();
         }
+      }
+      
+      private CustomColor getColor;
+      
+      public CustomColor getColor() {
+        return this.getColor;
       }
     }
     
@@ -157,6 +176,13 @@ public abstract class NestEnv {
       }
       return this.selfComponent;
     }
+    
+    /**
+     * This should be overridden by the implementation to define the provided port.
+     * This will be called once during the construction of the component to initialize the port.
+     * 
+     */
+    protected abstract CustomColor make_getColor();
     
     /**
      * This can be called by the implementation to access the required ports.
@@ -318,9 +344,7 @@ public abstract class NestEnv {
    * This should be overridden by the implementation to instantiate the implementation of the species.
    * 
    */
-  protected NestEnv.Nest make_Nest(final CustomColor color) {
-    return new NestEnv.Nest();
-  }
+  protected abstract NestEnv.Nest make_Nest(final CustomColor color);
   
   /**
    * Do not call, used by generated code.

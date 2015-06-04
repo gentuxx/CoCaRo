@@ -27,4 +27,20 @@ public enum Element {
 			return "";
 		}
 	}
+	
+	public CustomColor getColor() {
+		switch(this) {
+		case RED_NEST:
+		case RED_BOX:
+			return CustomColor.Red;
+		case GREEN_NEST:
+		case GREEN_BOX:
+			return CustomColor.Green;
+		case BLUE_NEST:
+		case BLUE_BOX:
+			return CustomColor.Blue;
+		default:
+			return null;
+		}
+	}
 }

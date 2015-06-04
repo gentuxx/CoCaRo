@@ -2,6 +2,7 @@ package CoCaRo.environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -64,9 +65,16 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	}
 	
 	@Override
-	public Map<Nest.Component, Position> getNestList() {
-		//TODO Vérifier que cette méthode est bien utiles
-		return nestList;
+	public Position getNest(CustomColor color) {
+		
+		for(Iterator<Nest.Component>it = nestList.keySet().iterator();it.hasNext();) {
+			Nest.Component currentComp = it.next();
+			if(currentComp.getColor().equals(color)) {
+				return nestList.get(currentComp);
+			}
+		}
+		
+		return null;
 	}
 
 
@@ -137,6 +145,18 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 						nestList.put(newNest(CustomColor.Blue), pos);
 						System.out.println("Generated the "+CustomColor.Blue+" nest");
 					}
+				};
+			}
+
+			@Override
+			protected Nest make_Nest(final CustomColor color) {
+				return new Nest() {
+
+					@Override
+					protected CustomColor make_getColor() {
+						return color;
+					}
+					
 				};
 			}
 		};
