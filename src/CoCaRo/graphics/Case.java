@@ -17,13 +17,15 @@ public class Case extends JTextField {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 
-	public void setColor() {
+	public void setColor(Element e) {
 		
 		Font f  = getFont();
 		setFont(f.deriveFont(Font.BOLD));
 		
-		if (e == null)
+		if (e == null) {
 			this.setBackground(Color.white);
+			setText("");
+		}
 		
 		if (e == Element.AGENT) {
 			this.setBackground(Color.black);
