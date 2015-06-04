@@ -1,6 +1,7 @@
 package speadl.agents;
 
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
+import CoCaRo.logging.interfaces.ILog;
 
 @SuppressWarnings("all")
 public abstract class AgentAction {
@@ -53,6 +54,11 @@ public abstract class AgentAction {
   
   public static abstract class ActionCore {
     public interface Requires {
+      /**
+       * This can be called by the implementation to access this required port.
+       * 
+       */
+      public ILog log();
     }
     
     public interface Component extends AgentAction.ActionCore.Provides {
@@ -332,15 +338,6 @@ public abstract class AgentAction {
     assert this.selfComponent != null: "This is a bug.";
     implem.ecosystemComponent = this.selfComponent;
     return implem;
-  }
-  
-  /**
-   * This can be called to create an instance of the species from inside the implementation of the ecosystem.
-   * 
-   */
-  protected AgentAction.ActionCore.Component newActionCore() {
-    AgentAction.ActionCore _implem = _createImplementationOfActionCore();
-    return _implem._newComponent(new AgentAction.ActionCore.Requires() {},true);
   }
   
   /**

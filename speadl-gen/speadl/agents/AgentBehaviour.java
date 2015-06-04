@@ -5,6 +5,7 @@ import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
+import CoCaRo.logging.interfaces.ILog;
 import speadl.agents.AgentAction;
 import speadl.agents.AgentDecision;
 import speadl.agents.AgentPerception;
@@ -159,6 +160,12 @@ public abstract class AgentBehaviour {
        * 
        */
       public IRobotCore coreB();
+      
+      /**
+       * This can be called by the implementation to access this required port.
+       * 
+       */
+      public ILog log();
     }
     
     public interface Component extends AgentBehaviour.AgentBehaviourPDA.Provides {
@@ -277,6 +284,9 @@ public abstract class AgentBehaviour {
       private AgentAction.ActionCore.Component aAction;
       
       private final class BridgeImpl_actions_aAction implements AgentAction.ActionCore.Requires {
+        public final ILog log() {
+          return AgentBehaviour.AgentBehaviourPDA.ComponentImpl.this.bridge.log();
+        }
       }
       
       public final AgentAction.ActionCore.Component aAction() {

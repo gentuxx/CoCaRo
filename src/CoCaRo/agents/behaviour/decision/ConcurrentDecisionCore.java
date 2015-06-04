@@ -2,13 +2,11 @@ package CoCaRo.agents.behaviour.decision;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import speadl.agents.AgentDecision.DecisionCore;
-import speadl.environment.NestEnv.Nest;
-import CoCaRo.Position;
 import CoCaRo.Element;
+import CoCaRo.Position;
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 
 public class ConcurrentDecisionCore extends DecisionCore {
@@ -40,9 +38,35 @@ public class ConcurrentDecisionCore extends DecisionCore {
 				//Si le robot a déjà une boite
 				if (requires().core().hasBox()){
 					System.out.println("J'ai une boite!!!!!!!!!!!!!!");
-					// Si le robot a une boite alors retourner au nid
-					Map<Nest.Component, Position> nestsList = requires().core().getEnvironmentGet().getNestList();
-
+					
+					//On récupère la position du nid
+					Position nestPosition = requires().core().getEnvironmentGet().
+							getNest(requires().core().getBoxColor());
+					
+					if(nestPosition.equals(currentPosition)) {
+						requires().core().dropBox();
+					}
+					else {
+						int xDiff = currentPosition.getX()-nestPosition.getX();
+						int yDiff = currentPosition.getY()-nestPosition.getY();
+					
+						List<Position> positions = new ArrayList<Position>();
+						
+						//Algorithme pour trouver le plus court chemin vers le nid
+						
+						//Loop over each NESO case
+						for(int i=-1;i<1;i++) {
+							if(partialGrid[i][i+1]==null) {
+								positions.add(new Position(i,i+1));
+							}
+							
+							if(partialGrid[i+1][i]==null) {
+								positions.add(new Position(i+1,i));
+							}
+						}						
+					}
+					
+					
 					/*for(Nest.Component nest : nestsList.keySet()){
 						
 						//TODO Si la couleur du nid correspond à la boite

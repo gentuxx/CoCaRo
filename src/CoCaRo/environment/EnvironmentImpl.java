@@ -4,6 +4,7 @@ import speadl.agents.RobotsEcosystem;
 import speadl.environment.Environment;
 import speadl.environment.Grid;
 import speadl.graphics.GUI;
+import speadl.logging.Logging;
 import CoCaRo.CustomColor;
 import CoCaRo.Element;
 import CoCaRo.Position;
@@ -15,6 +16,7 @@ import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
 import CoCaRo.environment.interfaces.IEnvironmentSet;
 import CoCaRo.graphics.GUIImpl;
+import CoCaRo.logging.LoggerImpl;
 
 public class EnvironmentImpl extends Environment{
 	
@@ -93,22 +95,20 @@ public class EnvironmentImpl extends Environment{
 					public Element dropBox() {
 						Element oldBox = box;
 						box = null;
+						
+						if(oldBox.getColor().equals(getColor())) {
+							energy+=66;
+						}
+						else {
+							energy+=33;
+						}
+						
 						return oldBox;
 					}
 
 					@Override
 					public CustomColor getBoxColor() {
-						CustomColor color = null;
-						
-						if(box == Element.BLUE_BOX){
-							color = CustomColor.Blue;
-						}else if(box == Element.RED_BOX){
-							color = CustomColor.Red;
-						}else if(box == Element.GREEN_BOX){
-							color = CustomColor.Green;
-						}
-						
-						return color;
+						return box.getColor();
 					}
 					
 					public long getEnergy() {
@@ -166,6 +166,19 @@ public class EnvironmentImpl extends Environment{
 	@Override
 	protected GUI make_graphics() {
 		return new GUIImpl();
+	}
+
+	@Override
+	protected Logging make_log1() {
+		System.out.println("make LoggingImpl");
+		return new Logging(){
+
+			@Override
+			protected Logger make_Logger() {
+				return new LoggerImpl();
+			}
+			
+		};
 	}
 	
 }

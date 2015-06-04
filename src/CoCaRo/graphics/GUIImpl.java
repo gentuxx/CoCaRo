@@ -12,9 +12,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import speadl.graphics.GUI;
 import CoCaRo.Element;
 import CoCaRo.environment.interfaces.EnvChangeListener;
+
+import speadl.graphics.GUI;
 
 public class GUIImpl extends GUI implements ActionListener {
 

@@ -1,8 +1,9 @@
 import CoCaRo.CustomColor
 import CoCaRo.agents.IRobotCore
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction
-import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker
+import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception
+import CoCaRo.logging.interfaces.ILog
 
 namespace speadl.agents {
 	
@@ -11,9 +12,11 @@ namespace speadl.agents {
 		species Robot(identifier : String, color : 	CustomColor, cooperative : boolean) {
 			provides decisionMaker : IDecisionMaker = aBehaviour.decisionMaker
 			requires coreR : IRobotCore
+			requires log : ILog
 			
 			use aBehaviour : behaviour.AgentBehaviourPDA(identifier,color,cooperative){
 				bind coreB to coreR	
+				bind log to log
 			}
 		}
 		
@@ -27,11 +30,15 @@ namespace speadl.agents {
 		species AgentBehaviourPDA(identifier : String, color : CustomColor, cooperative : boolean) {
 			provides decisionMaker : IDecisionMaker = aDecision.decisionMaker
 			requires coreB: IRobotCore
+			requires log : ILog
 			
 			use aPerc : perception.PerceptionCore() {
 				bind core to coreB
 			}
-			use aAction : actions.ActionCore()
+			use aAction : actions.ActionCore() {
+				bind log to log
+			}
+			
 			use aDecision : decision.DecisionCore(cooperative) {
 				bind core to coreB
 				bind perception to aPerc.perception
@@ -64,7 +71,9 @@ namespace speadl.agents {
 		
 		species ActionCore() {
 			provides actions : IAgentAction
+			requires log : ILog			
 		}
+		
 	}
 	
 	ecosystem AgentDecision {
