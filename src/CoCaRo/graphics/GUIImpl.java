@@ -42,7 +42,7 @@ public class GUIImpl extends GUI implements ActionListener {
 			
 		};
 		
-		//requires().envGet().addGUI(observer);
+		
 	}
 
 	public void update() {
@@ -122,8 +122,14 @@ public class GUIImpl extends GUI implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
         if (ev.getSource() == startButton) {
-        	update();
+        	
+        	requires().envGet().addGUI(observer);
+        	
+        	
+//        	update();
         }
+        
+        
 	}
 	/*
 	public static void main(String[] args) {

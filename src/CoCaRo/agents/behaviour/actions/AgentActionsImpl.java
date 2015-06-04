@@ -58,6 +58,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX()+1,oldPosition.getY());
 						System.out.println(newPosition);
+						requires().log().addLine(newPosition.toString());
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -85,7 +86,12 @@ public class AgentActionsImpl extends AgentAction {
 
 					@Override
 					public void suicide() {
-						
+						try {
+							this.finalize();
+						} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 					@Override
