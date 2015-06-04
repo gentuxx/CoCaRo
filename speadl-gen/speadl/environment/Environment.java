@@ -7,9 +7,11 @@ import CoCaRo.environment.interfaces.IBoxGenerator;
 import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
 import CoCaRo.environment.interfaces.INestCreator;
+import CoCaRo.logging.interfaces.ILog;
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Grid;
 import speadl.graphics.GUI;
+import speadl.logging.Logging;
 
 @SuppressWarnings("all")
 public abstract class Environment {
@@ -66,6 +68,13 @@ public abstract class Environment {
      * 
      */
     public GUI.Component graphics();
+    
+    /**
+     * This can be called by the implementation to access the part and its provided ports.
+     * It will be initialized after the required ports are initialized and before the provided ports are initialized.
+     * 
+     */
+    public Logging.Component log1();
   }
   
   public static class ComponentImpl implements Environment.Component, Environment.Parts {
@@ -80,6 +89,8 @@ public abstract class Environment {
       ((Grid.ComponentImpl) this.globalGrid).start();
       assert this.graphics != null: "This is a bug.";
       ((GUI.ComponentImpl) this.graphics).start();
+      assert this.log1 != null: "This is a bug.";
+      ((Logging.ComponentImpl) this.log1).start();
       this.implementation.start();
       this.implementation.started = true;
     }
@@ -117,10 +128,22 @@ public abstract class Environment {
       
     }
     
+    private void init_log1() {
+      assert this.log1 == null: "This is a bug.";
+      assert this.implem_log1 == null: "This is a bug.";
+      this.implem_log1 = this.implementation.make_log1();
+      if (this.implem_log1 == null) {
+      	throw new RuntimeException("make_log1() in speadl.environment.Environment should not return null.");
+      }
+      this.log1 = this.implem_log1._newComponent(new BridgeImpl_log1(), false);
+      
+    }
+    
     protected void initParts() {
       init_robotEcosystem();
       init_globalGrid();
       init_graphics();
+      init_log1();
     }
     
     private void init_envInit() {
@@ -215,6 +238,17 @@ public abstract class Environment {
     public final GUI.Component graphics() {
       return this.graphics;
     }
+    
+    private Logging.Component log1;
+    
+    private Logging implem_log1;
+    
+    private final class BridgeImpl_log1 implements Logging.Requires {
+    }
+    
+    public final Logging.Component log1() {
+      return this.log1;
+    }
   }
   
   public static abstract class RobotGrid {
@@ -239,6 +273,13 @@ public abstract class Environment {
        * 
        */
       public RobotsEcosystem.Robot.Component aRobot();
+      
+      /**
+       * This can be called by the implementation to access the part and its provided ports.
+       * It will be initialized after the required ports are initialized and before the provided ports are initialized.
+       * 
+       */
+      public Logging.Logger.Component aLog();
     }
     
     public static class ComponentImpl implements Environment.RobotGrid.Component, Environment.RobotGrid.Parts {
@@ -249,6 +290,8 @@ public abstract class Environment {
       public void start() {
         assert this.aRobot != null: "This is a bug.";
         ((RobotsEcosystem.Robot.ComponentImpl) this.aRobot).start();
+        assert this.aLog != null: "This is a bug.";
+        ((Logging.Logger.ComponentImpl) this.aLog).start();
         this.implementation.start();
         this.implementation.started = true;
       }
@@ -260,8 +303,16 @@ public abstract class Environment {
         
       }
       
+      private void init_aLog() {
+        assert this.aLog == null: "This is a bug.";
+        assert this.implementation.use_aLog != null: "This is a bug.";
+        this.aLog = this.implementation.use_aLog._newComponent(new BridgeImpl_log1_aLog(), false);
+        
+      }
+      
       protected void initParts() {
         init_aRobot();
+        init_aLog();
       }
       
       private void init_robotCore() {
@@ -304,10 +355,23 @@ public abstract class Environment {
         public final IRobotCore coreR() {
           return Environment.RobotGrid.ComponentImpl.this.robotCore();
         }
+        
+        public final ILog log() {
+          return Environment.RobotGrid.ComponentImpl.this.aLog().log();
+        }
       }
       
       public final RobotsEcosystem.Robot.Component aRobot() {
         return this.aRobot;
+      }
+      
+      private Logging.Logger.Component aLog;
+      
+      private final class BridgeImpl_log1_aLog implements Logging.Logger.Requires {
+      }
+      
+      public final Logging.Logger.Component aLog() {
+        return this.aLog;
       }
     }
     
@@ -382,6 +446,8 @@ public abstract class Environment {
     }
     
     private RobotsEcosystem.Robot use_aRobot;
+    
+    private Logging.Logger use_aLog;
     
     /**
      * Not meant to be used to manually instantiate components (except for testing).
@@ -528,6 +594,13 @@ public abstract class Environment {
   protected abstract GUI make_graphics();
   
   /**
+   * This should be overridden by the implementation to define how to create this sub-component.
+   * This will be called once during the construction of the component to initialize this sub-component.
+   * 
+   */
+  protected abstract Logging make_log1();
+  
+  /**
    * Not meant to be used to manually instantiate components (except for testing).
    * 
    */
@@ -564,6 +637,9 @@ public abstract class Environment {
     assert this.selfComponent.implem_robotEcosystem != null: "This is a bug.";
     assert implem.use_aRobot == null: "This is a bug.";
     implem.use_aRobot = this.selfComponent.implem_robotEcosystem._createImplementationOfRobot(identifier,color,cooperative);
+    assert this.selfComponent.implem_log1 != null: "This is a bug.";
+    assert implem.use_aLog == null: "This is a bug.";
+    implem.use_aLog = this.selfComponent.implem_log1._createImplementationOfLogger();
     return implem;
   }
   

@@ -1,0 +1,10 @@
+import CoCaRo.logging.interfaces.ILog
+
+namespace speadl.logging{
+	ecosystem Logging {
+				
+		species Logger() {
+			provides log: ILog
+		}
+	}
+}

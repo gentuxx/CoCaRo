@@ -32,7 +32,7 @@ public class GUIImpl extends GUI {
 			
 		};
 		
-		requires().envGet().addGUI(observer);
+//		requires().envGet().addGUI(observer);
 		
 		init();
 	}
