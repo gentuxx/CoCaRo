@@ -1,17 +1,16 @@
 package CoCaRo.environment.interfaces;
 
 import java.util.List;
-import java.util.Map;
 
 import speadl.environment.BoxEnv.Box;
 import speadl.environment.Environment.RobotGrid;
-import speadl.environment.NestEnv.Nest;
+import CoCaRo.CustomColor;
 import CoCaRo.Element;
 import CoCaRo.Position;
 
 public interface IEnvironmentGet {
 	
-	public Map<Nest.Component, Position> getNestList();
+	public Position getNest(CustomColor color);
 	public List<Box.Component> getBoxList();
 	public void addRobot(RobotGrid.Component robotGrid);
 	public Element[][] getPartialGrid(Position pos);

@@ -23,7 +23,7 @@ namespace speadl.environment {
 		provides nestCreator : INestCreator
 		
 		species Nest(color : CustomColor) {
-			
+			provides getColor : CustomColor
 		}
 	}
 	

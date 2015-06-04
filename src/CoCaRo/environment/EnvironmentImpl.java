@@ -95,22 +95,20 @@ public class EnvironmentImpl extends Environment{
 					public Element dropBox() {
 						Element oldBox = box;
 						box = null;
+						
+						if(oldBox.getColor().equals(getColor())) {
+							energy+=66;
+						}
+						else {
+							energy+=33;
+						}
+						
 						return oldBox;
 					}
 
 					@Override
 					public CustomColor getBoxColor() {
-						CustomColor color = null;
-						
-						if(box == Element.BLUE_BOX){
-							color = CustomColor.Blue;
-						}else if(box == Element.RED_BOX){
-							color = CustomColor.Red;
-						}else if(box == Element.GREEN_BOX){
-							color = CustomColor.Green;
-						}
-						
-						return color;
+						return box.getColor();
 					}
 					
 					public long getEnergy() {
