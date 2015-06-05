@@ -98,9 +98,11 @@ public class GUIImpl extends GUI implements ActionListener {
 		
 		pauseButton = new JButton("Pause");
 		pauseButton.addActionListener(this);
+		pauseButton.setEnabled(false);
 		
 		repriseButton = new JButton("Reprise");
 		repriseButton.addActionListener(this);
+		repriseButton.setEnabled(false);
 		
 		nbRobotsLabel = new JLabel("Nombre de robots :");
 		nbBoxesLabel = new JLabel("Nombre de boites :");
@@ -162,7 +164,12 @@ public class GUIImpl extends GUI implements ActionListener {
 		}
 
 		jFrame.add(principal);
-		jFrame.setSize(700, 700);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		int xSize = ((int) tk.getScreenSize().getWidth());
+		int ySize = ((int) tk.getScreenSize().getHeight());
+		
+		jFrame.setSize(xSize, ySize);
+		jFrame.setResizable(false);
 
 		// Centers the window
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -212,14 +219,27 @@ public class GUIImpl extends GUI implements ActionListener {
 				requires().init().init(Integer.parseInt(nbRobots), 
 	        			Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
 	        	requires().envGet().addGUI(observer);
+	        	
+	        	repriseButton.setEnabled(false);
+	        	startButton.setEnabled(false);
+	        	pauseButton.setEnabled(true);
 			}catch(NumberFormatException e){
 				System.out.println("Mauvaise saisie");
 			}
         	        	
         } else if(ev.getSource() == pauseButton) {
         	requires().exec().pause();
+        	
+        	repriseButton.setEnabled(true);
+        	startButton.setEnabled(false);
+        	pauseButton.setEnabled(false);
+        	
         } else if(ev.getSource() == repriseButton){
         	requires().exec().restart();
+        	
+        	repriseButton.setEnabled(false);
+        	startButton.setEnabled(false);
+        	pauseButton.setEnabled(true);
         }
         
         
