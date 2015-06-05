@@ -25,7 +25,7 @@ public class ConcurrentDecisionCore extends DecisionCore {
 				Element[][] partialGrid = requires().perception().getPartialGrid();
 
 				if(requires().core().getEnergy()==0) {
-					System.out.println("Va te pendre!!!!!!!");
+					System.out.println("Plus d'énergie...Adieu!");
 					try {
 						requires().core().suicide();
 					} catch (Throwable e) {

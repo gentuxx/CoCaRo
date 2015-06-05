@@ -26,7 +26,6 @@ public class GUIImpl extends GUI implements ActionListener {
 	private JFrame jFrame;
 	private EnvChangeListener observer;
 	final int GRID_SIZE = 20;
-	private int lastSpeed;
 	GridLayout layout;
 	Element[][] elements;
 	JPanel principal;
@@ -165,11 +164,10 @@ public class GUIImpl extends GUI implements ActionListener {
 
 		jFrame.add(principal);
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
+		int xSize = ((int) tk.getScreenSize().getWidth()/2);
+		int ySize = ((int) tk.getScreenSize().getHeight()/2);
 		
 		jFrame.setSize(xSize, ySize);
-		jFrame.setResizable(false);
 
 		// Centers the window
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

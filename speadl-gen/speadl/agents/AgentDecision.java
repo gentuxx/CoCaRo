@@ -2,6 +2,7 @@ package speadl.agents;
 
 import CoCaRo.agents.IRobotCore;
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction;
+import CoCaRo.agents.behaviour.decision.interfaces.ICooperativeModule;
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception;
 
@@ -14,6 +15,11 @@ public abstract class AgentDecision {
   }
   
   public interface Provides {
+    /**
+     * This can be called to access the provided port.
+     * 
+     */
+    public ICooperativeModule coopModule();
   }
   
   public interface Parts {
@@ -33,8 +39,16 @@ public abstract class AgentDecision {
       
     }
     
+    private void init_coopModule() {
+      assert this.coopModule == null: "This is a bug.";
+      this.coopModule = this.implementation.make_coopModule();
+      if (this.coopModule == null) {
+      	throw new RuntimeException("make_coopModule() in speadl.agents.AgentDecision should not return null.");
+      }
+    }
+    
     protected void initProvidedPorts() {
-      
+      init_coopModule();
     }
     
     public ComponentImpl(final AgentDecision implem, final AgentDecision.Requires b, final boolean doInits) {
@@ -51,6 +65,12 @@ public abstract class AgentDecision {
       	initParts();
       	initProvidedPorts();
       }
+    }
+    
+    private ICooperativeModule coopModule;
+    
+    public ICooperativeModule coopModule() {
+      return this.coopModule;
     }
   }
   
@@ -292,6 +312,13 @@ public abstract class AgentDecision {
     }
     return this.selfComponent;
   }
+  
+  /**
+   * This should be overridden by the implementation to define the provided port.
+   * This will be called once during the construction of the component to initialize the port.
+   * 
+   */
+  protected abstract ICooperativeModule make_coopModule();
   
   /**
    * This can be called by the implementation to access the required ports.

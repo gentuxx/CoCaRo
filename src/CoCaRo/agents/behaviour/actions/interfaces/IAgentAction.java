@@ -16,8 +16,4 @@ public interface IAgentAction {
 	public void dropBox(IRobotCore core);
 
 	public void takeBox(IRobotCore core, Position boxPosition);
-	
-	public void suicide();
-	
-	public void checkEnergy(IRobotCore core);
 }

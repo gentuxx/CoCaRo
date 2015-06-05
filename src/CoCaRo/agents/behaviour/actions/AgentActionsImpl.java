@@ -77,23 +77,6 @@ public class AgentActionsImpl extends AgentAction {
 					public void dropBox(IRobotCore core) {
 						core.dropBox();
 					}
-
-					@Override
-					public void suicide() {
-						try {
-							this.finalize();
-						} catch (Throwable e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-
-					@Override
-					public void checkEnergy(IRobotCore core) {
-						if(core.getEnergy() == 0){
-							suicide();
-						}						
-					}
 				};
 			}
 		};
