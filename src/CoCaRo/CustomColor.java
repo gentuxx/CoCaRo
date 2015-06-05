@@ -32,15 +32,8 @@ public enum CustomColor {
 			return "Blue";
 		}
 	}
-	
-	private static final List<CustomColor> VALUES =
-		    Collections.unmodifiableList(Arrays.asList(values()));
-	
-	private static final int SIZE = VALUES.size();
-	
-	private static final Random RANDOM = new Random();
-	
-	public static CustomColor randomColor()  {
-	    return VALUES.get(RANDOM.nextInt(SIZE));
-	  }
+		
+	public static CustomColor randomColor() {
+        return values()[(int) (Math.random() * values().length)];
+    }
 }
