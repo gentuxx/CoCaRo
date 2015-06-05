@@ -269,6 +269,7 @@ public class GUIImpl extends GUI implements ActionListener {
         	requires().exec().increaseSpeed();
         	vitesseMoinsButton.setEnabled(true);
         } else if (ev.getSource() == resetButton) {
+        	/*
         	repriseButton.setEnabled(false);
         	startButton.setEnabled(true);
         	pauseButton.setEnabled(false);
@@ -282,7 +283,32 @@ public class GUIImpl extends GUI implements ActionListener {
     			for (int j = 0; j < GRID_SIZE; j++) {
     				elements[i][j] = null;
     			}
-    		}
+    		}*/
+        	
+        	String nbRobots = nbRobotsTextField.getText();
+			String nbBoxes = nbBoxesTextField.getText();
+			String speedExec = speedExecTextField.getText();
+			try{
+				requires().init().init(Integer.parseInt(nbRobots), 
+	        			Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
+	        	requires().envGet().addGUI(observer);
+	        	
+	        	repriseButton.setEnabled(false);
+	        	startButton.setEnabled(false);
+	        	pauseButton.setEnabled(true);
+	        	vitessePlusButton.setEnabled(true);
+	        	resetButton.setEnabled(true);
+	        	
+	        	if (Integer.parseInt(speedExec) > 1) {
+	        		vitesseMoinsButton.setEnabled(true);
+	        	} else {
+	        		vitesseMoinsButton.setEnabled(false);
+	        	}
+
+			}catch(NumberFormatException e){
+				System.out.println("Mauvaise saisie");
+			}
+        	
         }
         
         
