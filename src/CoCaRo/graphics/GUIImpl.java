@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.EnvChangeListener;
@@ -38,6 +36,9 @@ public class GUIImpl extends GUI implements ActionListener {
 	JButton startButton;
 	JButton pauseButton;
 	JButton repriseButton;
+	JButton vitessePlusButton;
+	JButton vitesseMoinsButton;
+	JButton resetButton;
 	JLabel nbRobotsLabel;
 	JLabel nbBoxesLabel;
 	JLabel speedExecLabel;
@@ -48,6 +49,8 @@ public class GUIImpl extends GUI implements ActionListener {
 	public GUIImpl() {
 		jFrame = new JFrame("Cocaro");
 		init();
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		//update();
 		
 		observer = new EnvChangeListener() {
@@ -100,9 +103,23 @@ public class GUIImpl extends GUI implements ActionListener {
 		
 		pauseButton = new JButton("Pause");
 		pauseButton.addActionListener(this);
+		pauseButton.setEnabled(false);
 		
 		repriseButton = new JButton("Reprise");
 		repriseButton.addActionListener(this);
+		repriseButton.setEnabled(false);
+		
+		resetButton = new JButton("Reset");
+		resetButton.addActionListener(this);
+		resetButton.setEnabled(false);
+		
+		vitessePlusButton = new JButton("Vitesse++");
+		vitessePlusButton.addActionListener(this);
+		vitessePlusButton.setEnabled(false);
+		
+		vitesseMoinsButton = new JButton("Vitesse--");
+		vitesseMoinsButton.addActionListener(this);
+		vitesseMoinsButton.setEnabled(false);
 		
 		nbRobotsLabel = new JLabel("Nombre de robots :");
 		nbBoxesLabel = new JLabel("Nombre de boites :");
@@ -142,6 +159,9 @@ public class GUIImpl extends GUI implements ActionListener {
 		centerPanel.add(startButton);
 		centerPanel.add(pauseButton);
 		centerPanel.add(repriseButton);
+		centerPanel.add(vitessePlusButton);
+		centerPanel.add(vitesseMoinsButton);
+		centerPanel.add(resetButton);
 		
 		principal.add(centerPanel);
 				
@@ -214,15 +234,55 @@ public class GUIImpl extends GUI implements ActionListener {
 				requires().init().init(Integer.parseInt(nbRobots), 
 	        			Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
 	        	requires().envGet().addGUI(observer);
+	        	
+	        	repriseButton.setEnabled(false);
+	        	startButton.setEnabled(false);
+	        	pauseButton.setEnabled(true);
+	        	vitessePlusButton.setEnabled(true);
+	        	resetButton.setEnabled(true);
+	        	
+	        	if (Integer.parseInt(speedExec) > 1) {
+	        		vitesseMoinsButton.setEnabled(true);
+	        	} else {
+	        		vitesseMoinsButton.setEnabled(false);
+	        	}
+
 			}catch(NumberFormatException e){
 				System.out.println("Mauvaise saisie");
 			}
         	        	
         } else if(ev.getSource() == pauseButton) {
-        	lastSpeed = requires().exec().getSpeed();
         	requires().exec().pause();
         } else if(ev.getSource() == repriseButton){
-        	requires().exec().start(lastSpeed);
+        	
+        	requires().exec().restart();
+        	
+        	repriseButton.setEnabled(false);
+        	startButton.setEnabled(false);
+        	pauseButton.setEnabled(true);
+        } else if (ev.getSource() == vitesseMoinsButton) {
+        	requires().exec().decreaseSpeed();
+        	if (requires().exec().getSpeed() <= 1) {
+        		vitesseMoinsButton.setEnabled(false);
+        	}
+        } else if (ev.getSource() == vitessePlusButton) {
+        	requires().exec().increaseSpeed();
+        	vitesseMoinsButton.setEnabled(true);
+        } else if (ev.getSource() == resetButton) {
+        	repriseButton.setEnabled(false);
+        	startButton.setEnabled(true);
+        	pauseButton.setEnabled(false);
+        	vitessePlusButton.setEnabled(false);
+        	vitesseMoinsButton.setEnabled(false);
+        	resetButton.setEnabled(false);
+        	
+        	requires().exec().stop();
+        	
+    		for (int i = 0; i < GRID_SIZE; i++) {
+    			for (int j = 0; j < GRID_SIZE; j++) {
+    				elements[i][j] = null;
+    			}
+    		}
         }
         
         
