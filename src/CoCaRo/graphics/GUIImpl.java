@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.EnvChangeListener;
@@ -44,6 +46,7 @@ public class GUIImpl extends GUI implements ActionListener {
 	JTextField speedExecTextField;
 
 	public GUIImpl() {
+		jFrame = new JFrame("Cocaro");
 		init();
 		//update();
 		
@@ -55,6 +58,8 @@ public class GUIImpl extends GUI implements ActionListener {
 			}
 			
 		};
+		
+		
 	}
 
 	public void update() {
@@ -82,9 +87,6 @@ public class GUIImpl extends GUI implements ActionListener {
 	 */
 	public void init() {
 		
-		jFrame = new JFrame("Cocaro");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		elements = new Element[GRID_SIZE][GRID_SIZE];
 		
 		for (int i = 0; i < GRID_SIZE; i++) {
@@ -98,11 +100,9 @@ public class GUIImpl extends GUI implements ActionListener {
 		
 		pauseButton = new JButton("Pause");
 		pauseButton.addActionListener(this);
-		pauseButton.setEnabled(false);
 		
 		repriseButton = new JButton("Reprise");
 		repriseButton.addActionListener(this);
-		repriseButton.setEnabled(false);
 		
 		nbRobotsLabel = new JLabel("Nombre de robots :");
 		nbBoxesLabel = new JLabel("Nombre de boites :");
@@ -164,12 +164,7 @@ public class GUIImpl extends GUI implements ActionListener {
 		}
 
 		jFrame.add(principal);
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
-		
-		jFrame.setSize(xSize, ySize);
-		jFrame.setResizable(false);
+		jFrame.setSize(700, 700);
 
 		// Centers the window
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -219,27 +214,15 @@ public class GUIImpl extends GUI implements ActionListener {
 				requires().init().init(Integer.parseInt(nbRobots), 
 	        			Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
 	        	requires().envGet().addGUI(observer);
-	        	
-	        	repriseButton.setEnabled(false);
-	        	startButton.setEnabled(false);
-	        	pauseButton.setEnabled(true);
 			}catch(NumberFormatException e){
 				System.out.println("Mauvaise saisie");
 			}
         	        	
         } else if(ev.getSource() == pauseButton) {
+        	lastSpeed = requires().exec().getSpeed();
         	requires().exec().pause();
-        	
-        	repriseButton.setEnabled(true);
-        	startButton.setEnabled(false);
-        	pauseButton.setEnabled(false);
-        	
         } else if(ev.getSource() == repriseButton){
-        	requires().exec().restart();
-        	
-        	repriseButton.setEnabled(false);
-        	startButton.setEnabled(false);
-        	pauseButton.setEnabled(true);
+        	requires().exec().start(lastSpeed);
         }
         
         
