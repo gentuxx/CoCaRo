@@ -19,5 +19,6 @@ public interface IEnvironmentGet {
 	public void removeGUI(EnvChangeListener listener);
 	public void addRobot(RobotGrid.Component robotGrid);
 	public Map<Position,RobotGrid.Component> getRobotsMap();
+	public void initGrid();
 
 }

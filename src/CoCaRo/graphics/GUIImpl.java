@@ -35,6 +35,9 @@ public class GUIImpl extends GUI implements ActionListener {
 	JButton startButton;
 	JButton pauseButton;
 	JButton repriseButton;
+	JButton vitessePlusButton;
+	JButton vitesseMoinsButton;
+	JButton resetButton;
 	JLabel nbRobotsLabel;
 	JLabel nbBoxesLabel;
 	JLabel speedExecLabel;
@@ -43,7 +46,10 @@ public class GUIImpl extends GUI implements ActionListener {
 	JTextField speedExecTextField;
 
 	public GUIImpl() {
+		jFrame = new JFrame("Cocaro");
 		init();
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		//update();
 		
 		observer = new EnvChangeListener() {
@@ -54,6 +60,8 @@ public class GUIImpl extends GUI implements ActionListener {
 			}
 			
 		};
+		
+		
 	}
 
 	public void update() {
@@ -81,9 +89,6 @@ public class GUIImpl extends GUI implements ActionListener {
 	 */
 	public void init() {
 		
-		jFrame = new JFrame("Cocaro");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		elements = new Element[GRID_SIZE][GRID_SIZE];
 		
 		for (int i = 0; i < GRID_SIZE; i++) {
@@ -102,6 +107,18 @@ public class GUIImpl extends GUI implements ActionListener {
 		repriseButton = new JButton("Reprise");
 		repriseButton.addActionListener(this);
 		repriseButton.setEnabled(false);
+		
+		resetButton = new JButton("Reset");
+		resetButton.addActionListener(this);
+		resetButton.setEnabled(false);
+		
+		vitessePlusButton = new JButton("Vitesse++");
+		vitessePlusButton.addActionListener(this);
+		vitessePlusButton.setEnabled(false);
+		
+		vitesseMoinsButton = new JButton("Vitesse--");
+		vitesseMoinsButton.addActionListener(this);
+		vitesseMoinsButton.setEnabled(false);
 		
 		nbRobotsLabel = new JLabel("Nombre de robots :");
 		nbBoxesLabel = new JLabel("Nombre de boites :");
@@ -141,6 +158,9 @@ public class GUIImpl extends GUI implements ActionListener {
 		centerPanel.add(startButton);
 		centerPanel.add(pauseButton);
 		centerPanel.add(repriseButton);
+		centerPanel.add(vitessePlusButton);
+		centerPanel.add(vitesseMoinsButton);
+		centerPanel.add(resetButton);
 		
 		principal.add(centerPanel);
 				
@@ -163,6 +183,7 @@ public class GUIImpl extends GUI implements ActionListener {
 		}
 
 		jFrame.add(principal);
+
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth()/2);
 		int ySize = ((int) tk.getScreenSize().getHeight()/2);
@@ -221,23 +242,77 @@ public class GUIImpl extends GUI implements ActionListener {
 	        	repriseButton.setEnabled(false);
 	        	startButton.setEnabled(false);
 	        	pauseButton.setEnabled(true);
+	        	vitessePlusButton.setEnabled(true);
+	        	resetButton.setEnabled(true);
+	        	
+	        	if (Integer.parseInt(speedExec) > 1) {
+	        		vitesseMoinsButton.setEnabled(true);
+	        	} else {
+	        		vitesseMoinsButton.setEnabled(false);
+	        	}
+
 			}catch(NumberFormatException e){
 				System.out.println("Mauvaise saisie");
 			}
         	        	
         } else if(ev.getSource() == pauseButton) {
         	requires().exec().pause();
-        	
-        	repriseButton.setEnabled(true);
-        	startButton.setEnabled(false);
-        	pauseButton.setEnabled(false);
-        	
         } else if(ev.getSource() == repriseButton){
+        	
         	requires().exec().restart();
         	
         	repriseButton.setEnabled(false);
         	startButton.setEnabled(false);
         	pauseButton.setEnabled(true);
+        } else if (ev.getSource() == vitesseMoinsButton) {
+        	requires().exec().decreaseSpeed();
+        	if (requires().exec().getSpeed() <= 1) {
+        		vitesseMoinsButton.setEnabled(false);
+        	}
+        } else if (ev.getSource() == vitessePlusButton) {
+        	requires().exec().increaseSpeed();
+        	vitesseMoinsButton.setEnabled(true);
+        } else if (ev.getSource() == resetButton) {
+        	/*
+        	repriseButton.setEnabled(false);
+        	startButton.setEnabled(true);
+        	pauseButton.setEnabled(false);
+        	vitessePlusButton.setEnabled(false);
+        	vitesseMoinsButton.setEnabled(false);
+        	resetButton.setEnabled(false);
+        	
+        	requires().exec().stop();
+        	
+    		for (int i = 0; i < GRID_SIZE; i++) {
+    			for (int j = 0; j < GRID_SIZE; j++) {
+    				elements[i][j] = null;
+    			}
+    		}*/
+        	
+        	String nbRobots = nbRobotsTextField.getText();
+			String nbBoxes = nbBoxesTextField.getText();
+			String speedExec = speedExecTextField.getText();
+			try{
+				requires().init().init(Integer.parseInt(nbRobots), 
+	        			Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
+	        	requires().envGet().addGUI(observer);
+	        	
+	        	repriseButton.setEnabled(false);
+	        	startButton.setEnabled(false);
+	        	pauseButton.setEnabled(true);
+	        	vitessePlusButton.setEnabled(true);
+	        	resetButton.setEnabled(true);
+	        	
+	        	if (Integer.parseInt(speedExec) > 1) {
+	        		vitesseMoinsButton.setEnabled(true);
+	        	} else {
+	        		vitesseMoinsButton.setEnabled(false);
+	        	}
+
+			}catch(NumberFormatException e){
+				System.out.println("Mauvaise saisie");
+			}
+        	
         }
         
         

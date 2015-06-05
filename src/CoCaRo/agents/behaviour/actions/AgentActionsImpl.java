@@ -25,7 +25,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX(),oldPosition.getY()-1);
 						System.out.println(newPosition);
-						requires().log().addLine("Go Up " + newPosition.toString() + " \nEnergy : " + core.getEnergy());
+						requires().log().addLine("Go Up " + newPosition.toString() + " -- Energy : " + core.getEnergy() + "\n");
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -37,7 +37,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX(),oldPosition.getY()+1);
 						System.out.println(newPosition);
-						requires().log().addLine("Go Down " + newPosition.toString() + " \nEnergy : " + core.getEnergy());
+						requires().log().addLine("Go Down " + newPosition.toString() + " -- Energy : " + core.getEnergy() + "\n");
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -49,7 +49,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX()-1,oldPosition.getY());
 						System.out.println(newPosition);
-						requires().log().addLine("Go Left " + newPosition.toString() + " \nEnergy : " + core.getEnergy());
+						requires().log().addLine("Go Left " + newPosition.toString() + " -- Energy : " + core.getEnergy() + "\n");
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -61,7 +61,7 @@ public class AgentActionsImpl extends AgentAction {
 						final Position oldPosition = core.getPosition();
 						Position newPosition = new Position(oldPosition.getX()+1,oldPosition.getY());
 						System.out.println(newPosition);
-						requires().log().addLine("Go Right " + newPosition.toString() + " \nEnergy : " + core.getEnergy());
+						requires().log().addLine("Go Right " + newPosition.toString() + " -- Energy : " + core.getEnergy() + "\n");
 						core.setPosition(newPosition);
 						core.spendEnergy();
 						env.updatePosition(oldPosition,newPosition);
@@ -71,11 +71,13 @@ public class AgentActionsImpl extends AgentAction {
 					public void takeBox(IRobotCore core, Position boxPosition) {
 						Element box = core.getEnvironmentSet().removeBox(boxPosition);
 						core.takeBox(box);
+						requires().log().addLine("Take box at position : " + boxPosition.toString() + "\n");
 					}
 
 					@Override
 					public void dropBox(IRobotCore core) {
 						core.dropBox();
+						requires().log().addLine("Found nest and drop box \n");
 					}
 				};
 			}
