@@ -157,7 +157,7 @@ public class EnvironmentImpl extends Environment{
 		return new IEnvInit() {
 			
 			@Override
-			public void init(int nbRobots, int nbBoxes) {
+			public void init(int nbRobots, int nbBoxes, int vitesseExec) {
 				System.out.println("\n\n\n Début de l'initialisation \n\n\n");
 				provides().nestCreator().createAllNests();
 				
@@ -170,7 +170,7 @@ public class EnvironmentImpl extends Environment{
 					parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.randomColor(),cooperative));
 				}
 				System.out.println("\n===================\n");
-				provides().controller().start(1);
+				provides().controller().start(vitesseExec);
 			}
 		};
 	}

@@ -1,5 +1,6 @@
 package speadl.graphics;
 
+import CoCaRo.agents.RobotController;
 import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
 
@@ -17,6 +18,12 @@ public class GUI {
      * 
      */
     public IEnvInit init();
+    
+    /**
+     * This can be called by the implementation to access this required port.
+     * 
+     */
+    public RobotController exec();
   }
   
   public interface Component extends GUI.Provides {

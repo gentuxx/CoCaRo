@@ -1,9 +1,11 @@
 import CoCaRo.environment.interfaces.IEnvironmentGet
 import CoCaRo.environment.interfaces.IEnvInit
+import CoCaRo.agents.RobotController
 
 namespace speadl.graphics {
 	component GUI {
 		requires envGet : IEnvironmentGet
 		requires init : IEnvInit
+		requires exec : RobotController
 	}
 }

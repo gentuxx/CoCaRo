@@ -121,4 +121,8 @@ public class RobotController {
 		robotThread.turnOff();
 		robots.remove(robotThread);
 	}
+	
+	public int getSpeed() {
+		return speed;
+	}
 }

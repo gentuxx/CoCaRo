@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.EnvChangeListener;
@@ -26,15 +28,22 @@ public class GUIImpl extends GUI implements ActionListener {
 	private JFrame jFrame;
 	private EnvChangeListener observer;
 	final int GRID_SIZE = 20;
+	private int lastSpeed;
 	GridLayout layout;
 	Element[][] elements;
 	JPanel principal;
 	JPanel panel;
+	JPanel westPanel;
+	JPanel centerPanel;
 	JButton startButton;
+	JButton pauseButton;
+	JButton repriseButton;
 	JLabel nbRobotsLabel;
 	JLabel nbBoxesLabel;
+	JLabel speedExecLabel;
 	JTextField nbRobotsTextField;
 	JTextField nbBoxesTextField;
+	JTextField speedExecTextField;
 
 	public GUIImpl() {
 		jFrame = new JFrame("Cocaro");
@@ -89,20 +98,32 @@ public class GUIImpl extends GUI implements ActionListener {
 		startButton = new JButton("Start");
 		startButton.addActionListener(this);
 		
+		pauseButton = new JButton("Pause");
+		pauseButton.addActionListener(this);
+		
+		repriseButton = new JButton("Reprise");
+		repriseButton.addActionListener(this);
+		
 		nbRobotsLabel = new JLabel("Nombre de robots :");
 		nbBoxesLabel = new JLabel("Nombre de boites :");
+		speedExecLabel = new JLabel("speed d'execution :");
 		
 		nbRobotsTextField = new JTextField();
 		nbBoxesTextField = new JTextField();
+		speedExecTextField = new JTextField();
 		
 		layout = new GridLayout(GRID_SIZE,GRID_SIZE);
 
 		// A mettre dans l'update la boucle de traitement
-		JPanel westPanel = new JPanel();
+		
 		GridLayout gl = new GridLayout();
 		gl.setColumns(2);
 		gl.setRows(3);
+						
 		principal = new JPanel();
+		westPanel = new JPanel();
+		centerPanel = new JPanel();
+		
 		principal.setLayout(new BoxLayout(principal, BoxLayout.LINE_AXIS));
 		
 		westPanel.setLayout(gl);
@@ -111,14 +132,22 @@ public class GUIImpl extends GUI implements ActionListener {
 		westPanel.add(nbRobotsTextField);
 		westPanel.add(nbBoxesLabel);
 		westPanel.add(nbBoxesTextField);
+		westPanel.add(speedExecLabel);
+		westPanel.add(speedExecTextField);
 		
 		principal.add(westPanel);
-		principal.add(startButton);
+				
+		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+		
+		centerPanel.add(startButton);
+		centerPanel.add(pauseButton);
+		centerPanel.add(repriseButton);
+		
+		principal.add(centerPanel);
 				
 		panel = new JPanel(layout);
 		principal.add(panel);
 		panel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-		//panel.add(startButton);
 
 		for (int i = 0; i < GRID_SIZE; i++) {
 			for (int j = 0; j < GRID_SIZE; j++) {
@@ -177,10 +206,23 @@ public class GUIImpl extends GUI implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
         if (ev.getSource() == startButton) {
-        	requires().init().init(Integer.parseInt(nbRobotsTextField.getText()),
-        			Integer.parseInt(nbBoxesTextField.getText()));
-        	requires().envGet().addGUI(observer);
         	
+        	String nbRobots = nbRobotsTextField.getText();
+			String nbBoxes = nbBoxesTextField.getText();
+			String speedExec = speedExecTextField.getText();
+			try{
+				requires().init().init(Integer.parseInt(nbRobots), 
+	        			Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
+	        	requires().envGet().addGUI(observer);
+			}catch(NumberFormatException e){
+				System.out.println("Mauvaise saisie");
+			}
+        	        	
+        } else if(ev.getSource() == pauseButton) {
+        	lastSpeed = requires().exec().getSpeed();
+        	requires().exec().pause();
+        } else if(ev.getSource() == repriseButton){
+        	requires().exec().start(lastSpeed);
         }
         
         

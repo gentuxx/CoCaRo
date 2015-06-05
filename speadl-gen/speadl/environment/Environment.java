@@ -237,6 +237,10 @@ public abstract class Environment {
       public final IEnvInit init() {
         return Environment.ComponentImpl.this.envInit();
       }
+      
+      public final RobotController exec() {
+        return Environment.ComponentImpl.this.controller();
+      }
     }
     
     public final GUI.Component graphics() {
