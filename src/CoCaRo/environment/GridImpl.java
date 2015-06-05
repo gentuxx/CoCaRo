@@ -256,4 +256,9 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	public Map<Position, speadl.environment.Environment.RobotGrid.Component> getRobotsMap() {
 		return robotsMap;
 	}
+
+	@Override
+	public void initGrid() {
+		grid = new Element[GRID_SIZE][GRID_SIZE];		
+	}
 }

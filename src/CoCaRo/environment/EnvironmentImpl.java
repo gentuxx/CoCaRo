@@ -159,6 +159,9 @@ public class EnvironmentImpl extends Environment{
 			@Override
 			public void init(int nbRobots, int nbBoxes, int vitesseExec) {
 				System.out.println("\n\n\n Début de l'initialisation \n\n\n");
+				
+				parts().globalGrid().env().initGrid();
+				
 				provides().nestCreator().createAllNests();
 				
 				for(int i = 0; i<nbBoxes; i++){
