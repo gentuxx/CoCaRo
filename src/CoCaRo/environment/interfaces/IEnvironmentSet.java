@@ -1,6 +1,5 @@
 package CoCaRo.environment.interfaces;
 
-import speadl.environment.Environment.RobotGrid;
 import CoCaRo.Element;
 import CoCaRo.Position;
 

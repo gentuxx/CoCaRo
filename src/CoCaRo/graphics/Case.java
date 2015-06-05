@@ -10,6 +10,12 @@ import CoCaRo.Element;
 
 public class Case extends JTextField {
 
+	/**
+	 * Generated Serial ID 
+	 */
+	private static final long serialVersionUID = 8166664197376509785L;
+	
+	
 	Element e;
 	int x;
 	int y;

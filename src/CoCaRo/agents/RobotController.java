@@ -19,7 +19,7 @@ public class RobotController {
 	/**
 	 * The speed of the robots (minimum 1)
 	 */
-	private int speed;
+	private int speed = -1;
 	
 	/**
 	 * Boolean value to know when robots run or not
@@ -36,10 +36,20 @@ public class RobotController {
 	
 	/**
 	 * Start all the RobotThread in the list
+	 */
+	public void start() {
+		if(speed>0) {
+			start(speed);
+		}
+	}
+	
+	/**
+	 * Start all the RobotThread in the list
 	 * @param speed the initial speed of the program
 	 */
 	public void start(int speed) {
 		this.speed = speed;
+		
 		if(speed <= 0) {
 			this.speed = 1;
 		}
@@ -54,18 +64,38 @@ public class RobotController {
 	}
 	
 	/**
-	 * Stop the execution of the program
+	 * Pause the execution of the program
 	 */
 	public void pause() {
 		for(final RobotThread robot : robots) {
-			robot.turnOff();
-			try {
-				robot.join();
-			} catch (InterruptedException e) {
-			}
+			robot.setPaused(true);
 		}
 	}
 	
+	/**
+	 * Pause the execution of the program
+	 */
+	public void restart() {
+		for(final RobotThread robot : robots) {
+			robot.setPaused(false);
+		}
+	}
+	
+	/**
+	 * Stop the execution of the program
+	 */
+	public void stop() {
+		for(final RobotThread robot : robots) {
+			robot.turnOff();
+			
+			try {
+				robot.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * Calculate the delay to wait for in the threads
 	 * @return the delay as a long

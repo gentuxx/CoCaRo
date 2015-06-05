@@ -15,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.EnvChangeListener;
@@ -46,7 +44,6 @@ public class GUIImpl extends GUI implements ActionListener {
 	JTextField speedExecTextField;
 
 	public GUIImpl() {
-		jFrame = new JFrame("Cocaro");
 		init();
 		//update();
 		
@@ -58,8 +55,6 @@ public class GUIImpl extends GUI implements ActionListener {
 			}
 			
 		};
-		
-		
 	}
 
 	public void update() {
@@ -86,6 +81,9 @@ public class GUIImpl extends GUI implements ActionListener {
 	 * Changer -> il faut juste l'initialisation des variables
 	 */
 	public void init() {
+		
+		jFrame = new JFrame("Cocaro");
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		elements = new Element[GRID_SIZE][GRID_SIZE];
 		
@@ -219,10 +217,9 @@ public class GUIImpl extends GUI implements ActionListener {
 			}
         	        	
         } else if(ev.getSource() == pauseButton) {
-        	lastSpeed = requires().exec().getSpeed();
         	requires().exec().pause();
         } else if(ev.getSource() == repriseButton){
-        	requires().exec().start(lastSpeed);
+        	requires().exec().restart();
         }
         
         
