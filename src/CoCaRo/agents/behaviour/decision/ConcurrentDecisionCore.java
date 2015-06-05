@@ -60,6 +60,7 @@ public class ConcurrentDecisionCore extends DecisionCore {
 					if((xDiff==0 && (yDiff==1 || yDiff==-1)) || (yDiff==0 && (xDiff==1 || xDiff==-1))){
 						System.out.println("Boite ramenée au nid");
 						requires().core().dropBox();
+						return;
 					}
 					
 					//Loop over each NESO case

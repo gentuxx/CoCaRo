@@ -47,7 +47,10 @@ public class GUIImpl extends GUI implements ActionListener {
 	JTextField speedExecTextField;
 
 	public GUIImpl() {
+		jFrame = new JFrame("Cocaro");
 		init();
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		//update();
 		
 		observer = new EnvChangeListener() {
@@ -58,6 +61,8 @@ public class GUIImpl extends GUI implements ActionListener {
 			}
 			
 		};
+		
+		
 	}
 
 	public void update() {
@@ -84,9 +89,6 @@ public class GUIImpl extends GUI implements ActionListener {
 	 * Changer -> il faut juste l'initialisation des variables
 	 */
 	public void init() {
-		
-		jFrame = new JFrame("Cocaro");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		elements = new Element[GRID_SIZE][GRID_SIZE];
 		
@@ -182,12 +184,7 @@ public class GUIImpl extends GUI implements ActionListener {
 		}
 
 		jFrame.add(principal);
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		int xSize = ((int) tk.getScreenSize().getWidth());
-		int ySize = ((int) tk.getScreenSize().getHeight());
-		
-		jFrame.setSize(xSize, ySize);
-		jFrame.setResizable(false);
+		jFrame.setSize(700, 700);
 
 		// Centers the window
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -249,19 +246,15 @@ public class GUIImpl extends GUI implements ActionListener {
 	        	} else {
 	        		vitesseMoinsButton.setEnabled(false);
 	        	}
-	        	
+
 			}catch(NumberFormatException e){
 				System.out.println("Mauvaise saisie");
 			}
         	        	
         } else if(ev.getSource() == pauseButton) {
         	requires().exec().pause();
-        	
-        	repriseButton.setEnabled(true);
-        	startButton.setEnabled(false);
-        	pauseButton.setEnabled(false);
-        	
         } else if(ev.getSource() == repriseButton){
+        	
         	requires().exec().restart();
         	
         	repriseButton.setEnabled(false);
