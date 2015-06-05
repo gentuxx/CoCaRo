@@ -251,4 +251,9 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 		grid[position.getX()][position.getY()]=null;
 		robotsMap.remove(position);
 	}
+
+	@Override
+	public Map<Position, speadl.environment.Environment.RobotGrid.Component> getRobotsMap() {
+		return robotsMap;
+	}
 }

@@ -1,6 +1,7 @@
 package CoCaRo.environment.interfaces;
 
 import java.util.List;
+import java.util.Map;
 
 import speadl.environment.BoxEnv.Box;
 import speadl.environment.Environment.RobotGrid;
@@ -17,5 +18,6 @@ public interface IEnvironmentGet {
 	public void addGUI(EnvChangeListener listener);
 	public void removeGUI(EnvChangeListener listener);
 	public void addRobot(RobotGrid.Component robotGrid);
+	public Map<Position,RobotGrid.Component> getRobotsMap();
 
 }

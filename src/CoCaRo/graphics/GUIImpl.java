@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -15,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import CoCaRo.Element;
+import CoCaRo.Position;
 import CoCaRo.environment.interfaces.EnvChangeListener;
+import speadl.environment.Environment.RobotGrid;
 import speadl.graphics.GUI;
 
 public class GUIImpl extends GUI implements ActionListener {
@@ -119,9 +122,15 @@ public class GUIImpl extends GUI implements ActionListener {
 
 		for (int i = 0; i < GRID_SIZE; i++) {
 			for (int j = 0; j < GRID_SIZE; j++) {
-				Case c = new Case(elements[i][j]);
+				Case c = new Case(elements[i][j], i, j);
 				panel.add(c);
 				c.setColor(elements[i][j]);
+				c.addMouseListener(new java.awt.event.MouseAdapter() {
+		            public void mouseClicked(java.awt.event.MouseEvent evt) {
+		            	Case c = (Case) evt.getSource();
+		            	caseMouseClicked(evt, c);
+		            }
+		        });
 			}
 		}
 
@@ -138,6 +147,28 @@ public class GUIImpl extends GUI implements ActionListener {
 		
 		jFrame.setVisible(true);
 	}
+	
+	private void caseMouseClicked(java.awt.event.MouseEvent evt, Case c) {                                         
+        System.out.println("Pos X: " + c.getCoordX() + " Pos Y : " + c.getCoordY());
+        System.err.println(elements[c.getCoordY()][c.getCoordX()]);
+        Map<Position,RobotGrid.Component> robotsMap = requires().envGet().getRobotsMap();
+        
+        if(elements[c.getCoordY()][c.getCoordX()] == Element.BLUE_AGENT
+        		|| elements[c.getCoordY()][c.getCoordX()] == Element.GREEN_AGENT
+        		|| elements[c.getCoordY()][c.getCoordX()] == Element.RED_AGENT){
+        	RobotGrid.Component robot = robotsMap.get(new Position(c.getCoordY(), c.getCoordX()));
+        	for(Position pos : robotsMap.keySet()){
+        		System.err.println(pos.toString());
+        	}
+            if(robot == null){
+            	System.err.println("NO ROBOT");
+            }else{
+            	System.out.println("ENERGY " + robot.robotCore().getEnergy() + " COLOR : " + robot.robotCore().getColor());
+            }
+        }
+        
+    }                                        
+
 	
 	private int nthComponent(int x, int y) {
 		// 20 * 20

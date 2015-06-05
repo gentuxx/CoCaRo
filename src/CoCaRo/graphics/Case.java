@@ -11,10 +11,22 @@ import CoCaRo.Element;
 public class Case extends JTextField {
 
 	Element e;
+	int x;
+	int y;
 
-	public Case(Element e) {
+	public Case(Element e, int x, int y) {
 		this.e = e;
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.x = x;
+		this.y = y;
+	}
+
+	public int getCoordX() {
+		return x;
+	}
+
+	public int getCoordY() {
+		return y;
 	}
 
 	public void setColor(Element e) {
