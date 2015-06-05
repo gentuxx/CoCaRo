@@ -20,7 +20,7 @@ public abstract class RobotThread extends Thread{
 	/**
 	 * Boolean value for stopping the thread 
 	 */
-	private boolean pause = true;
+	private boolean pause = false;
 	
 	/**
 	 * Set the delay value
