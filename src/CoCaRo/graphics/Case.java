@@ -35,7 +35,7 @@ public class Case extends JTextField {
 		return y;
 	}
 
-	public void setColor(Element e) {
+	public synchronized void setColor(Element e) {
 		
 		Font f  = getFont();
 		setFont(f.deriveFont(Font.BOLD));
