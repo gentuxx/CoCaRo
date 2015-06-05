@@ -190,7 +190,21 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	@Override
 	public void addRobot(
 			speadl.environment.Environment.RobotGrid.Component robotGrid) {
-		robotGrid.robotCore().setPosition(putInGrid(Element.AGENT));
+		
+		System.err.println("Test " + robotGrid.robotCore().getColor());
+		
+		CustomColor robotColor = robotGrid.robotCore().getColor();
+		
+		if(robotColor == CustomColor.Red){
+			robotGrid.robotCore().setPosition(putInGrid(Element.RED_AGENT));
+		}else if(robotColor == CustomColor.Blue){
+			robotGrid.robotCore().setPosition(putInGrid(Element.BLUE_AGENT));
+		}else if(robotColor == CustomColor.Green){
+			robotGrid.robotCore().setPosition(putInGrid(Element.GREEN_AGENT));
+		}else{
+			robotGrid.robotCore().setPosition(putInGrid(Element.AGENT));
+		}
+		
 		robotsMap.put(robotGrid.robotCore().getPosition(),robotGrid);
 	}
 

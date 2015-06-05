@@ -32,6 +32,21 @@ public class Case extends JTextField {
 			setText("A");
 		}
 		
+		if (e == Element.BLUE_AGENT) {
+			this.setBackground(Color.blue);
+			setText("A");
+		}
+		
+		if (e == Element.RED_AGENT) {
+			this.setBackground(Color.red);
+			setText("A");
+		}
+		
+		if (e == Element.GREEN_AGENT) {
+			this.setBackground(Color.green);
+			setText("A");
+		}
+		
 		if (e == Element.BLUE_BOX) {
 			this.setBackground(Color.blue);
 			setText("B");

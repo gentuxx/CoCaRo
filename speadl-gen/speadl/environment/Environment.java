@@ -233,6 +233,10 @@ public abstract class Environment {
       public final IEnvironmentGet envGet() {
         return Environment.ComponentImpl.this.globalGrid().env();
       }
+      
+      public final IEnvInit init() {
+        return Environment.ComponentImpl.this.envInit();
+      }
     }
     
     public final GUI.Component graphics() {

@@ -7,7 +7,7 @@ public class Application {
 
 	public static void main(String[] args) {
 		Environment.Component env = new EnvironmentImpl(false).newComponent();
-		env.envInit().init();
+//		env.envInit().init();
 	}
 
 }

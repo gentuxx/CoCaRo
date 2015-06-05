@@ -10,11 +10,12 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import CoCaRo.Element;
 import CoCaRo.environment.interfaces.EnvChangeListener;
-
 import speadl.graphics.GUI;
 
 public class GUIImpl extends GUI implements ActionListener {
@@ -27,6 +28,10 @@ public class GUIImpl extends GUI implements ActionListener {
 	JPanel principal;
 	JPanel panel;
 	JButton startButton;
+	JLabel nbRobotsLabel;
+	JLabel nbBoxesLabel;
+	JTextField nbRobotsTextField;
+	JTextField nbBoxesTextField;
 
 	public GUIImpl() {
 		jFrame = new JFrame("Cocaro");
@@ -69,7 +74,7 @@ public class GUIImpl extends GUI implements ActionListener {
 	 * Changer -> il faut juste l'initialisation des variables
 	 */
 	public void init() {
-
+		
 		elements = new Element[GRID_SIZE][GRID_SIZE];
 		
 		for (int i = 0; i < GRID_SIZE; i++) {
@@ -81,13 +86,32 @@ public class GUIImpl extends GUI implements ActionListener {
 		startButton = new JButton("Start");
 		startButton.addActionListener(this);
 		
+		nbRobotsLabel = new JLabel("Nombre de robots :");
+		nbBoxesLabel = new JLabel("Nombre de boites :");
+		
+		nbRobotsTextField = new JTextField();
+		nbBoxesTextField = new JTextField();
+		
 		layout = new GridLayout(GRID_SIZE,GRID_SIZE);
 
 		// A mettre dans l'update la boucle de traitement
+		JPanel westPanel = new JPanel();
+		GridLayout gl = new GridLayout();
+		gl.setColumns(2);
+		gl.setRows(3);
 		principal = new JPanel();
 		principal.setLayout(new BoxLayout(principal, BoxLayout.LINE_AXIS));
-		principal.add(startButton);
 		
+		westPanel.setLayout(gl);
+		westPanel.setPreferredSize(new Dimension(0,0));
+		westPanel.add(nbRobotsLabel);
+		westPanel.add(nbRobotsTextField);
+		westPanel.add(nbBoxesLabel);
+		westPanel.add(nbBoxesTextField);
+		
+		principal.add(westPanel);
+		principal.add(startButton);
+				
 		panel = new JPanel(layout);
 		principal.add(panel);
 		panel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
@@ -122,11 +146,10 @@ public class GUIImpl extends GUI implements ActionListener {
 	
 	public void actionPerformed(ActionEvent ev) {
         if (ev.getSource() == startButton) {
-        	
+        	requires().init().init(Integer.parseInt(nbRobotsTextField.getText()),
+        			Integer.parseInt(nbBoxesTextField.getText()));
         	requires().envGet().addGUI(observer);
         	
-        	
-//        	update();
         }
         
         

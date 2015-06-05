@@ -1,7 +1,9 @@
 import CoCaRo.environment.interfaces.IEnvironmentGet
+import CoCaRo.environment.interfaces.IEnvInit
 
 namespace speadl.graphics {
 	component GUI {
 		requires envGet : IEnvironmentGet
+		requires init : IEnvInit
 	}
 }

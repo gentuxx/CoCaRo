@@ -1,5 +1,5 @@
 package CoCaRo.environment.interfaces;
 
 public interface IEnvInit {
-	public void init();
+	public void init(int nbRobots, int nbBoxes);
 }

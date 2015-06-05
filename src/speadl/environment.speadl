@@ -71,7 +71,8 @@ namespace speadl.environment {
 		}
 		
 		part graphics : GUI {
-			bind envGet to globalGrid.env	
+			bind envGet to globalGrid.env
+			bind init to envInit	
 		}
 		
 		part log1 : Logging

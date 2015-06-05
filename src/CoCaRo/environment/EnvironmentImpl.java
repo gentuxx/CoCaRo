@@ -157,19 +157,20 @@ public class EnvironmentImpl extends Environment{
 		return new IEnvInit() {
 			
 			@Override
-			public void init() {
+			public void init(int nbRobots, int nbBoxes) {
 				System.out.println("\n\n\n Début de l'initialisation \n\n\n");
-				
 				provides().nestCreator().createAllNests();
-				provides().boxGenerator().generateBox(CustomColor.Red);
-				provides().boxGenerator().generateBox(CustomColor.Blue);
-				provides().boxGenerator().generateBox(CustomColor.Green);
+				
+				for(int i = 0; i<nbBoxes; i++){
+					provides().boxGenerator().generateBox(CustomColor.randomColor());
+				}
+				
 				System.out.println("\n===================\n");
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Red,cooperative));
-				/*parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Green,cooperative));
-				parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.Blue,cooperative));*/
+				for(int i = 0; i<nbRobots; i++){
+					parts().globalGrid().env().addRobot(newRobotGrid("test", CustomColor.randomColor(),cooperative));
+				}
 				System.out.println("\n===================\n");
-				provides().controller().start(20);
+				provides().controller().start(8);
 			}
 		};
 	}

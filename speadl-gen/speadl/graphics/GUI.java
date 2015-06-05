@@ -1,5 +1,6 @@
 package speadl.graphics;
 
+import CoCaRo.environment.interfaces.IEnvInit;
 import CoCaRo.environment.interfaces.IEnvironmentGet;
 
 @SuppressWarnings("all")
@@ -10,6 +11,12 @@ public class GUI {
      * 
      */
     public IEnvironmentGet envGet();
+    
+    /**
+     * This can be called by the implementation to access this required port.
+     * 
+     */
+    public IEnvInit init();
   }
   
   public interface Component extends GUI.Provides {
