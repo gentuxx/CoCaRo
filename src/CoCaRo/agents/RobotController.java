@@ -112,7 +112,7 @@ public class RobotController {
 	 * Increase the speed of the program
 	 */
 	public void increaseSpeed() {
-		this.speed++;
+		this.speed += 2;
 		long waitTime = calculateDelay();
 		for(final RobotThread robot : robots) {
 			robot.setDelay(waitTime);
@@ -123,7 +123,7 @@ public class RobotController {
 	 * Decrease the speed of the program
 	 */
 	public void decreaseSpeed() {
-		this.speed--;
+		this.speed -= 2;
 		
 		if(this.speed <= 0) {
 			this.speed = 1;
@@ -154,7 +154,7 @@ public class RobotController {
 	}
 	
 	public int getSpeed() {
-		return speed;
+		return (int) (speed/2 + 0.5);
 	}
 
 	public void removeAllThread() {

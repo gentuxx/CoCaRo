@@ -51,8 +51,8 @@ public class GUIImpl extends GUI implements ActionListener {
 
 	JButton startButton;
 	JButton pauseButton;
-	JButton lowSpeedButton;
 	JButton highSpeedButton;
+	JButton lowSpeedButton;
 
 	JLabel nbRobotsLabel;
 	JLabel nbBoxesLabel;
@@ -118,11 +118,11 @@ public class GUIImpl extends GUI implements ActionListener {
 		pauseButton.addActionListener(this);
 		pauseButton.setAlignmentX(JFrame.CENTER_ALIGNMENT);
 
-		lowSpeedButton = new JButton(">>");
-		lowSpeedButton.addActionListener(this);
-
-		highSpeedButton = new JButton("<<");
+		highSpeedButton = new JButton(">>");
 		highSpeedButton.addActionListener(this);
+
+		lowSpeedButton = new JButton("<<");
+		lowSpeedButton.addActionListener(this);
 
 		speedValueLabel = new JLabel("0");	
 
@@ -132,11 +132,11 @@ public class GUIImpl extends GUI implements ActionListener {
 		speedPanel.setAlignmentX(JFrame.CENTER_ALIGNMENT);
 
 		//Ajout des boutons de controle de la vitesse et du label
-		speedPanel.add(highSpeedButton);
+		speedPanel.add(lowSpeedButton);
 		speedPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		speedPanel.add(speedValueLabel);
 		speedPanel.add(Box.createRigidArea(new Dimension(10,0)));
-		speedPanel.add(lowSpeedButton);
+		speedPanel.add(highSpeedButton);
 
 		//Creation du panel central
 		centerPanel = new JPanel();
@@ -150,8 +150,8 @@ public class GUIImpl extends GUI implements ActionListener {
 
 		//Desactivation des boutons
 		pauseButton.setEnabled(false);
-		highSpeedButton.setEnabled(false);
 		lowSpeedButton.setEnabled(false);
+		highSpeedButton.setEnabled(false);
 	}
 
 	private void initConfigPanel() {
@@ -321,30 +321,66 @@ public class GUIImpl extends GUI implements ActionListener {
 		if (ev.getSource() == startButton) {
 
 			if (!transitionPauseRestart) {
+				
 				String nbRobots = nbRobotsField.getText();
 				String nbBoxes = nbBoxesField.getText();
 				String speedExec = speedConfigField.getText();
+				
 				try{
+					
+					int robots = Integer.parseInt(nbRobots);
+					int boxes = Integer.parseInt(nbBoxes);
+					int speed = Integer.parseInt(speedExec);
+					
+					/*
+					 *  Si valeurs inférieures au minimum, alors on mets des valeurs arbitraires
+					 *  Idem pour les valeurs maximales
+					 */
+					
+					if (robots > 100) {
+						robots = 100;
+					} else if (robots < 1) {
+						robots = 1;
+					}
+					
+					if (boxes > 100) {
+						boxes = 100;
+					} else if (boxes < 1) {
+						boxes = 1;
+					}
+					
+					if (speed > 10) {
+						speed = 10;
+					} else if (speed < 1) {
+						speed = 1;
+					}
+					
+					// setText
+					nbRobotsField.setText(Integer.toString(robots));
+					nbBoxesField.setText(Integer.toString(boxes));
+					speedConfigField.setText(Integer.toString(speed));
+					
 					if (cooperativeCheckBox.isSelected()) {
-						requires().init().init(Integer.parseInt(nbRobots), 
-								Integer.parseInt(nbBoxes), Integer.parseInt(speedExec), true);			
+						requires().init().init(robots, boxes, speed, true);			
 					} else {
-						requires().init().init(Integer.parseInt(nbRobots), 
-								Integer.parseInt(nbBoxes), Integer.parseInt(speedExec), false);
+						requires().init().init(robots, boxes, speed, false);
 					}
 					cooperativeCheckBox.setEnabled(false);
 					requires().envGet().addGUI(observer);
 
 					startButton.setEnabled(false);
 					pauseButton.setEnabled(true);
-					lowSpeedButton.setEnabled(true);
+					highSpeedButton.setEnabled(true);
 
 					if (requires().exec().getSpeed() > 1) {
-						highSpeedButton.setEnabled(true);
+						lowSpeedButton.setEnabled(true);
 					} else {
-						highSpeedButton.setEnabled(false);
+						lowSpeedButton.setEnabled(false);
 					}
 					speedValueLabel.setText(Integer.toString(requires().exec().getSpeed()));
+					nbRobotsField.setEnabled(false);
+					nbBoxesField.setEnabled(false);
+					speedConfigField.setEnabled(false);
 				}catch(NumberFormatException e){
 					System.out.println("Mauvaise saisie");
 				}
@@ -360,17 +396,24 @@ public class GUIImpl extends GUI implements ActionListener {
 			pauseButton.setEnabled(false);
 
 			transitionPauseRestart = true;
-		} else if (ev.getSource() == highSpeedButton) {
+		} else if (ev.getSource() == lowSpeedButton) {
 			requires().exec().decreaseSpeed();
 
 			if (requires().exec().getSpeed() <= 1) {
-				highSpeedButton.setEnabled(false);
+				lowSpeedButton.setEnabled(false);
 			}
-			speedValueLabel.setText(Integer.toString(requires().exec().getSpeed()));
-		} else if (ev.getSource() == lowSpeedButton) {
-			requires().exec().increaseSpeed();
+			
 			highSpeedButton.setEnabled(true);
 			speedValueLabel.setText(Integer.toString(requires().exec().getSpeed()));
+		
+		} else if (ev.getSource() == highSpeedButton) {
+			requires().exec().increaseSpeed();
+			lowSpeedButton.setEnabled(true);
+			speedValueLabel.setText(Integer.toString(requires().exec().getSpeed()));
+			
+			if (requires().exec().getSpeed() >= 10) {
+				highSpeedButton.setEnabled(false);
+			}
 		}
 	}
 }
