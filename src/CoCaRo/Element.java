@@ -50,10 +50,10 @@ public enum Element {
 				return RED_BOX;
 			}
 			else if(color.equals(CustomColor.Green)) {
-				
+				return GREEN_BOX;
 			}
 			else if(color.equals(CustomColor.Blue)) {
-				
+				return BLUE_BOX;
 			}
 		}
 		

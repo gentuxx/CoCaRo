@@ -147,6 +147,7 @@ public class CooperativeDecisionCore extends DecisionCore{
 					Position boxPosition = eco_provides().coopModule().getRandomElement(myColorBox);
 					
 					if(boxPosition!=null) {
+						System.out.println("Je me dirige vers une boite découverte !!!");
 						try {
 							positionToGo = findPathToPosition(currentPosition, boxPosition);
 							
