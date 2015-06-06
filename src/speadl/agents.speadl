@@ -1,10 +1,10 @@
 import CoCaRo.CustomColor
 import CoCaRo.agents.IRobotCore
 import CoCaRo.agents.behaviour.actions.interfaces.IAgentAction
+import CoCaRo.agents.behaviour.decision.interfaces.ICooperativeModule
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker
 import CoCaRo.agents.behaviour.perception.interfaces.IAgentPerception
 import CoCaRo.logging.interfaces.ILog
-import CoCaRo.agents.behaviour.decision.interfaces.ICooperativeModule
 
 namespace speadl.agents {
 	
