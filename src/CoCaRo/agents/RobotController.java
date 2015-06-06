@@ -155,4 +155,12 @@ public class RobotController {
 	public int getSpeed() {
 		return speed;
 	}
+
+	public void removeAllThread() {
+		for(final RobotThread robot : robots) {
+			robot.interrupt();
+			removeThread(robot);
+		}
+		
+	}
 }

@@ -160,6 +160,8 @@ public class EnvironmentImpl extends Environment{
 			public void init(int nbRobots, int nbBoxes, int vitesseExec) {
 				System.out.println("\n\n\n Début de l'initialisation \n\n\n");
 				
+				provides().controller().removeAllThread();
+	
 				parts().globalGrid().env().initGrid();
 				
 				provides().nestCreator().createAllNests();
