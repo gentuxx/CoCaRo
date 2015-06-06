@@ -17,8 +17,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -281,21 +283,27 @@ public class GUIImpl extends GUI implements ActionListener {
 	}
 	
 	private void caseMouseClicked(java.awt.event.MouseEvent evt, Case c) {                                         
-        System.out.println("Pos X: " + c.getCoordX() + " Pos Y : " + c.getCoordY());
-        System.err.println(elements[c.getCoordY()][c.getCoordX()]);
+
         Map<Position,RobotGrid.Component> robotsMap = requires().envGet().getRobotsMap();
         
         if(elements[c.getCoordY()][c.getCoordX()] == Element.BLUE_AGENT
         		|| elements[c.getCoordY()][c.getCoordX()] == Element.GREEN_AGENT
         		|| elements[c.getCoordY()][c.getCoordX()] == Element.RED_AGENT){
-        	RobotGrid.Component robot = robotsMap.get(new Position(c.getCoordY(), c.getCoordX()));
+        	RobotGrid.Component robot = null ;
+        	
         	for(Position pos : robotsMap.keySet()){
-        		System.err.println(pos.toString());
+        		
+        		if(pos.equals(new Position(c.getCoordY(), c.getCoordX()))){
+        			robot = robotsMap.get(pos);
+        		}	
         	}
-            if(robot == null){
-            	System.err.println("NO ROBOT");
-            }else{
-            	System.out.println("ENERGY " + robot.robotCore().getEnergy() + " COLOR : " + robot.robotCore().getColor());
+            if(robot != null){
+            	String message = "ENERGY : " + robot.robotCore().getEnergy() + " ROBOT COLOR : " + robot.robotCore().getColor();
+            	if(robot.robotCore().hasBox()){
+            		message += " HAS BOX : " + robot.robotCore().getBoxColor();
+            	}
+            	
+            	JOptionPane.showMessageDialog(mainFrame, message);
             }
         }
         
