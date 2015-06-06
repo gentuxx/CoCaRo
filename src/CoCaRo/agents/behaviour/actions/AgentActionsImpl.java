@@ -72,6 +72,7 @@ public class AgentActionsImpl extends AgentAction {
 						Element box = core.getEnvironmentSet().removeBox(boxPosition);
 						core.takeBox(box);
 						requires().log().addLine("Take box at position : " + boxPosition.toString() + "\n");
+						
 					}
 
 					@Override
