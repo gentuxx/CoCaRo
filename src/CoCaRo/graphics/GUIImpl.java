@@ -17,8 +17,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -120,29 +122,29 @@ public class GUIImpl extends GUI implements ActionListener {
 
 		speedValueLabel = new JLabel("0");	
 
-		//Cr�ation d'un panel pour la gestion de la vitesse
+		//Creation d'un panel pour la gestion de la vitesse
 		JPanel speedPanel = new JPanel();
 		speedPanel.setLayout(new BoxLayout(speedPanel,BoxLayout.LINE_AXIS));
 		speedPanel.setAlignmentX(JFrame.CENTER_ALIGNMENT);
 
-		//Ajout des boutons de contr�le de la vitesse et du label
+		//Ajout des boutons de controle de la vitesse et du label
 		speedPanel.add(highSpeedButton);
 		speedPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		speedPanel.add(speedValueLabel);
 		speedPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		speedPanel.add(lowSpeedButton);
 
-		//Cr�ation du panel central
+		//Creation du panel central
 		centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
 
-		//Ajout des diff�rents boutons et du speedPanel
+		//Ajout des differents boutons et du speedPanel
 		centerPanel.add(startButton);
 		centerPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		centerPanel.add(pauseButton);
 		centerPanel.add(speedPanel);
 
-		//D�sactivation des boutons
+		//Desactivation des boutons
 		pauseButton.setEnabled(false);
 		highSpeedButton.setEnabled(false);
 		lowSpeedButton.setEnabled(false);
@@ -153,7 +155,7 @@ public class GUIImpl extends GUI implements ActionListener {
 		nbRobotsLabel = new JLabel("Nombre de Robots :");
 		nbRobotsLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		nbBoxesLabel = new JLabel("Nombre de Bo�tes :");
+		nbBoxesLabel = new JLabel("Nombre de Boites :");
 		nbBoxesLabel.setHorizontalAlignment(JLabel.CENTER);
 
 		speedConfigLabel = new JLabel("Vitesse Initiale :");
@@ -173,7 +175,7 @@ public class GUIImpl extends GUI implements ActionListener {
 		configPanel = new JPanel();
 		configPanel.setLayout(new GridBagLayout());
 
-		//Ajout des diff�rents �l�ments
+		//Ajout des differents elements
 		GridBagConstraints constraints=new GridBagConstraints();
 
 		constraints.insets = new Insets(0,5,0,5);
@@ -266,28 +268,33 @@ public class GUIImpl extends GUI implements ActionListener {
 
 		mainFrame.setVisible(true);
 	}
-
+	
 	private void caseMouseClicked(java.awt.event.MouseEvent evt, Case c) {                                         
-		System.out.println("Pos X: " + c.getCoordX() + " Pos Y : " + c.getCoordY());
-		System.err.println(elements[c.getCoordY()][c.getCoordX()]);
-		Map<Position,RobotGrid.Component> robotsMap = requires().envGet().getRobotsMap();
 
-		if(elements[c.getCoordY()][c.getCoordX()] == Element.BLUE_AGENT
-				|| elements[c.getCoordY()][c.getCoordX()] == Element.GREEN_AGENT
-				|| elements[c.getCoordY()][c.getCoordX()] == Element.RED_AGENT){
-			RobotGrid.Component robot = robotsMap.get(new Position(c.getCoordY(), c.getCoordX()));
-			for(Position pos : robotsMap.keySet()){
-				System.err.println(pos.toString());
-			}
-			if(robot == null){
-				System.err.println("NO ROBOT");
-			}else{
-				System.out.println("ENERGY " + robot.robotCore().getEnergy() + " COLOR : " + robot.robotCore().getColor());
-			}
-		}
-
-	}                                        
-
+        Map<Position,RobotGrid.Component> robotsMap = requires().envGet().getRobotsMap();
+        
+        if(elements[c.getCoordY()][c.getCoordX()] == Element.BLUE_AGENT
+        		|| elements[c.getCoordY()][c.getCoordX()] == Element.GREEN_AGENT
+        		|| elements[c.getCoordY()][c.getCoordX()] == Element.RED_AGENT){
+        	RobotGrid.Component robot = null ;
+        	
+        	for(Position pos : robotsMap.keySet()){
+        		
+        		if(pos.equals(new Position(c.getCoordY(), c.getCoordX()))){
+        			robot = robotsMap.get(pos);
+        		}	
+        	}
+            if(robot != null){
+            	String message = "ENERGY : " + robot.robotCore().getEnergy() + " ROBOT COLOR : " + robot.robotCore().getColor();
+            	if(robot.robotCore().hasBox()){
+            		message += " HAS BOX : " + robot.robotCore().getBoxColor();
+            	}
+            	
+            	JOptionPane.showMessageDialog(mainFrame, message);
+            }
+        }
+        
+    }                                        
 
 	private int nthComponent(int x, int y) {
 		// 20 * 20
