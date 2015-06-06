@@ -321,16 +321,49 @@ public class GUIImpl extends GUI implements ActionListener {
 		if (ev.getSource() == startButton) {
 
 			if (!transitionPauseRestart) {
+				
 				String nbRobots = nbRobotsField.getText();
 				String nbBoxes = nbBoxesField.getText();
 				String speedExec = speedConfigField.getText();
+				
 				try{
+					
+					int robots = Integer.parseInt(nbRobots);
+					int boxes = Integer.parseInt(nbBoxes);
+					int speed = Integer.parseInt(speedExec);
+					
+					/*
+					 *  Si valeurs inférieures au minimum, alors on mets des valeurs arbitraires
+					 *  Idem pour les valeurs maximales
+					 */
+					
+					if (robots > 100) {
+						robots = 100;
+					} else if (robots < 1) {
+						robots = 1;
+					}
+					
+					if (boxes > 100) {
+						boxes = 100;
+					} else if (boxes < 1) {
+						boxes = 1;
+					}
+					
+					if (speed > 10) {
+						speed = 10;
+					} else if (speed < 1) {
+						speed = 1;
+					}
+					
+					// setText
+					nbRobotsField.setText(Integer.toString(robots));
+					nbBoxesField.setText(Integer.toString(boxes));
+					speedConfigField.setText(Integer.toString(speed));
+					
 					if (cooperativeCheckBox.isSelected()) {
-						requires().init().init(Integer.parseInt(nbRobots), 
-								Integer.parseInt(nbBoxes), Integer.parseInt(speedExec), true);			
+						requires().init().init(robots, boxes, speed, true);			
 					} else {
-						requires().init().init(Integer.parseInt(nbRobots), 
-								Integer.parseInt(nbBoxes), Integer.parseInt(speedExec), false);
+						requires().init().init(robots, boxes, speed, false);
 					}
 					cooperativeCheckBox.setEnabled(false);
 					requires().envGet().addGUI(observer);
