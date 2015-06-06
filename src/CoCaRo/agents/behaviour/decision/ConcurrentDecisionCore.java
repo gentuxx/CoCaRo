@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import speadl.agents.AgentDecision.DecisionCore;
 import CoCaRo.Element;
 import CoCaRo.Position;
+import CoCaRo.agents.behaviour.decision.DecisionCoreImpl.NoPositionException;
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 
-public class ConcurrentDecisionCore extends DecisionCore {
+public class ConcurrentDecisionCore extends DecisionCoreImpl {
 
 	@Override
 	public IDecisionMaker make_decisionMaker() {
@@ -53,45 +53,15 @@ public class ConcurrentDecisionCore extends DecisionCore {
 							getNest(requires().core().getBoxColor());
 					
 					System.out.println("Nid repéré à "+nestPosition);
-					
-					int xDiff = currentPosition.getX()-nestPosition.getX();
-					int yDiff = currentPosition.getY()-nestPosition.getY();
-					
-					if((xDiff==0 && (yDiff==1 || yDiff==-1)) || (yDiff==0 && (xDiff==1 || xDiff==-1))){
-						System.out.println("Boite ramenée au nid");
-						requires().core().dropBox();
+					try {
+						positionToGo = findPathToPosition(currentPosition, nestPosition);
+						if(positionToGo==null) {
+							System.out.println("Boite ramenée au nid");
+							requires().core().dropBox();
+							return;
+						}
+					} catch (NoPositionException e) {
 						return;
-					}
-					
-					//Loop over each NESO case
-					for(int i=-1;i<1;i++) {
-						//If the Element is null, add it to the list
-						if(partialGrid[i+1][i+2]==null) {
-							positions.add(new Position(i,i+1));
-						}
-						
-						if(partialGrid[i+2][i+1]==null) {
-							positions.add(new Position(i+1,i));
-						}
-					}
-					
-					//Depending on xDiff and yDiff
-					if(xDiff<0 && positions.contains(Position.EAST)) {
-						positionToGo = Position.EAST;
-					}
-					else if(yDiff<0 && positions.contains(Position.SOUTH)){
-						positionToGo = Position.SOUTH;
-					}
-					else if(xDiff>0 && positions.contains(Position.WEST)){
-						positionToGo = Position.WEST;
-					}
-					else if(yDiff>0 && positions.contains(Position.NORTH)) {
-						positionToGo = Position.NORTH;
-					}
-					
-					if(positionToGo!=null) {
-						positionToGo = new Position(positionToGo.getX()+currentPosition.getX(),
-								positionToGo.getY()+currentPosition.getY());
 					}
 				}
 				else {

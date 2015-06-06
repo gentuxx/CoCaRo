@@ -143,6 +143,7 @@ public class RobotController {
 	public void addThread(RobotThread robot) {
 		robots.add(robot);
 		if(!stop) {
+			robot.setDelay(calculateDelay());
 			robot.start();
 		}
 	}

@@ -2,8 +2,8 @@ package CoCaRo.environment;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import speadl.agents.RobotsEcosystem;
@@ -79,7 +79,7 @@ public class EnvironmentImpl extends Environment{
 						eco_provides().controller().removeThread(robotThread);
 						globalGrid.removeRobot(getPosition());
 						
-						//TODO Voir � quoi sert l'identifier
+						//TODO Voir a quoi sert l'identifier
 						globalGrid.addRobot(newRobotGrid("", color, cooperative));
 					}
 
@@ -163,16 +163,31 @@ public class EnvironmentImpl extends Environment{
 			
 			@Override
 			public void init(int nbRobots, int nbBoxes, int vitesseExec, boolean cooperative) {
-				System.out.println("\n\n\n D�but de l'initialisation \n\n\n");
+				System.out.println("\n\n\n Debut de l'initialisation \n\n\n");
+				
+				try {
+					Files.createDirectory(Paths.get("./log"));
+				} catch (FileAlreadyExistsException e2) {
+					
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					System.out.println("Failed to create log folder");
+					System.exit(-3);
+				} 
 				
 				File folder = new File("./log/");
-				for (final File fileEntry : folder.listFiles()) {
-			        try {
-						Files.deleteIfExists(fileEntry.toPath());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-			    }
+				
+				if(folder!=null && folder.isDirectory() && folder.exists()) {
+					System.out.println(folder.listFiles().length);
+					for (final File fileEntry : folder.listFiles()) {
+				        try {
+							Files.deleteIfExists(fileEntry.toPath());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				    }
+				}
+				
 				
 				provides().controller().removeAllThread();
 	

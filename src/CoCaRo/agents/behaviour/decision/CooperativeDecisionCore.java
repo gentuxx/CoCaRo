@@ -2,89 +2,12 @@ package CoCaRo.agents.behaviour.decision;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import speadl.agents.AgentDecision.DecisionCore;
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 
-public class CooperativeDecisionCore extends DecisionCore{
-	
-	private class NoPositionException extends Exception {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 4588124584513269513L;
-		
-	}
-	
-	private Position findPathToPosition(Position currentPosition, Position targetPosition) throws NoPositionException{
-		Element[][] partialGrid = requires().perception().getPartialGrid();
-		Position positionToGo = null;
-		
-		List<Position> positions = new ArrayList<>();
-		
-		int xDiff = currentPosition.getX()-targetPosition.getX();
-		int yDiff = currentPosition.getY()-targetPosition.getY();
-		
-		if((xDiff==0 && (yDiff==1 || yDiff==-1)) || (yDiff==0 && (xDiff==1 || xDiff==-1))){
-			System.out.println("Target Acquired!!!");
-			return null;
-		}
-		
-		//Loop over each NESO case
-		for(int i=-1;i<1;i++) {
-			//If the Element is null, add it to the list
-			if(partialGrid[i+1][i+2]==null) {
-				positions.add(new Position(i,i+1));
-			}
-			
-			if(partialGrid[i+2][i+1]==null) {
-				positions.add(new Position(i+1,i));
-			}
-		}
-		
-		//Depending on xDiff and yDiff
-		if(xDiff<0 && positions.contains(Position.EAST)) {
-			positionToGo = Position.EAST;
-		}
-		else if(yDiff<0 && positions.contains(Position.SOUTH)){
-			positionToGo = Position.SOUTH;
-		}
-		else if(xDiff>0 && positions.contains(Position.WEST)){
-			positionToGo = Position.WEST;
-		}
-		else if(yDiff>0 && positions.contains(Position.NORTH)) {
-			positionToGo = Position.NORTH;
-		}
-		
-		if(positionToGo!=null) {
-			return new Position(positionToGo.getX()+currentPosition.getX(),
-					positionToGo.getY()+currentPosition.getY());
-		}
-		else {
-			Position result =  randomPosition(positions);
-			
-			if(result == null) {
-				throw new NoPositionException();
-			}
-			else {
-				return result;
-			}
-		}
-	}
-	
-	private Position randomPosition(List<Position> positions) {
-		if(!positions.isEmpty()) {
-			Random rand = new Random();
-			int index = rand.nextInt(positions.size());
-			return positions.get(index);
-		}
-		
-		return null;
-	}
+public class CooperativeDecisionCore extends DecisionCoreImpl{
 	
 	@Override
 	public IDecisionMaker make_decisionMaker() {
@@ -104,7 +27,6 @@ public class CooperativeDecisionCore extends DecisionCore{
 					try {
 						requires().core().suicide();
 					} catch (Throwable e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						System.exit(-1);
 					}

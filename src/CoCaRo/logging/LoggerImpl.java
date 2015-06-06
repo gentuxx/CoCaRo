@@ -29,12 +29,14 @@ public class LoggerImpl extends Logger implements ILog{
 		
 		pathFile = Paths.get("./log/agent"+nbAgent+".txt");
 		try {
-			
 			Files.createFile(pathFile);
 			nbAgent++;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("Path créé");
+		
 		return this;
 	}
 
