@@ -105,7 +105,8 @@ public class EnvironmentImpl extends Environment{
 
 					@Override
 					public void takeBox(Element box) {
-						this.box = box;						
+						this.box = box;
+						eco_provides().boxGenerator().generateBox(CustomColor.randomColor());
 					}
 
 					@Override

@@ -6,7 +6,6 @@ import java.util.Random;
 
 import CoCaRo.Element;
 import CoCaRo.Position;
-import CoCaRo.agents.behaviour.decision.DecisionCoreImpl.NoPositionException;
 import CoCaRo.agents.behaviour.decision.interfaces.IDecisionMaker;
 
 public class ConcurrentDecisionCore extends DecisionCoreImpl {
