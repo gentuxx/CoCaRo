@@ -20,11 +20,10 @@ import CoCaRo.logging.LoggerImpl;
 
 public class EnvironmentImpl extends Environment{
 	
-	private boolean cooperative = false;
 	private GridImpl globalGrid;
 	
-	public EnvironmentImpl(boolean cooperative) {
-		this.cooperative = cooperative;
+	public EnvironmentImpl() {
+		
 	}
 	
 	@Override
@@ -74,7 +73,7 @@ public class EnvironmentImpl extends Environment{
 						eco_provides().controller().removeThread(robotThread);
 						globalGrid.removeRobot(getPosition());
 						
-						//TODO Voir à quoi sert l'identifier
+						//TODO Voir ï¿½ quoi sert l'identifier
 						globalGrid.addRobot(newRobotGrid("", color, cooperative));
 					}
 
@@ -157,8 +156,8 @@ public class EnvironmentImpl extends Environment{
 		return new IEnvInit() {
 			
 			@Override
-			public void init(int nbRobots, int nbBoxes, int vitesseExec) {
-				System.out.println("\n\n\n Début de l'initialisation \n\n\n");
+			public void init(int nbRobots, int nbBoxes, int vitesseExec, boolean cooperative) {
+				System.out.println("\n\n\n Dï¿½but de l'initialisation \n\n\n");
 				
 				provides().controller().removeAllThread();
 	

@@ -1,5 +1,6 @@
 package CoCaRo.graphics;
 
+import java.awt.CheckboxGroup;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,7 +18,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,11 +27,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import speadl.environment.Environment.RobotGrid;
+import speadl.graphics.GUI;
 import CoCaRo.Element;
 import CoCaRo.Position;
 import CoCaRo.environment.interfaces.EnvChangeListener;
-import speadl.environment.Environment.RobotGrid;
-import speadl.graphics.GUI;
 
 public class GUIImpl extends GUI implements ActionListener {
 
@@ -56,11 +58,13 @@ public class GUIImpl extends GUI implements ActionListener {
 	JLabel nbBoxesLabel;
 	JLabel speedConfigLabel;
 	JLabel speedValueLabel;
-
+	JLabel cooperativesLabel;
+	
 	JTextField nbRobotsField;
 	JTextField nbBoxesField;
 	JTextField speedConfigField;
-
+	JCheckBox cooperativeCheckBox;
+	
 	boolean transitionPauseRestart = false;
 
 	public GUIImpl() {
@@ -161,6 +165,9 @@ public class GUIImpl extends GUI implements ActionListener {
 		speedConfigLabel = new JLabel("Vitesse Initiale :");
 		speedConfigLabel.setHorizontalAlignment(JLabel.CENTER);
 
+		cooperativesLabel = new JLabel("Cooperatifs :");
+		cooperativesLabel.setHorizontalAlignment(JLabel.CENTER);
+		
 		//Initialisation des champs
 		nbRobotsField = new JTextField();
 		nbRobotsField.setPreferredSize(new Dimension(50,32));
@@ -171,6 +178,10 @@ public class GUIImpl extends GUI implements ActionListener {
 		speedConfigField = new JTextField();
 		speedConfigField.setPreferredSize(new Dimension(50,32));
 
+		cooperativeCheckBox = new JCheckBox();
+		
+		cooperativeCheckBox.setPreferredSize(new Dimension(50,50));
+		
 		//Initialisation du panel de configuration
 		configPanel = new JPanel();
 		configPanel.setLayout(new GridBagLayout());
@@ -192,7 +203,12 @@ public class GUIImpl extends GUI implements ActionListener {
 
 		configPanel.add(speedConfigLabel,constraints);
 		configPanel.add(speedConfigField,constraints);
+		
+		constraints.gridy = 3;
 
+		configPanel.add(cooperativesLabel,constraints);
+		configPanel.add(cooperativeCheckBox,constraints);
+		
 		//Update the size of the panel
 		configPanel.setMaximumSize(new Dimension(300,200));
 		configPanel.setPreferredSize(new Dimension(300,200));
@@ -309,8 +325,14 @@ public class GUIImpl extends GUI implements ActionListener {
 				String nbBoxes = nbBoxesField.getText();
 				String speedExec = speedConfigField.getText();
 				try{
-					requires().init().init(Integer.parseInt(nbRobots), 
-							Integer.parseInt(nbBoxes), Integer.parseInt(speedExec));
+					if (cooperativeCheckBox.isSelected()) {
+						requires().init().init(Integer.parseInt(nbRobots), 
+								Integer.parseInt(nbBoxes), Integer.parseInt(speedExec), true);			
+					} else {
+						requires().init().init(Integer.parseInt(nbRobots), 
+								Integer.parseInt(nbBoxes), Integer.parseInt(speedExec), false);
+					}
+					cooperativeCheckBox.setEnabled(false);
 					requires().envGet().addGUI(observer);
 
 					startButton.setEnabled(false);
@@ -323,7 +345,6 @@ public class GUIImpl extends GUI implements ActionListener {
 						highSpeedButton.setEnabled(false);
 					}
 					speedValueLabel.setText(Integer.toString(requires().exec().getSpeed()));
-
 				}catch(NumberFormatException e){
 					System.out.println("Mauvaise saisie");
 				}
