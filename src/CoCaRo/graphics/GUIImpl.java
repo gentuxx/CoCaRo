@@ -322,8 +322,8 @@ public class GUIImpl extends GUI implements ActionListener {
 				}
 			} else {
 				requires().exec().restart();
-				startButton.setEnabled(true);
-				transitionPauseRestart = false;
+				startButton.setEnabled(false);
+				pauseButton.setEnabled(true);
 			}
 
 		} else if(ev.getSource() == pauseButton) {
