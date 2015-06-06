@@ -1,6 +1,5 @@
 package CoCaRo.graphics;
 
-import java.awt.CheckboxGroup;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,7 +18,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -381,6 +379,7 @@ public class GUIImpl extends GUI implements ActionListener {
 					nbRobotsField.setEnabled(false);
 					nbBoxesField.setEnabled(false);
 					speedConfigField.setEnabled(false);
+					configPanel.setVisible(false);
 				}catch(NumberFormatException e){
 					System.out.println("Mauvaise saisie");
 				}
