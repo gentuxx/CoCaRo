@@ -43,4 +43,21 @@ public enum Element {
 			return null;
 		}
 	}
+	
+	public static Element getBox(CustomColor color) {
+		if(color!=null) {
+			if(color.equals(CustomColor.Red)) {
+				return RED_BOX;
+			}
+			else if(color.equals(CustomColor.Green)) {
+				
+			}
+			else if(color.equals(CustomColor.Blue)) {
+				
+			}
+		}
+		
+		return null;
+	}
+	
 }

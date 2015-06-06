@@ -79,23 +79,6 @@ public class AgentActionsImpl extends AgentAction {
 						core.dropBox();
 						requires().log().addLine("Found nest and drop box \n");
 					}
-
-					@Override
-					public void suicide() {
-						try {
-							this.finalize();
-						} catch (Throwable e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-
-					@Override
-					public void checkEnergy(IRobotCore core) {
-						if(core.getEnergy() == 0){
-							suicide();
-						}						
-					}
 				};
 			}
 		};

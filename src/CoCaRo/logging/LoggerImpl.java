@@ -16,19 +16,19 @@ public class LoggerImpl extends Logger implements ILog{
 	
 	@Override
 	public void addLine(String line) {
-		System.out.println(line);
+		/*System.out.println(line);
 		
 		try {
 			Files.write(pathFile, line.getBytes(), StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	@Override
 	protected ILog make_log() {
 		
-		pathFile = Paths.get("./log/agent"+nbAgent+".txt");
+		/*fileFile = Paths.get("./log/agent"+nbAgent+".txt");
 		try {
 			Files.createDirectories(Paths.get("./log"));
 			if(Files.exists(pathFile)){
@@ -38,7 +38,7 @@ public class LoggerImpl extends Logger implements ILog{
 			nbAgent++;
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		return this;
 	}
 
