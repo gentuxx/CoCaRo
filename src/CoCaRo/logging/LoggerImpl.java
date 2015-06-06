@@ -11,7 +11,7 @@ import speadl.logging.Logging.Logger;
 
 public class LoggerImpl extends Logger implements ILog{
 
-	private Path fileFile;
+	private Path pathFile;
 	private static int nbAgent = 0;
 	
 	@Override
@@ -19,7 +19,7 @@ public class LoggerImpl extends Logger implements ILog{
 		/*System.out.println(line);
 		
 		try {
-			Files.write(fileFile, line.getBytes(), StandardOpenOption.APPEND);
+			Files.write(pathFile, line.getBytes(), StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
@@ -31,7 +31,10 @@ public class LoggerImpl extends Logger implements ILog{
 		/*fileFile = Paths.get("./log/agent"+nbAgent+".txt");
 		try {
 			Files.createDirectories(Paths.get("./log"));
-			Files.createFile(fileFile);
+			if(Files.exists(pathFile)){
+				Files.delete(pathFile);
+			}
+			Files.createFile(pathFile);
 			nbAgent++;
 		} catch (IOException e) {
 			e.printStackTrace();

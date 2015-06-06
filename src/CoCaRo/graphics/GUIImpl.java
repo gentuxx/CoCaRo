@@ -366,6 +366,7 @@ public class GUIImpl extends GUI implements ActionListener {
     			for (int j = 0; j < GRID_SIZE; j++) {
     				elements[i][j] = null;
     			}
+
     		}*/
         	
         	String nbRobots = nbRobotsField.getText();
@@ -391,6 +392,7 @@ public class GUIImpl extends GUI implements ActionListener {
 			}catch(NumberFormatException e){
 				System.out.println("Mauvaise saisie");
 			}
+
         }
         
         
