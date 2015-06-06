@@ -1,5 +1,11 @@
 package CoCaRo.environment;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import speadl.agents.RobotsEcosystem;
 import speadl.environment.Environment;
 import speadl.environment.Grid;
@@ -99,7 +105,7 @@ public class EnvironmentImpl extends Environment{
 
 					@Override
 					public void takeBox(Element box) {
-						this.box = box;
+						this.box = box;						
 					}
 
 					@Override
@@ -158,6 +164,15 @@ public class EnvironmentImpl extends Environment{
 			@Override
 			public void init(int nbRobots, int nbBoxes, int vitesseExec, boolean cooperative) {
 				System.out.println("\n\n\n D�but de l'initialisation \n\n\n");
+				
+				File folder = new File("./log/");
+				for (final File fileEntry : folder.listFiles()) {
+			        try {
+						Files.deleteIfExists(fileEntry.toPath());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			    }
 				
 				provides().controller().removeAllThread();
 	
