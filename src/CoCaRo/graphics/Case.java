@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import CoCaRo.Element;
 
-public class Case extends JTextField {
+public class Case extends JLabel {
 
 	/**
 	 * Generated Serial ID 
@@ -37,66 +39,63 @@ public class Case extends JTextField {
 
 	public synchronized void setColor(Element e) {
 		
-		Font f  = getFont();
-		setFont(f.deriveFont(Font.BOLD));
+		this.setOpaque(true);
 		
 		if (e == null) {
+			this.setIcon(null);
 			this.setBackground(Color.white);
-			setText("");
 		}
 		
 		if (e == Element.AGENT) {
-			this.setBackground(Color.black);
-			setText("A");
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/robot.png")));
+			this.setBackground(Color.white);
 		}
 		
 		if (e == Element.BLUE_AGENT) {
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/robot.png")));
 			this.setBackground(Color.blue);
-			setText("A");
 		}
 		
 		if (e == Element.RED_AGENT) {
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/robot.png")));
 			this.setBackground(Color.red);
-			setText("A");
 		}
 		
 		if (e == Element.GREEN_AGENT) {
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/robot.png")));
 			this.setBackground(Color.green);
-			setText("A");
 		}
 		
 		if (e == Element.BLUE_BOX) {
-			this.setBackground(Color.blue);
-			setText("B");
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/blue_box.jpg")));
+			this.setBackground(Color.white);
 		}
 		
 		if (e == Element.BLUE_NEST) {
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/nest.png")));
 			this.setBackground(Color.blue);
-			setText("N");
 		}
 		
 		if (e == Element.RED_BOX) {
-			this.setBackground(Color.red);
-			setText("B");
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/red_box.jpg")));
+			this.setBackground(Color.white);
 		}
 		
 		if (e == Element.RED_NEST) {
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/nest.png")));
 			this.setBackground(Color.red);
-			setText("N");
 		}
 		
 		if (e == Element.GREEN_BOX) {
-			this.setBackground(Color.green);
-			setText("B");
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/green_box.jpg")));
+			this.setBackground(Color.white);
 		}
 		
 		if (e == Element.GREEN_NEST) {
+			this.setIcon(new ImageIcon(getClass().getResource("/resources/nest.png")));
 			this.setBackground(Color.green);
-			setText("N");
 		}
 		
-	    setHorizontalAlignment(JTextField.CENTER);
-	    this.setEnabled(false);
-		
+	    setHorizontalAlignment(JTextField.CENTER);	
 	}
 }
