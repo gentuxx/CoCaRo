@@ -205,8 +205,8 @@ public class GUIImpl extends GUI implements ActionListener {
 		configPanel.add(speedConfigField,constraints);
 		
 		//Update the size of the panel
-		configPanel.setMaximumSize(new Dimension(180,200));
-		configPanel.setPreferredSize(new Dimension(180,200));
+		configPanel.setMaximumSize(new Dimension(300,200));
+		configPanel.setPreferredSize(new Dimension(300,200));
 	}
 	
 	private void initGrid() {

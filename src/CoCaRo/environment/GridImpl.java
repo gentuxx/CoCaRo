@@ -209,10 +209,14 @@ public class GridImpl extends Grid implements IEnvironmentGet, IEnvironmentSet{
 	}
 
 	@Override
-	public void updatePosition(Position oldPosition, Position newPosition) {
+	public synchronized void updatePosition(Position oldPosition, Position newPosition) {
 		System.out.println("Déplacement de "+oldPosition+" vers "+newPosition );
 		grid[newPosition.getX()][newPosition.getY()] = grid[oldPosition.getX()][oldPosition.getY()];
 		grid[oldPosition.getX()][oldPosition.getY()] = null;
+		
+		robotsMap.put(newPosition,robotsMap.get(oldPosition));
+		robotsMap.remove(oldPosition);
+		
 		fireChangeEvent();
 	}
 
